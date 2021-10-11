@@ -47,19 +47,26 @@
 ----
 # 1. Introduction
 
-This section should provide an overview of the entire document
+This document is an overview of the Cougar Research Application Portal project. It includes Table of Contents and Document Revision History history for easy navigation and version management. It also includes an introduction section that consists of this statement, Document Purpose, Product Scope, and Document Overview sections. These introduce the Software Requirement Specification document and the product that is being created. Following the list of use-cases is a swim-lane diagram, a list of non-functional requirements, a user interface diagram, and a list of references used in the creation of this document and the product. 
 
 ## 1.1 Document Purpose
 
-Describe the purpose of the Software Requirement Specification (SRS) document and its intended audience.
+The purpose of the Software Requirement Specification (SRS) document is to outline the functions that the software must perform. This specification is useful because it may be read by the designer of the product to guide the planning and implementation process. It also provides clear documentation, which allows for transparency and minimizes confusion. This is essential because it limits the chances for the product implementation to stray from the initial needs of the client/customer. The document is intended to be read by the product designers/creators and the client. It should only be directly edited by the product designers/creators. 
 
 ## 1.2 Product Scope
 
-Identify the product whose software requirements are specified in this document. Explain what the product that is covered by this SRS will do. Provide a short description of the software being specified and its purpose, including relevant benefits, objectives, and goals.
+Though many students falsely assume that only professors or graduate students are involved in research, there are many research opportunities at WSU EECS for undergraduate students. Usually, faculty present the research opportunities in their classes and students who are interested in the project directly contact the faculty. However, if the faculty isnot teaching a lower-level course, they can’t easily reach out to sophomore and junior cohorts. There is a need for an online platform that will allow the faculty advertise their research positions and connect them with the qualified undergraduate students. The product that will be created is a web application where: 
+-students can enter their contact information
+-completed coursework
+-research interests
+-prior research experience
+-faculty can advertise research opportunities for undergraduate students
+-students can apply for research positions
+-faculty can select the candidates that they would like to interview with for the position.
 
 ## 1.3 Document Overview
 
-Describe what the rest of the document contains and how it is organized.
+The next section is the Requirement Specification. This includes a list of use-cases, a swim-lane diagram, and a list of non-functional requirements. Following this is a user interface diagram and a list of references used in the creation of this document and the product. 
 
 ----
 # 2. Requirements Specification
@@ -212,7 +219,7 @@ Below describes the use cases for the software. It is categorized by "Student Us
 | **Name**              | Faculty Login with username and password |
 | **Users**             | Faculty |
 | **Rationale**         | When users register for the application there needs to be a way to properly verify whether the user is in fact a faculty member prior to accessing the application. Therefore, by making it so that a faculty member enters the proper credentials on a page before accessing the full capailities of the application, we will be able to know that the user is a faculty member. |
-| **Triggers**          |  User selects to login option. |
+| **Triggers**          |  User selects the login option. |
 | **Preconditions**     | User has already created a Faculty account |
 | **Actions**           |   **1.** The user indicates that the software is to perform a Student login option <br/> **2.** The software responds by prompting for a Student username and password <br/> **3.** The user enters the proper student credentials (username and password) then indicates to login <br/> **4.**  the credentials that the user enters are valid. |
 | **Alternative paths** | **1.** The user indicates that the software is to perform a Student login option <br/> **2.** The software responds by prompting for a Student username and password <br/> **3.** The user enters the proper student credentials (username and password) then indicates to login <br/> **4.**  the credentials that the user enters are invalid and they a prompt the user to create a student account. |
@@ -314,7 +321,7 @@ Below describes the use cases for the software. It is categorized by "Student Us
 “A student applies to a research position; initially its status will appear as “Pending”. The faculty who created that position reviews the application and updates the application status to either “Approved for Interview”, or “Hired”, or “Not hired”. The updated status of the application is displayed on the student view.
 The student may delete the pending applications (i.e., whose status is still “Pending”. )”
 
-
+![](readme_imgs/swimlane.png)
 ----
 ## 2.3 Non-Functional Requirements
 
@@ -322,7 +329,15 @@ List the non-functional requirements in this section.
 
 You may use the following template for non-functional requirements.
 
-1. [Enter a Concise Requirement Name]:  [provide a concise description, in clear and easily understandable language to specify the requirement]
+**1.** Dependability: The system shall be reliable in terms of all its operations that it may need to perform. 
+
+**2.** Reusability:  The system shall have aspects within it that may be reused wheiter it be for present or future purposes. 
+
+**3.** Portability:  The system shall be able to perform equivalently in all devices, web browsers (chrome and firefox), operating systems.    
+
+**4.** Performance:  The system shall be able to both consistently and effectively.  
+
+**5.** Security:  The system shall not disclose any personal user information.
 
 ----
 # 3. User Interface
