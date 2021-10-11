@@ -1,7 +1,7 @@
 # Software Requirements Specification
 
 ## Cougar Research Application Portal
-
+ 
 --------
 **Prepared by:**
 
