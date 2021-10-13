@@ -221,10 +221,10 @@ Below describes the use cases for the software. It is categorized by "Student Us
 | **Rationale**         | When users register for the application there needs to be a way to properly verify whether the user is in fact a faculty member prior to accessing the application. Therefore, by making it so that a faculty member enters the proper credentials on a page before accessing the full capailities of the application, we will be able to know that the user is a faculty member. |
 | **Triggers**          |  User selects the login option. |
 | **Preconditions**     | User has already created a Faculty account |
-| **Actions**           |   **1.** The user indicates that the software is to perform a Student login option <br/> **2.** The software responds by prompting for a Student username and password <br/> **3.** The user enters the proper student credentials (username and password) then indicates to login <br/> **4.**  the credentials that the user enters are valid. |
-| **Alternative paths** | **1.** The user indicates that the software is to perform a Student login option <br/> **2.** The software responds by prompting for a Student username and password <br/> **3.** The user enters the proper student credentials (username and password) then indicates to login <br/> **4.**  the credentials that the user enters are invalid and they a prompt the user to create a student account. |
+| **Actions**           |   **1.** The user indicates that the software is to perform a Faculty login option <br/> **2.** The software responds by prompting for a Faculty username and password <br/> **3.** The user enters the proper student credentials (username and password) then indicates to login <br/> **4.**  the credentials that the user enters are valid. |
+| **Alternative paths** | **1.** The user indicates that the software is to perform a Faculty login option <br/> **2.** The software responds by prompting for a Faculty username and password <br/> **3.** The user enters the proper student credentials (username and password) then indicates to login <br/> **4.**  the credentials that the user enters are invalid and they a prompt the user to create a student account. |
 | **Postconditions**    |  The user is logged in as a faculty member |
-| **Acceptance tests**  |  Make sure that the user logs in only with the proper Student credentials   |
+| **Acceptance tests**  |  Make sure that the user logs in only with the proper Faculty credentials   |
 | **Iteration**         |  1 |
 
 <br/><br/>
