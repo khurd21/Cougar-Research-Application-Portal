@@ -33,6 +33,8 @@
     - [2.2.2 Faculty Use Cases](#222-faculty-use-cases) 
   - [2.3 Non-Functional Requirements](#23-non-functional-requirements)
 - [3. User Interface](#3-user-interface)
+    - [3.1 Student User Interface](#31-student-user-interface)
+    - [3.2 Faculty User Interface](#32-faculty-user-interface)
 - [4. References](#4-references)
 - [Appendix: Grading Rubric](#appendix-grading-rubric)
 
@@ -342,8 +344,10 @@ You may use the following template for non-functional requirements.
 ----
 # 3. User Interface
 
-Here you should include the sketches or mockups for the main parts of the interface.
-
+## 3.1 Student User Interface
+![](readme_imgs/StudentUI.png)
+## 3.2 Faculty User Interface
+![](readme_imgs/FacultyUI.png)
 ----
 # 4. References
 
