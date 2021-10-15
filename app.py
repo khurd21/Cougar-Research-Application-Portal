@@ -19,6 +19,6 @@ def init_db(*args, **kwargs):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
 
