@@ -1,0 +1,35 @@
+{% extends "base.html "%}
+
+{% block content %}
+    <h1>Sign In</h1>
+    {% if form %}
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            
+            <p>{{ form.username.label }}</p>
+            <p>{{ form.username(class='textinput') }}</p>
+
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            <p>{{ form.password.label }}</p>
+            <p>{{ form.password(class='textinput') }}</p>
+
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            <!-- Include a checkbox for logging in as Student or Faculty Member -->
+
+            <p>{{ form.submit(class="button") }}</p>
+            
+        </form>
+    {% else %}
+        <p>FORM COULD NOT BE RENDER!!!</p>
+    {% endif %}
+
+    <!-- Include link to Create an Account -->
+    <p>New User? <a href="">Click to Create Account</a></p>
+
+{% endblock %}
