@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Coug Research Application Portal</h1>
+
+    {% if research_positions %}
+        <!-- researchPositions represents all open researchPositions in database -->
+        {% for position in research_positions %}
+                {% include '_positions.html' %}
+        {% endfor %}
+    {% else %}
+        <p>FORM COULD NOT BE RENDERED!!!</p>
+    {% endif %}
+
+{% endblock %}
