@@ -1,6 +1,6 @@
 
-
 from flask import Flask
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
 from flask_login import LoginManager
@@ -23,8 +23,6 @@ def create_app(config_class=Config):
     db.init_app(app=app)
     moment.init_app(app=app)
     login.init_app(app=app)
-
-    # Blueprints here:
 
     return app
 
