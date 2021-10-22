@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
 
     first_name  = db.Column(db.String(32))
     last_name   = db.Column(db.String(32))
-    wsu_id      = db.Column(db.String(10))
+    wsu_id      = db.Column(db.Integer)
     username    = db.Column(db.String(32), unique=True)
     email       = db.Column(db.String(64), unique=True)
     phone_number= db.Column(db.Integer, unique=True)
@@ -72,6 +72,7 @@ class Faculty(User):
     __mapper_args__ = {
             'polymorphic_identity': 'faculty'
             }
+
 
 
 # For research field interests, sort them so their fields are on top first
