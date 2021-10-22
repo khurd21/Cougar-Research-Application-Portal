@@ -5,6 +5,13 @@ from app.Model import user_models, tables
 
 
 class ResearchField(db.Model):
+    '''
+    A database model containing research field categories that are present at
+    a given organization.
+
+    :input positions relationship: A relationship between postitions and research fields
+    :input students relationship: A relationship between students and interested fields (reserach fields)
+    '''
     __tablename__ = 'researchfield'
     id          = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String(32), nullable=False)
@@ -21,6 +28,10 @@ class ResearchField(db.Model):
 
 
 class Position(db.Model):
+    '''
+    A database model containing information needed for a posted position. This includes
+    start and end dates, faculty identification, description, title, etc.
+    '''
     
     id              = db.Column(db.Integer, primary_key=True)
     title           = db.Column(db.String(32))
