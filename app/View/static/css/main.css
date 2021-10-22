@@ -5,6 +5,10 @@ body {
     text-align: left;
   
 }
+.textinput {
+    font-family: Tahoma;
+    font-size: 10px;
+}
 .nav-container {
     background:#f6f6f6;
     font-family: Tahoma;
@@ -20,4 +24,15 @@ body {
     margin : 5px;
     padding : 5px;
     border: 1px solid lightgray;
+}
+
+.positiontable tr:hover {
+    background-color: lightgray;
+}
+
+.positiontable { 
+    text-align: left;
+    border : 1px black solid;
+    width : 80%;
+    font-size: 18px;
 }

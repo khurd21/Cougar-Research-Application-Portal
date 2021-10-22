@@ -7,9 +7,15 @@
     <body>
         <div class="nav-container">
             <tr>
-                <!-- add link to login page -->           
-                <td><a href="" class = "button">Login</td>
-                <!-- Add future links here -->
+                <!-- keep if login is implemented -->
+                {% if current_user.is_anonymous %}
+                    <!-- add link to login route -->           
+                    <td><a href="" class = "button">Login</td>
+                {% else %}
+                    <!-- add link to logout route -->           
+                    <td><a href="" class = "button">Logout</td>
+                {% endif %}
+                <!-- Add future links go here -->
             </tr>
         </div>
     </body>

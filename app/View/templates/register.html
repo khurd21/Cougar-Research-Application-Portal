@@ -39,6 +39,10 @@
                 {% for error in form.password2.errors %}
                 <span style="color:red;">[{{ error }}]</span>
                 {% endfor %}
+
+                <!-- Research Fields Interest tags (similiar to smile app tags)-->
+                <!-- {{ form.tag(class-'textinput') }} -->
+
             
             <p>{{ form.submit(class='button') }}</p>
         </form>
