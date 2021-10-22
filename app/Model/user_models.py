@@ -1,10 +1,12 @@
 # user_models.py
 # Contains the User models 
 
-from app import db, login
+from app import login, db
+from app.Model import position_models, tables
+
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from datetime import datetime
 
 
 @login.user_loader
@@ -28,15 +30,21 @@ class User(db.Model, UserMixin):
     '''
 
     __tablename__ = 'user'
+
     type        = db.Column(db.String(64))
     id          = db.Column(db.Integer, primary_key=True)
+
+    first_name  = db.Column(db.String(32))
+    last_name   = db.Column(db.String(32))
+    wsu_id      = db.Column(db.String(10))
     username    = db.Column(db.String(32), unique=True)
     email       = db.Column(db.String(64), unique=True)
+    phone_number= db.Column(db.Integer, unique=True)
+    last_seen   = db.Column(db.DateTime, default=datetime.utcnow)
+
     passwd_hash = db.Column(db.String(128))
 
 
-    # How we are able to use User for grabbing each polymorphic type
-    # From database
     __mapper_args__ = {
             'polymorphic_identity': 'user',
             'polymorphic_on':type
@@ -57,24 +65,28 @@ class User(db.Model, UserMixin):
 
 
 
-
 class Faculty(User):
 
-    posted_positions = None # relationship to positions db
-    # Others ??
+    posted_positions = db.relationship('Position', backref='faculty_info', lazy=True)
 
     __mapper_args__ = {
             'polymorphic_identity': 'faculty'
             }
 
 
-
+# For research field interests, sort them so their fields are on top first
 class Student(User):
+    
+    applied_positions = db.relationship('Position',
+                                        secondary=tables.applied_positions, lazy='subquery',
+                                        back_populates='students'
+                                        )
 
-    applied_positions = None # relationship to positions db
-    # Others ??
+    interested_fields = db.relationship('ResearchField',
+                            secondary=tables.interested_fields, lazy='subquery',
+                            back_populates='students'
+                            )
 
     __mapper_args__ = {
             'polymorphic_identity': 'student'
             }
-
