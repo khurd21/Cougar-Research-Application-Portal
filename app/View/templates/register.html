@@ -1,51 +1,11 @@
+<!-- page used to register a defined user (i.e., Faculty member or Student) 
+     Takes a register form object called "form" -->
 {% extends "base.html "%}
 
-{% block content%}
+{% block app_content%}
     <h1>Register an Account</h1>
     {% if form %}
-        <form action="" method="POST">
-            {{ form.hidden_tag() }}
-                <p>{{ form.username.label }}</p>
-                <p>{{ form.username(class='textinput')}}</p>
-
-                {% for error in form.username.errors %}
-                <span style="color:red;">[{{ error }}]</span>
-                {% endfor %}
-
-                <p>{{ form.email.label }}</p>
-                <p>{{ form.email(class='textinput')}}</p>
-
-                {% for error in form.email.errors %}
-                <span style="color:red;">[{{ error }}]</span>
-                {% endfor %}
-
-                <p>{{ form.userid.label }}</p>
-                <p>{{ form.userid(class='textinput')}}</p>
-
-                {% for error in form.userid.errors %}
-                <span style="color:red;">[{{ error }}]</span>
-                {% endfor %}
-
-                <p>{{ form.password1.label }}</p>
-                <p>{{ form.password1(class='textinput')}}</p>
-
-                {% for error in form.password1.errors %}
-                <span style="color:red;">[{{ error }}]</span>
-                {% endfor %}
-
-                <p>{{ form.password2.label }}</p>
-                <p>{{ form.password2(class='textinput')}}</p>
-
-                {% for error in form.password2.errors %}
-                <span style="color:red;">[{{ error }}]</span>
-                {% endfor %}
-
-                <!-- Research Fields Interest tags (similiar to smile app tags)-->
-                <!-- {{ form.tag(class-'textinput') }} -->
-
-            
-            <p>{{ form.submit(class='button') }}</p>
-        </form>
+        {{ wtf.quick_form(form, action = url_for('auth.register')) }}
     {% else %}
         <p>FORM COULD NOT BE RENDERED!!!</p>
     {% endif %}

@@ -1,9 +1,11 @@
-<table class = "positiontable">
+<!-- Page used to render each position on the index page,
+     takes in a research position object called "position" -->
+<table class = "table table-hover">
     <tr valign="center">
-        <td width="30%">{{ position.title }} - {{ position.writer }}</td>
+        <td width="20%">{{ position.title }} - {{ position.writer }}</td>
           
         <!-- "read more" collapsable menu for position description -->
-        <td width="30%">
+        <td width="40%">
             <button class="btn btn-primary" type="button" 
                     data-toggle="collapse" data-target="#infocollapse" 
                     aria-expanded="false" aria-controls="infocollapse">
@@ -11,16 +13,28 @@
             </button>
             <div class="collapse" id="infocollapse">  
               <div class="card card-body">
+                <b> Duration: </b> {{ position.time_commitment }} <br>
+                <b> Description: </b> <br>
                 {{ position.description }}
+                <br>
+                <b> Qualifications: </b> <br>
+                {{ position.required_qualifications}}
               </div>
             </div>
         </td>
 
-        <!-- Add research tags for post around here in a <td> with width of 20% -->
+        <!-- Add research fields for post around here in a <td> with width of 20% -->
+        <td width=20%>
+            {% for field in position.get_research_fields() %}
+                <span >{% field.name %}</span>
+            {% endfor %}
+        </td>
 
 
         <!-- IMPORTANT, conditional statments to differentiate between the Students and the Faculty
-             not be implemented yet, please be aware until implementation -->
+             not be implemented yet, please be aware until implementation. Conditions shall be handled
+             by a global enum state for both Student and Faculty -->
+            
              
         <!-- IF the current user is a student -->
             <!-- the action would be the url_for the "apply to application" route with userid-->

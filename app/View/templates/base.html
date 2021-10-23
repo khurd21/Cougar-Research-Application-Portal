@@ -1,22 +1,47 @@
-<html>
-    <head>
-        <title>Welcome to Cougar Research Application Portal</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    </head>
+<!-- base page of the application which -->
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' %}
 
+{% block title %}
+    {% if title %}{{ title }} - Coug Research Application Portal {% else %}Welcome to the Coug Portal{% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+    {{ moment.include_moment() }}
+{% endblock %} 
+
+
+{% block navbar %}
     <body>
         <div class="nav-container">
             <tr>
-                <!-- keep if login is implemented -->
                 {% if current_user.is_anonymous %}
-                    <!-- add link to login route -->           
-                    <td><a href="" class = "button">Login</td>
+                    <!-- add link to login route (login.html) -->           
+                    <td><a href="" class = "button">Login</a></td>
                 {% else %}
                     <!-- add link to logout route -->           
-                    <td><a href="" class = "button">Logout</td>
+                    <td><a href="" class = "button">Logout</a></td>
                 {% endif %}
-                <!-- Add future links go here -->
+                <!-- IF user is a Faculty Member -->
+                    <td><a href="" class = "button">Create</a></td>
+                <!-- Future links go here -->
             </tr>
         </div>
     </body>
-</html>
+{% endblock %}
+
+{% block content %}>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

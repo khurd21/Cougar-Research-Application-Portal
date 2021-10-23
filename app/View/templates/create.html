@@ -1,33 +1,9 @@
+<!-- Page used to create a research position -->
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
     {% if form %}
-        <form action="" method="POST">
-            {{ form.hidden_tag() }}
-            <div>
-                <p>{{ form.title.label }}</p>
-                <p>{{ form.title(class="textinput")}}</p>
-
-                {% for error in form.title.errors %} 
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-
-                <p>{{ form.description.label }}</p>
-                <p>{{ form.description(class="textinput")}}</p>
-
-                {% for error in form.description.errors %} 
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </div>
-
-            <p>
-                
-            <!-- Research Fields tags (similiar to smile app tags)-->
-            <!-- {{ form.tag(class-'textinput') }} -->
-
-            {{ form.submit(class="button") }}
-            </p>
-        </form>
+        {{ wtf.quick_form(form, action = url_for('routes.create_position')) }}
     {% else %}
         <p>FORM COULD NOT BE RENDERED!!!</p>
     {% endif %}
