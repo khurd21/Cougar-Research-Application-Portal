@@ -1,6 +1,6 @@
 
 from app import create_app, db
-from app.Model import models
+from app.Model import position_models
 
 app = create_app()
 

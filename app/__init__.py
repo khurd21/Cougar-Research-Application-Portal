@@ -23,6 +23,12 @@ def create_app(config_class=Config):
     db.init_app(app=app)
     moment.init_app(app=app)
     login.init_app(app=app)
+    
+    # blueprint registration
+    from app.Controller.errors import bp_errors as errors
+    app.register_blueprint(errors)
+    from app.Controller.routes import bp_routes as routes
+    app.register_blueprint(routes)
 
     return app
 
