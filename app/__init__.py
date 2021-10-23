@@ -30,8 +30,8 @@ def create_app(config_class=Config):
     # blueprint registration
     from app.Controller.errors import bp_errors as errors
     app.register_blueprint(errors)
-    from app.Controller.routes import bp_routes as routes
-    app.register_blueprint(routes)
+    from app.Controller.routes import bp_routes as auth_routes
+    app.register_blueprint(auth_routes)
 
     return app
 
