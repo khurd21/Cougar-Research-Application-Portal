@@ -1,6 +1,8 @@
 
 from app import create_app, db
 from app.Model import position_models
+from flask_login import current_user
+from datetime import datetime
 
 app = create_app()
 
@@ -25,6 +27,13 @@ def init_db(*args, **kwargs):
             db.session.add(position_models.ResearchField(name=field))
         db.session.commit()
     return None
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.add(current_user)
+        db.session.commit()
 
 
 if __name__ == '__main__':

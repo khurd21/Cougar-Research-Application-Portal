@@ -1,6 +1,6 @@
 <!-- page used to log in a defined user (i.e., Faculty member or Student) 
      Takes a login form object called "form" -->
-{% extends "base.html "%}
+{% extends "base.html" %}
 
 {% block app_content %}
     <h1>Sign In</h1>
@@ -11,6 +11,6 @@
     {% endif %}
 
     <!-- Include link to Create an Account (register.html)-->
-    <p>New User? <a href="">Click to Create Account</a></p>
+    <p>New User? <a href="{{ url_for('auth.register')}}">Click to Create Account</a></p>
 
 {% endblock %}

@@ -13,6 +13,7 @@ from app import db
 
 bp_auth = Blueprint('auth', __name__)
 bp_auth.template_folder = Config.TEMPLATE_FOLDER 
+bp_auth.static_folder = Config.STATIC_FOLDER
 
 @bp_auth.route('/login', methods=['GET', 'POST'])
 def login():

@@ -11,7 +11,8 @@ from datetime import datetime
 
 @login.user_loader
 def user_loader(id):
-    return User.query.get(int(id))
+    print(f"id:{id}")
+    return User.query.filter_by(id = int(id)).first()
 
 
 ### User Models ###
