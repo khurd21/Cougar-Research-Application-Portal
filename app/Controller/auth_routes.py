@@ -5,6 +5,7 @@ from flask import render_template, flash, redirect, url_for
 from flask_sqlalchemy import sqlalchemy
 from config import Config
 from app.Model.user_models import User
+from app.Controller.auth_forms import LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user, login_required
 
 
@@ -40,7 +41,7 @@ def register():
     if not current_user.is_anonymous:
         return redirect(url_for('auth.login'))
 
-    rform = RegistrationForm()
+    rform = RegisterForm()
     if rform.validate_on_submit():
         user = User(username=rform.username.data,       email=rform.email.data,
                     first_name=rform.first_name.data,   last_name=rform.last_name.data,

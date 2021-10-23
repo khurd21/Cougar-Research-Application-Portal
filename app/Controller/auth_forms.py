@@ -58,13 +58,13 @@ class RegisterForm(FlaskForm):
             raise ValidationError('Invalid phone number')
 
         try:
-            input_number = phonenumbers.parse(field.data)
-            if not (phonenumbers.is_valid_number(input_number)):
+            input_number = phone.parse(field.data)
+            if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
 
         except:
-            input_number = phonenumbers.parse("+1"+field.data)
-            if not (phonenumbers.is_valid_number(input_number)):
+            input_number = phone.parse("+1"+field.data)
+            if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
             
 
