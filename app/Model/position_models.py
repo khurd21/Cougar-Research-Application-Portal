@@ -2,8 +2,6 @@ from app import login, db
 from datetime import datetime
 from app.Model import user_models, tables
 
-
-
 class ResearchField(db.Model):
     '''
     A database model containing research field categories that are present at
@@ -39,6 +37,7 @@ class Position(db.Model):
     start_date      = db.Column(db.DateTime, default=datetime.utcnow)
     end_date        = db.Column(db.DateTime)
     time_commitment = db.Column(db.Integer)
+    #faculty_object?
     faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     required_qualifications = db.Column(db.String(256))
     research_fields = db.relationship('ResearchField',
