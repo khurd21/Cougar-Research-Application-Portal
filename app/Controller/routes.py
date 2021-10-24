@@ -17,4 +17,14 @@ bp_routes.static_folder = Config.STATIC_FOLDER
 @login_required
 def index():
     positions = Position.query.all()
+    print("Positions", positions)
     return render_template('index.html', research_positions=positions)
+
+'''
+@bp_routes.route('/position/<pos_id>', methods=['GET','POST'])
+@login_required
+def singlePosition():
+    def displayPosition(pos_id):
+        position = Position.query.filter_by(id=pos_id).first()
+    return render_template('position.html', position=position)
+'''

@@ -69,7 +69,7 @@ class RegisterForm(FlaskForm):
             if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
     
-class LoginForm(FlaskForm)
+class LoginForm(FlaskForm):
     username    = wtforms.StringField('Username')
     password    = wtforms.PasswordField('Password')
     remember_me = wtforms.BooleanField('Remember Me?')
