@@ -5,7 +5,7 @@
 {% block app_content%}
     <h1>Register an Account</h1>
     {% if form %}
-        {{ wtf.quick_form(form, action = url_for('auth.register')) }}
+        {{ wtf.quick_form(form, action=url_for('auth.register')) }}
     {% else %}
         <p>FORM COULD NOT BE RENDERED!!!</p>
     {% endif %}

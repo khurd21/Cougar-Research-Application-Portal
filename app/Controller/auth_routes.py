@@ -2,9 +2,10 @@ from __future__ import print_function
 import sys
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for
-from flask_sqlalchemy import sqlalchemy
 from config import Config
-from app.Model.user_models import User
+
+import app.Model.user_models as user_models
+
 from app.Controller.auth_forms import LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -24,7 +25,7 @@ def login():
     lform = LoginForm()
     if lform.validate_on_submit():
 
-        user = User.query.filter_by(username = lform.username.data).first()
+        user = user_models.User.query.filter_by(username = lform.username.data).first()
 
         if user is None or user.check_password(lform.password.data) == False:
             flash('Invalid username or password')
@@ -38,20 +39,26 @@ def login():
 
 @bp_auth.route('/register', methods=['GET', 'POST']) 
 def register():
-
+    print('Enter REGISTER')
     if not current_user.is_anonymous:
         return redirect(url_for('auth.login'))
 
     rform = RegisterForm()
     if rform.validate_on_submit():
-        user = User(username=rform.username.data,       email=rform.email.data,
-                    first_name=rform.first_name.data,   last_name=rform.last_name.data,
-                    wsu_id=rform.wsu_id.data,           phone_number=rform.phone_number.data,
-                    last_seen=rform.last_seen.data
-                    )
+        print("HELLOOOOOO\n\n\n\n\n") 
+        if rform.is_faculty.data:
+            user = user_models.Facuty(username=rform.username.data,       email=rform.email.data,
+                                    first_name=rform.first_name.data,   last_name=rform.last_name.data,
+                                    wsu_id=rform.wsu_id.data,           phone_number=rform.phone_number.data
+                                    )
+        else:
+            user = user_models.Student(username=rform.username.data,       email=rform.email.data,
+                            first_name=rform.first_name.data,   last_name=rform.last_name.data,
+                            wsu_id=rform.wsu_id.data,           phone_number=rform.phone_number.data
+                            )
         user.set_password(rform.password1.data)
-        db.session.add(user)
-        db.session.commit()
+        print(f'User:: {user}')
+        user.save_to_db()
         flash(f'Welcome {user.first_name}! Account successfully created.')
         login_user(user, remember=False)
         return redirect(url_for('routes.index'))

@@ -1,16 +1,14 @@
 
 from app import create_app, db
 from app.Model import position_models
-from flask_login import current_user
 from datetime import datetime
+from flask_login import current_user
+
+
+from app.Model.position_models import ResearchField, Position
+from app.Model.user_models import User, Faculty, Student
 
 app = create_app()
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return {'db': db} # Post?
-
 
 @app.before_first_request
 def init_db(*args, **kwargs):

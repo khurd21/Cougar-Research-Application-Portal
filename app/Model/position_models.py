@@ -50,6 +50,9 @@ class Position(db.Model):
                         back_populates='applied_positions'
                         )
 
+    def get_research_fields(self):
+        return self.research_fields
+
 
     def __repr__(self):
         return f'<Position id: {self.id} title: {self.title} faculty_id: {self.faculty_id}>'

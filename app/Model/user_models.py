@@ -60,6 +60,11 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.passwd_hash, passwrd)
 
 
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+
     def __repr__(self):
         return f'<User id: {self.id} username: {self.username} email: {self.email}>'
 

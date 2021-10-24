@@ -26,10 +26,9 @@
         <!-- Add research fields for post around here in a <td> with width of 20% -->
         <td width=20%>
             {% for field in position.get_research_fields() %}
-                <span >{% field.name %}</span>
+			<span>{{ field.name }}</span>
             {% endfor %}
         </td>
-
 
         <!-- IMPORTANT, conditional statments to differentiate between the Students and the Faculty
              not be implemented yet, please be aware until implementation. Conditions shall be handled
@@ -45,7 +44,7 @@
             </td>
         <!-- ELSE -->
             <!-- There will eventually be an edit button feature hear for the post.writer -->
-            {% if current.user == post.writer %}
+            {% if current_user.id == position.faculty_id.id %}
                 <!-- the action would be the url_for the "edit application" route with userid-->
                 <td width="10%">
                     <form action="" method="post">
@@ -59,6 +58,6 @@
                     </form>
                 </td>
             {% endif %}
-
+			
     </tr>
 </table>

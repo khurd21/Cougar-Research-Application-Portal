@@ -30,16 +30,18 @@ class RegisterForm(FlaskForm):
     submit      = wtforms.SubmitField('Register')
 
     
+
+
+    def validate_username(self, field):
+        user = user_models.User.query.filter_by(username=field.data).first()
+        if user is not None:
+            raise ValidationError('Username already in use by another account.')
+
+
     def validate_wsu_id(self, field):
         user = user_models.User.query.filter_by(wsu_id=int(field.data)).first()
         if user is not None:
             raise ValidationError('WSU ID already in use by another account.')
-
-
-    def validate_username(self, field):
-        user = user_models.User.query.filter_by(username=field.data)
-        if user is not None:
-            raise ValidationError('Username already in use by another account.')
 
 
     def validate_email(self, field):
@@ -66,11 +68,8 @@ class RegisterForm(FlaskForm):
             input_number = phone.parse("+1"+field.data)
             if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
-            
-
-
-class LoginForm(FlaskForm):
-
+    
+class LoginForm(FlaskForm)
     username    = wtforms.StringField('Username')
     password    = wtforms.PasswordField('Password')
     remember_me = wtforms.BooleanField('Remember Me?')
