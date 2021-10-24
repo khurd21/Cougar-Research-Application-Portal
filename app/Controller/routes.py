@@ -28,3 +28,19 @@ def singlePosition():
         position = Position.query.filter_by(id=pos_id).first()
     return render_template('position.html', position=position)
 '''
+
+@bp_routes.postPosition('postposition', methods=['GET', 'POST'])
+@login_required
+def postPosition():
+    pForm = PositionForm()
+    if pForm.validate_on_submit():
+        position = Position(title=pForm.title.data, description=pForm.description.data, start_date=pForm.start_date.data, 
+                            end_date=pForm.end_date.data, time_commitment=pForm.time_commitment.data,
+                            faculty_id=pForm.faculty_id.data, required_qualification=pForm.required_qualifications.data,
+                            research_fields=pForm.research_fields.data, students=pForm.students.data)
+        db.session.add(position)
+        db.session.commit()
+        flash('You have created a position!')
+        return redirect(url_for('routes.index'))
+    return render_template('create.html', form=pForm)
+        
