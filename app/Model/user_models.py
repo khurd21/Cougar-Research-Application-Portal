@@ -60,6 +60,10 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.passwd_hash, passwrd)
 
 
+    def is_faculty(self):
+        return type(self) == Faculty
+
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
