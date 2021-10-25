@@ -45,14 +45,14 @@ class RegisterForm(FlaskForm):
 
 
     def validate_email(self, field):
-        user = user_models.User.query.filter_by(email=field.data)
+        user = user_models.User.query.filter_by(email=field.data).first()
         if user is not None:
-            raise ValidationError('Email already in use by another account..')
+            raise ValidationError('Email already in use by another account.')
 
 
     def validate_phone_number(self, field):
         
-        user = user_models.User.query.filter_by(phone_number=field.data)
+        user = user_models.User.query.filter_by(phone_number=field.data).first()
         if user is not None:
             raise ValidationError('Phone number already in use by another account.')
 
@@ -68,7 +68,8 @@ class RegisterForm(FlaskForm):
             input_number = phone.parse("+1"+field.data)
             if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
-    
+
+
 class LoginForm(FlaskForm):
     username    = wtforms.StringField('Username')
     password    = wtforms.PasswordField('Password')
