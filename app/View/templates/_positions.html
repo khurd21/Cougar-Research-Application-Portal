@@ -2,7 +2,7 @@
      takes in a research position object called "position" -->
 <table class = "table table-hover">
     <tr valign="center">
-        <td width="20%">{{ position.title }} - {{ position.writer }}</td>
+        <td width="20%"> <a href="{{ url_for('routes.display_position', pos_id = position.id) }}" class = "button">{{ position.title }}</a> - {{ position.faculty_id.name }}</td>
           
         <!-- "read more" collapsable menu for position description -->
         <td width="40%">
@@ -28,36 +28,31 @@
             {% for field in position.get_research_fields() %}
 			<span>{{ field.name }}</span>
             {% endfor %}
-        </td>
+        </td> 
 
-        <!-- IMPORTANT, conditional statments to differentiate between the Students and the Faculty
-             not be implemented yet, please be aware until implementation. Conditions shall be handled
-             by a global enum state for both Student and Faculty -->
-            
-             
-        <!-- IF the current user is a student -->
-            <!-- the action would be the url_for the "apply to application" route with userid-->
+        {% if current_user.is_faculty() == False %}
+        <!-- the action would be the url_for the "apply to application" route with userid-->
             <td width="20%">
                 <form action="" method="post">
                     <input type="submit" value="Apply" class="btn btn-warning">
                 </form>
             </td>
-        <!-- ELSE -->
-            <!-- There will eventually be an edit button feature hear for the post.writer -->
-            {% if current_user.id == position.faculty_id.id %}
-                <!-- the action would be the url_for the "edit application" route with userid-->
-                <td width="10%">
-                    <form action="" method="post">
-                        <input type="submit" value="Edit" class="btn btn-warning">
-                    </form>
-                </td>
-                <!-- the action would be the url_for the "delete application" route with userid-->
-                <td width="10%">
-                    <form action="" method="post">
-                        <input type="submit" value="Delete" class="btn btn-warning">
-                    </form>
-                </td>
-            {% endif %}
+        {% endif %}
+        <!-- There will eventually be an edit button feature hear for the post.writer -->
+        {% if current_user.id == position.faculty_id.id %}
+            <!-- the action would be the url_for the "edit application" route with userid-->
+            <td width="10%">
+                <form action="" method="post">
+                    <input type="submit" value="Edit" class="btn btn-warning">
+                </form>
+            </td>
+            <!-- the action would be the url_for the "delete application" route with userid-->
+            <td width="10%">
+                <form action="" method="post">
+                    <input type="submit" value="Delete" class="btn btn-warning">
+                </form>
+            </td>
+        {% endif %}
 			
     </tr>
 </table>

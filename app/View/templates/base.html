@@ -18,20 +18,20 @@
             <tr>
                 {% if current_user.is_anonymous %}
                     <!-- add link to login route (login.html) -->           
-                    <td><a href="" class = "button">Login</a></td>
+                    <td><a href="{{ url_for('auth.login') }}" class = "button">Login</a></td>
                 {% else %}
                     <!-- add link to logout route -->           
-                    <td><a href="" class = "button">Logout</a></td>
+                    <td><a href="{{ url_for('auth.logout') }}" class = "button">Logout</a></td>
                 {% endif %}
                 <!-- IF user is a Faculty Member -->
-                    <td><a href="" class = "button">Create</a></td>
+                    <td><a href="{{ url_for('routes.create_position') }}" class = "button">Create</a></td>
                 <!-- Future links go here -->
             </tr>
         </div>
     </body>
 {% endblock %}
 
-{% block content %}>
+{% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}

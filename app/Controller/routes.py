@@ -26,9 +26,8 @@ def index():
 
 @bp_routes.route('/position/<pos_id>', methods=['GET','POST'])
 @login_required
-def display_position():
-    def display_position(pos_id):
-        position = Position.query.filter_by(id=int(pos_id)).first()
+def display_position(pos_id):
+    position = Position.query.filter_by(id=int(pos_id)).first()
     return render_template('position.html', position=position)
 
 
