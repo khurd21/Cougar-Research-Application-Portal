@@ -45,7 +45,6 @@ def register():
 
     rform = RegisterForm()
     if rform.validate_on_submit():
-        print("HELLOOOOOO\n\n\n\n\n") 
         if rform.is_faculty.data:
             user = user_models.Facuty(username=rform.username.data,       email=rform.email.data,
                                     first_name=rform.first_name.data,   last_name=rform.last_name.data,
@@ -57,7 +56,6 @@ def register():
                             wsu_id=rform.wsu_id.data,           phone_number=rform.phone_number.data
                             )
         user.set_password(rform.password1.data)
-        print(f'User:: {user}')
         user.save_to_db()
         flash(f'Welcome {user.first_name}! Account successfully created.')
         login_user(user, remember=False)

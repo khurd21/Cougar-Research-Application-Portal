@@ -19,6 +19,12 @@ class ResearchField(db.Model):
     students    = db.relationship('Student',
                                     secondary=tables.interested_fields, lazy='subquery',
                                     back_populates='interested_fields')
+    
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
 
     def __repr__(self):
         return f'<ResearchField id: {self.id} name: {self.name}>'
@@ -50,8 +56,14 @@ class Position(db.Model):
                         back_populates='applied_positions'
                         )
 
+
     def get_research_fields(self):
         return self.research_fields
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
 
     def __repr__(self):
