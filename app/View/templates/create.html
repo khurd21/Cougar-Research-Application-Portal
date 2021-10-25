@@ -5,6 +5,6 @@
     {% if form %}
         {{ wtf.quick_form(form, action = url_for('routes.create_position')) }}
     {% else %}
-        <p>FORM COULD NOT BE RENDERED!!!</p>
+        <p>Position form not found</p>
     {% endif %}
 {% endblock %}

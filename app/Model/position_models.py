@@ -44,6 +44,7 @@ class Position(db.Model):
     end_date        = db.Column(db.DateTime)
     time_commitment = db.Column(db.Integer)
     #faculty_object?
+    faculty_name    = db.Column(db.String(32))
     faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     required_qualifications = db.Column(db.String(256))
     research_fields = db.relationship('ResearchField',

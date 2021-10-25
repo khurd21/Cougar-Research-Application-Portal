@@ -46,7 +46,7 @@ def register():
     rform = RegisterForm()
     if rform.validate_on_submit():
         if rform.is_faculty.data:
-            user = user_models.Facuty(username=rform.username.data,       email=rform.email.data,
+            user = user_models.Faculty(username=rform.username.data,       email=rform.email.data,
                                     first_name=rform.first_name.data,   last_name=rform.last_name.data,
                                     wsu_id=rform.wsu_id.data,           phone_number=rform.phone_number.data
                                     )
