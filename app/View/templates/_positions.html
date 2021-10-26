@@ -1,58 +1,43 @@
 <!-- Page used to render each position on the index page,
      takes in a research position object called "position" -->
 <table class = "table table-hover">
-    <tr valign="center">
-        <td width="20%"> <a href="{{ url_for('routes.display_position', pos_id = position.id) }}" class = "button">{{ position.title }}</a> - {{ position.faculty_id.name }}</td>
+    <tr valign="center">   
+        <td width="20%"><b>{{ position.title }}</b></td>
           
         <!-- "read more" collapsable menu for position description -->
-        <td width="40%">
-            <button class="btn btn-primary" type="button" 
-                    data-toggle="collapse" data-target="#infocollapse" 
-                    aria-expanded="false" aria-controls="infocollapse">
-                View Info
-            </button>
-            <div class="collapse" id="infocollapse">  
-              <div class="card card-body">
-                <b> Duration: </b> {{ position.time_commitment }} <br>
-                <b> Description: </b> <br>
-                {{ position.description }}
+        <td width="10%">
+            <form action="{{ url_for('routes.display_position', pos_id = position.id) }}" method="post">
+                <input type="submit" value="View Info" class="btn btn-info btn-block">
+            </form>
+            {% if current_user.is_faculty() == False %}
+            <!-- the action would be the url_for the "apply to application" route with userid-->
+                    <br>
+                    <form action="" method="post">
+                        <input type="submit" value="Apply" class="btn btn-success btn-block">
+                    </form>
+            {% endif %}
+            {% if current_user.id == position.faculty_id %}
+            <!-- the action would be the url_for the "edit application" route with userid-->
                 <br>
-                <b> Qualifications: </b> <br>
-                {{ position.required_qualifications}}
-              </div>
-            </div>
+                <form action="" method="post">
+                    <input type="submit" value="Edit" class="btn btn-warning btn-block">
+                </form>
+                <br>
+                <form action="" method="post">
+                    <input type="submit" value="Delete" class="btn btn-danger btn-block">
+                </form>
+            
+            {% endif %}
         </td>
 
         <!-- Add research fields for post around here in a <td> with width of 20% -->
-        <td width=20%>
+        <td width=70%>
             {% for field in position.get_research_fields() %}
-			<span>{{ field.name }}</span>
+			<span> <b>-</b> {{ field.name }}<br></span>
             {% endfor %}
         </td> 
 
-        {% if current_user.is_faculty() == False %}
-        <!-- the action would be the url_for the "apply to application" route with userid-->
-            <td width="20%">
-                <form action="" method="post">
-                    <input type="submit" value="Apply" class="btn btn-warning">
-                </form>
-            </td>
-        {% endif %}
         <!-- There will eventually be an edit button feature hear for the post.writer -->
-        {% if current_user.id == position.faculty_id.id %}
-            <!-- the action would be the url_for the "edit application" route with userid-->
-            <td width="10%">
-                <form action="" method="post">
-                    <input type="submit" value="Edit" class="btn btn-warning">
-                </form>
-            </td>
-            <!-- the action would be the url_for the "delete application" route with userid-->
-            <td width="10%">
-                <form action="" method="post">
-                    <input type="submit" value="Delete" class="btn btn-warning">
-                </form>
-            </td>
-        {% endif %}
-			
+
     </tr>
 </table>
