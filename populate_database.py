@@ -97,7 +97,7 @@ f2.save_to_db()
 p3 = position_models.Position(faculty_id=f2.id)
 p3.start_date = datetime.utcnow()
 p3.end_date = datetime.utcnow() + timedelta(days=29)
-p3.faculty_name = f1.first_name
+p3.faculty_name = f2.first_name
 p3.required_qualifications = 'Auctor neque vitae tempus quam. Integer enim neque volutpat' \
         ' ac tincidunt vitae semper. Sed viverra tellus in hac habitasse platea. Semper' \
         ' quis lectus nulla at volutpat diam ut venenatis. Nibh sed pulvinar proin gravida.'

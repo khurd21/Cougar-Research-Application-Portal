@@ -16,15 +16,15 @@ bp_routes.template_folder = Config.TEMPLATE_FOLDER #'..\\View\\templates'
 bp_routes.static_folder = Config.STATIC_FOLDER
 
 ## FUTURE: With faculty, sort so faculty id is on top? Or only show faculty's post?
-@bp_routes.route('/', methods=['GET','POST'])
-@bp_routes.route('/index', methods=['GET', 'POST'])
+@bp_routes.route('/', methods=['GET'])
+@bp_routes.route('/index', methods=['GET'])
 @login_required
 def index():
     positions = Position.query.all()
     return render_template('index.html', research_positions=positions)
 
 
-@bp_routes.route('/position/<pos_id>', methods=['GET','POST'])
+@bp_routes.route('/position/<pos_id>', methods=['GET', 'POST'])
 @login_required
 def display_position(pos_id):
     position = Position.query.filter_by(id=int(pos_id)).first()
