@@ -1,6 +1,8 @@
+<!-- Main page that is used to render all the open research positions
+     Takes all open research positions objects called "research_positions" -->
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
 
     <h1>Coug Research Application Portal</h1>
 
@@ -10,7 +12,7 @@
                 {% include '_positions.html' %}
         {% endfor %}
     {% else %}
-        <p>FORM COULD NOT BE RENDERED!!!</p>
+        <p>There are currently no available positions</p>
     {% endif %}
 
 {% endblock %}

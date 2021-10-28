@@ -2,8 +2,6 @@ from app import login, db
 from datetime import datetime
 from app.Model import user_models, tables
 
-
-
 class ResearchField(db.Model):
     '''
     A database model containing research field categories that are present at
@@ -21,6 +19,12 @@ class ResearchField(db.Model):
     students    = db.relationship('Student',
                                     secondary=tables.interested_fields, lazy='subquery',
                                     back_populates='interested_fields')
+    
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
 
     def __repr__(self):
         return f'<ResearchField id: {self.id} name: {self.name}>'
@@ -39,6 +43,8 @@ class Position(db.Model):
     start_date      = db.Column(db.DateTime, default=datetime.utcnow)
     end_date        = db.Column(db.DateTime)
     time_commitment = db.Column(db.Integer)
+    #faculty_object?
+    faculty_name    = db.Column(db.String(32))
     faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     required_qualifications = db.Column(db.String(256))
     research_fields = db.relationship('ResearchField',
@@ -50,6 +56,15 @@ class Position(db.Model):
                         secondary=tables.applied_positions, lazy='subquery',
                         back_populates='applied_positions'
                         )
+
+
+    def get_research_fields(self):
+        return self.research_fields
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
 
     def __repr__(self):

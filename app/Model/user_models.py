@@ -11,7 +11,8 @@ from datetime import datetime
 
 @login.user_loader
 def user_loader(id):
-    return User.query.get(int(id))
+    print(f"id:{id}")
+    return User.query.filter_by(id = int(id)).first()
 
 
 ### User Models ###
@@ -57,6 +58,15 @@ class User(db.Model, UserMixin):
 
     def check_password(self, passwrd):
         return check_password_hash(self.passwd_hash, passwrd)
+
+
+    def is_faculty(self):
+        return type(self) == Faculty
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
 
     def __repr__(self):

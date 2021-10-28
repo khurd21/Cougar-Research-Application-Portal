@@ -1,35 +1,16 @@
-{% extends "base.html "%}
+<!-- page used to log in a defined user (i.e., Faculty member or Student) 
+     Takes a login form object called "form" -->
+{% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
     <h1>Sign In</h1>
     {% if form %}
-        <form action="" method="POST">
-            {{ form.hidden_tag() }}
-            
-            <p>{{ form.username.label }}</p>
-            <p>{{ form.username(class='textinput') }}</p>
-
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-
-            <p>{{ form.password.label }}</p>
-            <p>{{ form.password(class='textinput') }}</p>
-
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-
-            <!-- Include a checkbox for logging in as Student or Faculty Member -->
-
-            <p>{{ form.submit(class="button") }}</p>
-            
-        </form>
+        {{ wtf.quick_form(form, action = url_for('auth.login')) }}
     {% else %}
         <p>FORM COULD NOT BE RENDERED!!!</p>
     {% endif %}
 
-    <!-- Include link to Create an Account -->
-    <p>New User? <a href="">Click to Create Account</a></p>
+    <!-- Include link to Create an Account (register.html)-->
+    <p>New User? <a href="{{ url_for('auth.register')}}">Click to Create Account</a></p>
 
 {% endblock %}

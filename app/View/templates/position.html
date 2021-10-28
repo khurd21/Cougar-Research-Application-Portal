@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h1>{{ position.title }}</h1>
+<body>
+    <p><b>Position Faculty Member: </b>{{ position.faculty_name }}</p>
+
+    <p><b>Time Commitment:</b> {{ position.time_commitment }}</p>
+
+    <p>
+        <b>Related Fields:</b><br>
+        {% for field in position.get_research_fields() %}
+            - {{ field.name }}<br>
+        {% endfor %}
+    </p>
+
+    <p>
+        <b>Description:</b><br>
+        {{ position.description }}
+    </p>
+
+	<p>
+		<b>Required Qualifications:</b><br>
+		{{ position.required_qualifications }}
+	</p>
+
+    {% if current_user.is_faculty() == False %}
+        <!-- url_for Apply route will implemented later -->
+        <form action="" method="post">
+            <input type="submit" value="Apply" class="btn btn-success">
+        </form>
+    {% endif %}
+
+    {% if current_user.id == position.faculty_id %}
+         <!-- the action would be the url_for the "edit application" route with userid-->
+		 <td width=10%>
+            <form action="" method="post">
+                <input type="submit" value="Edit" class="btn btn-warning">
+            </form>
+			<br>
+            <form action="" method="post">
+                <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+		</td>
+    {% endif %}
+
+
+    <br>
+    <a href="{{ url_for('routes.index') }}" class ="button"> Return to main page</a>
+</body>
+{% endblock %}
