@@ -81,13 +81,15 @@ Is to define the design of the project and the classes or subsystems that will b
 # 2.	Architectural and Component-level Design
 ## 2.1 System Structure
 
-This section should describe the high-level architecture of your software:  i.e., the major subsystems and how they fit together. 
-If you adopted the application structure we used in the Smile App, your application would have the Model-View-Controller (MVC) pattern. If you adopted a different architectural pattern, mention the pattern you adopted in your software and briefly discuss the rationale for using the proposed architecture (i.e., why that pattern fits well for your system).
-
 In this section:
  * Provide a UML component diagram that illustrates the architecture of your software.
  * Briefly explain the role of each subsystem in your architectural design and explain the dependencies between them. 
  * Discuss the rationale for the proposed decomposition in terms of cohesion and coupling.
+
+The three main subsystems in the architectural design are the Model, Controller, and the View. The Model manages the database and major operations of the software, the View manages what the user sees, and the Controller allows for interactions between the View and the Model through inputs and outputs. 
+
+The proposed decomposition was made more efficient by using polymorphism, which allows for the reusing of code to create different models. Also, having three main subsystems into which the project is organized, contributes to high cohesion. The Model does not directly depend on the View, and the View does not directly depend on the Model. Both go through the Controller, which allows for low coupling. 
+
 
 ![](readme_imgs/uml_imgs/UML_component_diagram.png)
 
@@ -95,35 +97,83 @@ In this section:
 
 ### 2.2.1 Model
 
-Briefly explain the role of the model.  
+The Model subsystem is used to manage data structures, databases, and anything that governs the actions of an application.
 
-(***in iteration-1***) Include a list of the tables (models) in your database and explain the role of each table. Provide the attributes of the tables and briefly explain each attribute. 
+<b>User</b>
+
+- Base class for the User Account Model, Contains the base data for all user types (Faculty and Student Users)
+
+- Attributes: 
+
+- type: name of the defined user (i.e., Student or Faculty)
+- Id: id of the user within the database
+- first_name: the user’s first name
+- last_name: the user’s last name
+- wsu_id: the user’s WSU id
+- username: the user’s WSU username
+- email: the user’s respected email
+- phone_number: the user’s respected phone numbers
+- last_seen: value that saves the last time the user has logged. 
+- passwd_hash: Encrypted password for respected user
+
+<b>Faculty<b>
+
+- Polymorphic class of the user class that only contains attributes that only adhere to the Faculty user. 
+
+- Attributes: 
+
+- posted_positions: a one-to-many relationship between the Faculty user and the positions that they have posted. 
+
+<b>Student<b>  
+
+- Polymorphic class of the user class that only contains attributes that only adhere to the Student user. 
+
+- Attributes: 
+
+- applied_positions: a many-to-many relationship between the Student users and the positions that they have applied to in the database. 
+- Interested_fields: a many-to-many relationship between the Students users and the research fields that they are interested in that are in the database. 
+
+<b>ResearchField<b>
+
+- Model that contains all the Research Fields that Students are interested in, and ones that posts are related to. 
+
+- Attributes:
+
+- id:  id of a research field in order to store it in a database
+- Name: the name of a given research field			
+- positions: many-to-many relationship between both the research field and the research positions in the database.  - students: many-to-many relationship between both the research field and the students users and the research fields that are in the database
+
+<b>Position</b>
+
+- Class that contains all information/attributes related to a Research Position which are created by a Faculty user and both Students and Faculty are able to view specific attributes from it. 
+
+- Attributes: 
+
+- Id: the id of the research position in the database
+- Title: the name of the research position
+- Description: the body description that mentions the details of the research position
+- start_date: the date of initiation for the research position
+- end_date: the date of conclusion for the research position
+- time_commitment: the amount of hours to commit to the research position
+- faculty_name: the name of the faculty user that created the research position
+- faculty_id: the id of the faculty user that created the research position
+- required_qualifications: the body descriptions that mentions the requirements that the student users must meet prior to applying to the research position
+- research_fields: many-to-many relationship between the research positions and the research field tags
+- students: many-to-many relationship between the research positions and the student users that have applied to said research positions
 
 ### 2.2.2 Controller
 
-Briefly explain the role of the controller. If your controller is decomposed into smaller subsystems (similar to the Smile App design we discussed in class), list each of those subsystems as subsections. 
+The Controller manages interactions between the View and the Model. It takes input from the user and outputs the results to the Model or View.  
 
-For each subsystem:
- * Explain the role of the subsystem (component) and its responsibilities.
- * 	Provide a detailed description of the subsystem interface, i.e., 
-    * which other subsystems does it interact with?  
-    * what are the interdependencies between them? 
-
-**Note:** Some of your subsystems will interact with the Web clients (browsers). Make sure to include a detailed description of the  Web API interface (i.e. the set of routes) your application will implement. For each route specify its “methods”, “URL path”, and “a description of the operation it implements”.  
-You can use the following table template to list your route specifications. 
-
-(***in iteration-1***) Brainstorm with your team members and identify all routes you need to implement for the completed application and explain each route briefly. If you included most of the major routes but you missed only a few, it maybe still acceptable. 
-
-
-|   | Methods           | URL Path   | Description  |
-|:--|:------------------|:-----------|:-------------|
-|1. |                   |            |              |
-|2. |                   |            |              |
-|3. |                   |            |              |
-|4. |                   |            |              |
-|5. |                   |            |              |
-|6. |                   |            |              |
-
+|             | Methods           | URL Path      | Description  |
+|:------------|:------------------|:--------------|:-------------|
+|1. Index     | GET               | / and /index  |  Once the user is logged in as a defined user, they go to this page, where they can see all the research positions that are currently within the database. They are able to view all of them on this page. This interacts with the database as this page requests the research positions within the database and then posts them. The route interacts with the model subsystem, specifically the Position model.            |
+|2. Display_position          |  GET and POST                 | /position/<pos_id>           | Once a Faculty defined user has posted a research position they have this page for that said research position created as well, this page is used to display a single research position and show all the attributes that are within that said research position on this page. From this page students are able to view all the information about the said position. This route interacts with the one single Position model at a time with its position id in order to grab all the information from that select position id’s position. For this page to be viewed, the position must be visible on the index page in order to find this said route and the user has to be logged in as a defined user. The route interacts with the model subsystem, specifically the Position model.                 |
+|3. Create_position          | GET and POST                  | /create_position           |  Once the user is logged in as a Faculty defined user, they are able to use this stated route in order to create their own research position, then submit it and once they do it will be visible on the index page for both the Student and Faculty user’s to see. The route will first check if the logged in user is in fact a Faculty user, then once this is validated and instance of a CreatePositionForm is generated and the Faculty user’s input information into the form is then saved to the database and then they are redirected to the index page and are able to see that their position is automatically posted to the index page. This route interacts with the controller subsystem, specifically the position form.            |
+|4. Login          | GET and POST                  | /login           | This page is used to block none defined user from entering the index page as the user has to register a defined account in order to have access to the index page (i.e., if the user is not logged in and tries to go to another other page, they will instead be redirected to this one until they are logged in). The user must input a valid email and password that they have defined when creating an account in order to login on this said page. This route interacts with the controller subsystem, specifically the login form in authentication forms.                |
+|5. Register          | GET and POST                  | /register            | If the user has not created a defined user account (i.e., a Student or Faculty account) and they are not logged in, on the login page they can select to go to the register page to input their personal information for a defined user and then submit the registration form with their information. This route interacts with the information of all the users in order to make sure that the new user does not use an already created one’s information within their account details. The route interacts with the model subsystem, specifically the Position model.                |
+|6. Logout          | None                  | /logout           | If the user is logged into the application and would instead be signed out of their account on this application, they can utilize this route in order log out of the application and once they do, they will be redirected to the login page. The route interacts with the model subsystem, specifically the Position model.   
+            |
 
 ### 2.2.3 View and User Interface Design 
 
