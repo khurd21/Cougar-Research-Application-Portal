@@ -123,7 +123,7 @@ Attributes:
 
 - Polymorphic class of the user class that only contains attributes that only adhere to the Student user. 
 
-- Attributes: 
+Attributes: 
 
 - applied_positions: a many-to-many relationship between the Student users and the positions that they have applied to in the database. 
 - Interested_fields: a many-to-many relationship between the Students users and the research fields that they are interested in that are in the database. 
