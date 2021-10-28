@@ -81,11 +81,6 @@ Is to define the design of the project and the classes or subsystems that will b
 # 2.	Architectural and Component-level Design
 ## 2.1 System Structure
 
-In this section:
- * Provide a UML component diagram that illustrates the architecture of your software.
- * Briefly explain the role of each subsystem in your architectural design and explain the dependencies between them. 
- * Discuss the rationale for the proposed decomposition in terms of cohesion and coupling.
-
 The three main subsystems in the architectural design are the Model, Controller, and the View. The Model manages the database and major operations of the software, the View manages what the user sees, and the Controller allows for interactions between the View and the Model through inputs and outputs. 
 
 The proposed decomposition was made more efficient by using polymorphism, which allows for the reusing of code to create different models. Also, having three main subsystems into which the project is organized, contributes to high cohesion. The Model does not directly depend on the View, and the View does not directly depend on the Model. Both go through the Controller, which allows for low coupling. 
@@ -103,7 +98,7 @@ The Model subsystem is used to manage data structures, databases, and anything t
 
 - Base class for the User Account Model, Contains the base data for all user types (Faculty and Student Users)
 
-- Attributes: 
+Attributes: 
 
 - type: name of the defined user (i.e., Student or Faculty)
 - Id: id of the user within the database
@@ -120,7 +115,7 @@ The Model subsystem is used to manage data structures, databases, and anything t
 
 - Polymorphic class of the user class that only contains attributes that only adhere to the Faculty user. 
 
-- Attributes: 
+Attributes: 
 
 - posted_positions: a one-to-many relationship between the Faculty user and the positions that they have posted. 
 
@@ -137,7 +132,7 @@ The Model subsystem is used to manage data structures, databases, and anything t
 
 - Model that contains all the Research Fields that Students are interested in, and ones that posts are related to. 
 
-- Attributes:
+Attributes:
 
 - id:  id of a research field in order to store it in a database
 - Name: the name of a given research field			
@@ -147,7 +142,7 @@ The Model subsystem is used to manage data structures, databases, and anything t
 
 - Class that contains all information/attributes related to a Research Position which are created by a Faculty user and both Students and Faculty are able to view specific attributes from it. 
 
-- Attributes: 
+Attributes: 
 
 - Id: the id of the research position in the database
 - Title: the name of the research position
