@@ -24,7 +24,7 @@ def index():
     return render_template('index.html', research_positions=positions)
 
 
-@bp_routes.route('/position/<pos_id>', methods=['GET', 'POST'])
+@bp_routes.route('/position/<pos_id>', methods=['GET'])
 @login_required
 def display_position(pos_id):
     position = Position.query.filter_by(id=int(pos_id)).first()
