@@ -85,9 +85,18 @@ class Faculty(User):
 
 
 
-# For research field interests, sort them so their fields are on top first
+# For accessing research experience, technical electives, only add them to the Student Model!
 class Student(User):
-    
+
+    gpa                         = db.Column(db.Float)
+    technical_electives         = db.relationship('TechnicalElective', backref='student_info', lazy=True)
+    research_experience         = db.relationship('ResearchExperience', backref='student_info', lazy=True)
+
+
+    programming_languages = db.relationship('ProgrammingLanguage',
+                                        secondary=tables.programming_languages, lazy='subquery',
+                                        back_populates='students')
+
     applied_positions = db.relationship('Position',
                                         secondary=tables.applied_positions, lazy='subquery',
                                         back_populates='students'
