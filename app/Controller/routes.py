@@ -74,8 +74,9 @@ def apply():
 def edit():
     eForm = EditForm()
     if eForm.validate_on_submit():
+        user = current_user
         
-
+        
 @bp_routes.route('/create_position', methods=['GET', 'POST'])
 @login_required
 def create_position():
