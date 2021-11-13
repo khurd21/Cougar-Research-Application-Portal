@@ -72,6 +72,14 @@ class ApplicationForm(FlaskForm):
     submit          = wtforms.SubmitField('Submit')
     
 class EditForm(FlaskForm):
+    major               = wtforms.SelectField('Major')
+    cum_GPA             = wtforms.FloatField('Cumulative GPA')
+    grad_date           = wtforms.StringField('Graduation Date [mm/dd/yyyy]')
+    tech_electives      = wtforms.SelectMultipleField('Technical Electives')
+    research_topics     = wtforms.SelectMultipleField('Research Topics of Interest')
+    languages           = wtforms.StringField('Programming Languages (separate each language by a semi-colon)')
+    prior_experience    = wtforms.TextAreaField('Prior Research Experience')
+    submit              = wtforms.SubmitField('Submit Changes')
     
 
 
