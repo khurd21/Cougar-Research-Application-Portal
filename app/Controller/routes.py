@@ -6,7 +6,9 @@ from app.Model.user_models import User
 from flask import render_template, flash, redirect, url_for, request
 from app import db
 from flask_login import current_user, login_user, logout_user, login_required
-from app.Controller.position_forms import CreatePositionForm, ApplicationForm, EditForm
+from app.Controller.position_forms import CreatePositionForm
+from app.Controller.application_forms import ApplicationForm
+from app.Controller.edit_forms import EditForm
 
 import app.Model.user_models as user_models
 from datetime import datetime
@@ -22,7 +24,6 @@ bp_routes.static_folder = Config.STATIC_FOLDER
 def index():
     positions = Position.query.all()
     return render_template('index.html', research_positions=positions)
-
 
 @bp_routes.route('/position/<pos_id>', methods=['GET', 'POST'])
 @login_required
@@ -73,15 +74,30 @@ def apply():
 @login_required
 def edit():
     eForm = EditForm()
+    eForm.first_name.data           = current_user.first_name
+    eForm.major.data                = current_user.major
+    eForm.cum_GPA.data              = current_user.cum_GPA
+    eForm.grad_date.data            = current_user.grad_date
+    eForm.languages.data            = current_user.languages
+    eForm.prior_experience.data     = current_user.prior_experience
+    eForm.research_topics.data      = current_user.research_topics
+    eForm.tech_electives.data       = current_user.tech_electives
+    
     if eForm.validate_on_submit():
-        user = current_user
+        current_user.first_name         = eForm.first_name.data
+        current_user.major              = eForm.major.data
+        current_user.cum_GPA            = eForm.cum_GPA.data
+        current_user.grad_date          = eForm.grad_date.data
+        current_user.languages          = eForm.languages.data
+        current_user.prior_experience   = eForm.prior_experience.data
+        current_user.research_topics    = eForm.research_topics.data
+        current_user.tech_electives     = eForm.tech_electives.data
+        current_user.save_to_db()
         
+        flash("Account information has been edited.")
         return redirect(url_for('routes.index'))
         
     render_template('edit.html', form=eForm)
-        
-        
-        
         
 @bp_routes.route('/create_position', methods=['GET', 'POST'])
 @login_required
