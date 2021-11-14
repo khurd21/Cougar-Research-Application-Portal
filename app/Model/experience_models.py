@@ -24,8 +24,9 @@ class ProgrammingLanguage(db.Model):
 class ResearchExperience(db.Model):
 
     __tablename__ = 'researchexperience'
-
     id          = db.Column(db.Integer, primary_key=True)
+    student_id  = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    title       = db.Column(db.String(64), nullable=False)
     company     = db.Column(db.String(32), nullable=False)
     description = db.Column(db.String(256), nullable=False)
     start_date  = db.Column(db.DateTime, nullable=False)
@@ -41,8 +42,8 @@ class ResearchExperience(db.Model):
 class TechnicalElective(db.Model):
 
     __tablename__ = 'technicalelective'
-
     id          = db.Column(db.Integer, primary_key=True)
+    student_id  = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     course_num  = db.Column(db.Integer, nullable=False)
     course_prefix = db.Column(db.String(8), nullable=False)
     course_title = db.Column(db.String(32), nullable=False)

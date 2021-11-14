@@ -7,7 +7,7 @@ from app import db
 
 programming_languages = db.Table('programming_languages',
                                 db.Column('language_id', db.Integer, db.ForeignKey('programminglanguages.id'), primary_key=True),
-                                db.Column('user_id', db.Integer, db.ForeignKey('user.id'). primary_key=True)
+                                db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
                                 )
 
 

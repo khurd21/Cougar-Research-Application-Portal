@@ -2,7 +2,7 @@
 # Contains the User models 
 
 from app import login, db
-from app.Model import position_models, tables
+from app.Model import position_models, tables, experience_models
 
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -89,8 +89,8 @@ class Faculty(User):
 class Student(User):
 
     gpa                         = db.Column(db.Float)
-    technical_electives         = db.relationship('TechnicalElective', backref='student_info', lazy=True)
-    research_experience         = db.relationship('ResearchExperience', backref='student_info', lazy=True)
+    technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
+    research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
 
 
     programming_languages = db.relationship('ProgrammingLanguage',
