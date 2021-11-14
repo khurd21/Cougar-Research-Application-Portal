@@ -10,7 +10,6 @@ import wtforms
 import wtforms.validators as validators
 import wtforms_sqlalchemy.fields as fields
 
-required = validators.DataRequired()
 class EditForm(FlaskForm):
     username            = wtforms.StringField('Username',   validators=[validators.DataRequired()])
     wsu_id              = wtforms.StringField('WSU ID',     validators=[validators.DataRequired(), validators.Length(max=10)])
@@ -20,13 +19,13 @@ class EditForm(FlaskForm):
     phone_number        = wtforms.StringField('Phone No.',  validators=[validators.DataRequired()])
     password1           = wtforms.PasswordField('Password', validators=[validators.DataRequired()])
     password2           = wtforms.PasswordField('Re-enter Password', validators=[validators.DataRequired(), validators.EqualTo('password1')])
-    major               = wtforms.SelectField('Major', validators=[required])
-    cum_GPA             = wtforms.FloatField('Cumulative GPA', validators=[required])
-    grad_date           = wtforms.StringField('Graduation Date [mm/dd/yyyy]', validators=[required])
-    tech_electives      = wtforms.SelectMultipleField('Technical Electives', validators=[required])
-    research_topics     = wtforms.SelectMultipleField('Research Topics of Interest', validators=[required])
-    languages           = wtforms.StringField('Programming Languages (separate each language by a semi-colon)', validators=[required])
-    prior_experience    = wtforms.TextAreaField('Prior Research Experience', validators=[required])
+    major               = wtforms.SelectField('Major', validators=[validators.DataRequired()])
+    cum_GPA             = wtforms.FloatField('Cumulative GPA', validators=[validators.DataRequired()])
+    grad_date           = wtforms.StringField('Graduation Date [mm/dd/yyyy]', validators=[validators.DataRequired()])
+    tech_electives      = wtforms.SelectMultipleField('Technical Electives', validators=[validators.DataRequired()])
+    research_topics     = wtforms.SelectMultipleField('Research Topics of Interest', validators=[validators.DataRequired()])
+    languages           = wtforms.StringField('Programming Languages (separate each language by a semi-colon)', validators=[validators.DataRequired()])
+    prior_experience    = wtforms.TextAreaField('Prior Research Experience', validators=[validators.DataRequired()])
     submit              = wtforms.SubmitField('Submit Changes')
     
     def validate_username(self, field):
