@@ -51,6 +51,7 @@ class User(db.Model, UserMixin):
             'polymorphic_on':type
             }
 
+    
 
     def set_password(self, passwrd):
         self.passwd_hash = generate_password_hash(passwrd)

@@ -12,11 +12,11 @@ import wtforms
 import wtforms.validators as validators
 import wtforms_sqlalchemy.fields as fields
 
-
+#required = validators.DataRequired()
 
 class CreatePositionForm(FlaskForm):
 
-    title           = wtforms.StringField('Position Title',             validators=[validators.DataRequired()])
+    title           = wtforms.StringField('Position Title', validators=[validators.DataRequired()])
     description     = wtforms.TextAreaField('Description of Position',  validators=[validators.DataRequired()])
     required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired()])
     start_date      = wtforms.StringField('Start Date [mm/dd/yyyy] (leave empty for current date)')
@@ -64,3 +64,10 @@ class CreatePositionForm(FlaskForm):
             value = int(field.data)
         except ValueError:
             raise ValidationError('Time commitment must be an integer (hours per week)')
+
+    
+
+
+
+
+

@@ -31,8 +31,6 @@ class ResearchField(db.Model):
     def __repr__(self):
         return f'<ResearchField id: {self.id} name: {self.name}>'
 
-
-
 class Position(db.Model):
     '''
     A database model containing information needed for a posted position. This includes
@@ -59,7 +57,9 @@ class Position(db.Model):
                         back_populates='applied_positions'
                         )
 
-
+    def get_students(self):
+        return self.students
+    
     def get_research_fields(self):
         return self.research_fields
 
