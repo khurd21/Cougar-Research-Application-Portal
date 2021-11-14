@@ -2,6 +2,8 @@ from app import login, db
 from datetime import datetime
 from app.Model import user_models, tables
 
+
+
 class ResearchField(db.Model):
     '''
     A database model containing research field categories that are present at

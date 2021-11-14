@@ -5,6 +5,12 @@
 from app import db
 
 
+programming_languages = db.Table('programming_languages',
+                                db.Column('language_id', db.Integer, db.ForeignKey('programminglanguages.id'), primary_key=True),
+                                db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+                                )
+
+
 interested_fields   = db.Table('interested_fields', 
                                 db.Column('field_id', db.Integer, db.ForeignKey('researchfield.id'), primary_key=True),
                                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)

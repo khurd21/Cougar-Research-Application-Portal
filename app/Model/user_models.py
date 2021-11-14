@@ -2,7 +2,7 @@
 # Contains the User models 
 
 from app import login, db
-from app.Model import position_models, tables
+from app.Model import position_models, tables, experience_models
 
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -85,9 +85,18 @@ class Faculty(User):
 
 
 
-# For research field interests, sort them so their fields are on top first
+# For accessing research experience, technical electives, only add them to the Student Model!
 class Student(User):
-    
+
+    gpa                         = db.Column(db.Float)
+    technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
+    research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
+
+
+    programming_languages = db.relationship('ProgrammingLanguage',
+                                        secondary=tables.programming_languages, lazy='subquery',
+                                        back_populates='students')
+
     applied_positions = db.relationship('Position',
                                         secondary=tables.applied_positions, lazy='subquery',
                                         back_populates='students'
