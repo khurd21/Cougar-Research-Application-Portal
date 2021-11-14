@@ -4,7 +4,6 @@ from app.Model.position_models import ResearchField
 from wtforms.validators import ValidationError
 from wtforms.widgets import CheckboxInput, ListWidget
 
-
 import wtforms
 import wtforms.validators as validators
 import wtforms_sqlalchemy.fields as fields

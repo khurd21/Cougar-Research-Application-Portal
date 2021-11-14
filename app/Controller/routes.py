@@ -17,6 +17,10 @@ bp_routes = Blueprint('routes', __name__)
 bp_routes.template_folder = Config.TEMPLATE_FOLDER #'..\\View\\templates'
 bp_routes.static_folder = Config.STATIC_FOLDER
 
+def get_applicants(pos_id):
+    position = Position.query.filter_by(id=int(pos_id)).first()
+    return position.students
+
 ## FUTURE: With faculty, sort so faculty id is on top? Or only show faculty's post?
 @bp_routes.route('/', methods=['GET'])
 @bp_routes.route('/index', methods=['GET'])
