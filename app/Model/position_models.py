@@ -55,6 +55,9 @@ class Position(db.Model):
                         back_populates='applied_positions'
                         )
 
+    def get_applicants(self):
+        return self.students
+    
     def get_research_fields(self):
         return self.research_fields
 
