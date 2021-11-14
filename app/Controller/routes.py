@@ -76,6 +76,12 @@ def edit():
     if eForm.validate_on_submit():
         user = current_user
         
+        return redirect(url_for('routes.index'))
+        
+    render_template('edit.html', form=eForm)
+        
+        
+        
         
 @bp_routes.route('/create_position', methods=['GET', 'POST'])
 @login_required
