@@ -28,7 +28,8 @@ def index():
 @login_required
 def display_position(pos_id):
     position = Position.query.filter_by(id=int(pos_id)).first()
-    return render_template('position.html', position=position)
+    user = User.query.filter_by(id=position.faculty_id).first()
+    return render_template('position.html', position=position, user=user)
 
 
 @bp_routes.route('/create_position', methods=['GET', 'POST'])
