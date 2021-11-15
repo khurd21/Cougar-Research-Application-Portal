@@ -31,6 +31,8 @@ class ResearchField(db.Model):
     def __repr__(self):
         return f'<ResearchField id: {self.id} name: {self.name}>'
 
+
+
 class Position(db.Model):
     '''
     A database model containing information needed for a posted position. This includes
@@ -46,7 +48,11 @@ class Position(db.Model):
     #faculty_object?
     faculty_name    = db.Column(db.String(32))
     faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    application_forms= db.relationship('Application', backref='position', lazy=True)
+
+
     required_qualifications = db.Column(db.String(256))
+
     research_fields = db.relationship('ResearchField',
                         secondary=tables.fields, lazy='subquery',
                         back_populates='positions'
@@ -71,3 +77,24 @@ class Position(db.Model):
 
     def __repr__(self):
         return f'<Position id: {self.id} title: {self.title} faculty_id: {self.faculty_id}>'
+
+
+
+
+class Application(db.Model):
+
+    id         = db.Column(db.Integer, primary_key=True)
+    position_id= db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    description= db.Column(db.String(256), nullable=False)
+    ref_name   = db.Column(db.String(32), nullable=False)
+    ref_email  = db.Column(db.String(64), nullable=False)
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    
+    def __repr__(self):
+        return f'<Application id: {self.id} pos_id: {self.position_id} stu_id: {self.student_id} description: {self.description[:16]}>'
