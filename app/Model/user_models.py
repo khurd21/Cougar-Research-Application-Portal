@@ -91,6 +91,7 @@ class Student(User):
     gpa                         = db.Column(db.Float)
     technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
     research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
+    application_forms           = db.relationship('Application', backref='student', lazy=True)
 
 
     programming_languages = db.relationship('ProgrammingLanguage',

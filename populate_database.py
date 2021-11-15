@@ -263,7 +263,42 @@ tech4.course_prefix = 'CPTS'
 tech4.course_num = '434'
 tech4.save_to_db()
 
+
+app1 = position_models.Application(student_id=s1.id, position_id=p1.id)
+app1.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie.' \
+    'Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.' \
+        'Et ultrices neque ornare aenean euismod elementum nisi. Ultrices tincidunt arcu non sodales.' \
+            'Accumsan lacus vel facilisis volutpat est. Pellentesque nec nam aliquam sem et tortor consequat id porta.'
+app1.ref_name = 'Dr. Calico Cat'
+app1.ref_email = 'calico_cat@edi.edu'
+app1.save_to_db()
+
+
+app2 = position_models.Application(student_id=s2.id, position_id=p2.id)
+app2.description = 'Facilisis magna etiam tempor orci eu. Tortor id aliquet' \
+    'lectus proin nibh nisl condimentum id. Suspendisse in est ante in nibh mauris cursus.' \
+        'Massa tempor nec feugiat nisl pretium fusce id.'
+app2.ref_name = 'Jackson Donner'
+app2.ref_email = 'jackson_donner@test.com'
+app2.save_to_db()
+
+
+app3 = position_models.Application(student_id=s1.id, position_id=p3.id)
+app3.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie.' \
+    'Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.' \
+        'Nibh mauris cursus mattis molestie a iaculis. Cras adipiscing enim eu turpis egestas pretium aenean pharetra.'
+app3.ref_name = 'Dr. Helmer Glue'
+app3.ref_email = 'helmerg@ghi.edu'
+app3.save_to_db()
+
 db.session.commit()
+
+
+test_app = position_models.Application.query.filter_by(student_id=s1.id).all()
+assert len(test_app) == 2
+for t in test_app:
+    print(t)
+
 
 ## Display contents to ensure accuracy
 print(f'Student 1: \n{s1}')
