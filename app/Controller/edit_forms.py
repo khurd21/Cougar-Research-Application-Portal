@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_wtf import FlaskForm
+from app.Model.experience_models import ProgrammingLanguage
 from app.Model.position_models import ResearchField
 from app.Model import user_models
 from wtforms.validators import ValidationError
@@ -22,10 +23,20 @@ class EditForm(FlaskForm):
     major               = wtforms.SelectField('Major', validators=[validators.DataRequired()])
     cum_GPA             = wtforms.FloatField('Cumulative GPA', validators=[validators.DataRequired()])
     grad_date           = wtforms.StringField('Graduation Date [mm/dd/yyyy]', validators=[validators.DataRequired()])
-    tech_electives      = wtforms.SelectMultipleField('Technical Electives', validators=[validators.DataRequired()])
-    research_topics     = wtforms.SelectMultipleField('Research Topics of Interest', validators=[validators.DataRequired()])
-    languages           = wtforms.StringField('Programming Languages (separate each language by a semi-colon)', validators=[validators.DataRequired()])
-    prior_experience    = wtforms.TextAreaField('Prior Research Experience', validators=[validators.DataRequired()])
+    #tech_electives      = wtforms.SelectMultipleField('Technical Electives', validators=[validators.DataRequired()])
+    research_topics     = wtforms.SelectMultipleField('Research Topics of Interest',
+                                                        query_factory=lambda: ResearchField.query.all(),
+                                                        get_label=lambda x: x.name,
+                                                        widget=ListWidget(prefix_label=False),
+                                                        option_widget=CheckboxInput()
+                                                        )                                                 
+    languages           = wtforms.SelectMultipleField('Programming Languages (separate each language by a semi-colon)', 
+                                                        query_factory=lambda: ProgrammingLanguage.query.all(),
+                                                        get_label=lambda x: x.language,
+                                                        widget=ListWidget(prefix_label=False),
+                                                        option_widget=CheckboxInput()
+                                                        )
+    # prior_experience    = wtforms.TextAreaField('Prior Research Experience', validators=[validators.DataRequired()])
     submit              = wtforms.SubmitField('Submit Changes')
     
     def validate_username(self, field):

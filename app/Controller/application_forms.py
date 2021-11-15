@@ -9,7 +9,7 @@ import wtforms.validators as validators
 import wtforms_sqlalchemy.fields as fields
 
 class ApplicationForm(FlaskForm):
-    reason          = wtforms.TextAreaField('Reason for Applying', validators=[validators.DataRequired()])
+    description     = wtforms.TextAreaField('Reason for Applying', validators=[validators.DataRequired()])
     ref_name        = wtforms.StringField('Faculty Reference Name', validators=[validators.DataRequired()])
     ref_email       = wtforms.StringField('Faculty Reference Email', validators=[validators.DataRequired(), validators.Email()])
     submit          = wtforms.SubmitField('Submit')
