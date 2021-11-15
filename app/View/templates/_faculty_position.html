@@ -1,0 +1,26 @@
+<!--  -->
+<table class = "table table-hover">
+    <tr valign="center">   
+        <td width="20%"><b>{{ position.title }}</b></td>
+        <td width="10%">
+            <a href="{{ url_for('routes.display_position',pos_id = position.id)}}" class ="btn btn-info btn-block">View Info</a>
+            {% if current_user.id == position.faculty_id %}
+                <br>
+                <a href="" class ="btn btn-warning btn-block">Edit</a>
+                <br>
+                <a href="" class ="btn btn-danger btn-block">Delete</a>  
+            {% endif %}
+        </td>
+
+        <td width=70%>
+            {% if position.get_students() is not None %}
+                {% for students in position.get_students() %}
+                <!-- routes below would be "{{ url_for('routes.display_applicant_info',student_id = student.id) }}"-->
+                <span><a href="{{ url_for('routes.index')}}"><i class="fa fa-angle-right"></i> {{ student.first_name + ' ' + student.last_name }}</a><br></span>
+                {% endfor %}
+            {% else %}
+                <span><i class="fa fa-angle-right"></i> No students have applied yet<br></span>
+            {% endif %}
+        </td> 
+    </tr>
+</table>
