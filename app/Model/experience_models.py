@@ -47,6 +47,7 @@ class TechnicalElective(db.Model):
     course_num  = db.Column(db.Integer, nullable=False)
     course_prefix = db.Column(db.String(8), nullable=False)
     course_title = db.Column(db.String(32), nullable=False)
+    course_description = db.Column(db.String(256), nullable=False)
 
 
     def save_to_db(self):

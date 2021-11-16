@@ -1,11 +1,101 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    {% if form %}
-        {{ wtf.quick_form(form, action = url_for('routes.edit')) }}
-    {% else %}
-        <p>Edit form not found</p>
-    {% endif %}
 
-    <br><br><br>
+
+{% if form %}
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+
+            <a href="{{ url_for('routes.technical_electives') }}" class ="btn btn-warning">Edit Technical Electives</a> <!-- Route to edit Tech Electives -->
+
+            <a href="{{ url_for('routes.research_experience') }}" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
+        <br><br>
+
+        <div>
+            <br>
+            {{ form.username.label }}<br>
+            {{ form.username }}<br> 
+
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.wsu_id.label}}<br>
+            {{form.wsu_id }}<br>
+
+            {% for error in form.wsu_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.first_name.label}}<br>
+            {{form.first_name }}<br>
+
+            {% for error in form.first_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.last_name.label}}<br>
+            {{form.last_name }}<br>
+
+            {% for error in form.last_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.email.label}}<br>
+            {{form.email }}<br>
+
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.phone_number.label}}<br>
+            {{form.phone_number }}<br>
+
+            {% for error in form.phone_number.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.major.label}}<br>
+            {{form.major }}<br>
+
+            {% for error in form.major.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.gpa.label}}<br>
+            {{form.gpa }}<br>
+
+            {% for error in form.gpa.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{form.graduation_date.label}}<br>
+            {{form.graduation_date }}<br>
+
+            {% for error in form.graduation_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </div>
+
+        <p class="formselect">{{form.interested_fields.label}}
+        {{form.interested_fields }}
+        </p>
+
+        <p class="formselect">{{form.programming_languages.label}}
+        {{form.programming_languages }}
+        </p>
+
+        {{ form.submit(class="btn btn-success") }}<br>
+
+    </form>
+
+{% else %}
+    <p>Edit form could not be rendered</p>
+{% endif %}
+
+<br><br><br><br>
+
 {% endblock %}

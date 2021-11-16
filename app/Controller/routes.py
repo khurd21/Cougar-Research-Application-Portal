@@ -1,4 +1,5 @@
 from flask import Blueprint
+from app.Model.experience_models import TechnicalElective, ResearchExperience
 from config import Config
 from flask_login import current_user, login_required
 from app.Model.position_models import Position, Application
@@ -8,7 +9,7 @@ from app import db
 from flask_login import current_user, login_user, logout_user, login_required
 from app.Controller.position_forms import CreatePositionForm
 from app.Controller.application_forms import ApplicationForm
-from app.Controller.edit_forms import EditForm
+from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm
 
 import app.Model.user_models as user_models
 from datetime import datetime
@@ -41,7 +42,7 @@ def view_applicants():
         flash('Access Denied: not logged in as Faculty')
         return redirect(url_for('routes.index'))
     
-    positions = Position.query.filter_by(faculty_id=current_user.id)
+    positions = Position.query.filter_by(faculty_id=current_user.id).all()
     
     return render_template('faculty_positions.html', positions=positions)
 
@@ -64,18 +65,30 @@ def apply(pos_id):
     if current_user.is_faculty():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
-    
+
+    position = Position.query.filter_by(id=int(pos_id)).first()
+    if position is None:
+        flash('Position not found')
+        return redirect(url_for('routes.index'))
+
+    application = Application.query.filter_by(position_id=int(pos_id), student_id=current_user.id).first() 
+    if application is not None:
+        flash(f'You have already applied for this position: {position.title}')
+        return redirect(url_for('routes.index'))
+
+
     appForm = ApplicationForm()
 
     if appForm.validate_on_submit():
-        application = Application(description=appForm.description, ref_name=appForm.ref_name,
-                                    ref_email = appForm.ref_email, position_id=pos_id,
-                                    student_id=current_user.id)
+        application = Application(description=appForm.description.data, ref_name=appForm.ref_name.data,
+                                    ref_email = appForm.ref_email.data, position_id=pos_id,
+                                    student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}'
+                                    )
         application.save_to_db()
         flash('Application successfully submitted.')
         return redirect(url_for('routes.index'))
     
-    return render_template('apply.html', form=appForm)
+    return render_template('apply.html', form=appForm, pos_id=pos_id)
 
 
 @bp_routes.route('/edit', methods=['GET', 'POST'])
@@ -87,43 +100,86 @@ def edit():
         return redirect(url_for('routes.index'))
 
     user = User.query.filter_by(id = current_user.id).first()
-    print(f'Type of user: {type(user)}')
-
-    eForm = EditForm()
-    eForm.username.data             = user.username
-    eForm.wsu_id.data               = user.wsu_id
-    eForm.first_name.data           = user.first_name
-    eForm.last_name.data            = user.last_name
-    eForm.email.data                = user.email
-    eForm.phone_number.data         = user.phone_number
-    eForm.major.data                = user.major
-    eForm.cum_GPA.data              = user.gpa
-    eForm.grad_date.data            = user.graduation_date
-    eForm.languages.data            = user.programming_languages
-    # eForm.prior_experience.data     = user.research_experience
-    # eForm.research_topics.data      = user.interested_fields
-    # eForm.tech_electives.data       = user.technical_electives
+    eForm = EditForm(obj=user)
     
     if eForm.validate_on_submit():
-        user.username              = eForm.username.data
-        user.first_name            = eForm.first_name.data
-        user.last_name             = eForm.last_name.data
-        user.email                 = eForm.email.data
-        user.phone_number          = eForm.phone_number.data
-        user.major                 = eForm.major.data
-        user.gpa                   = eForm.cum_GPA.data
-        user.graduation_data       = eForm.grad_date.data
-        user.programming_languages = eForm.languages.data
-       # user.research_experience   = eForm.prior_experience.data
-        user.interested_fields     = eForm.research_topics.data
-       # user.technical_electives   = eForm.tech_electives.data
-        user.save_to_db()
+        eForm.populate_obj(user)
+        db.session.commit()
+        # save_to_db() ?
         
         flash("Account information has been edited.")
         return redirect(url_for('routes.index'))
         
     return render_template('edit.html', form=eForm)
-        
+
+
+
+@bp_routes.route('/technical_electives', methods=['GET'])
+@login_required
+def technical_electives():
+    if current_user.is_faculty():
+        flash('Access Denied: You must be logged in as a student to apply for a position.')
+        return redirect(url_for('routes.index'))
+
+    technical_electives = TechnicalElective.query.filter_by(student_id=current_user.id).all()
+    return render_template('tech_electives.html', electives=technical_electives)
+
+
+@bp_routes.route('/create_technical_elective', methods=['GET', 'POST'])
+@login_required
+def create_technical_elective():
+
+    if current_user.is_faculty():
+        flash('Access Denied: You must be logged in as a student to apply for a position.')
+        return redirect(url_for('routes.index'))
+
+
+    form = EditTechnicalElectiveForm()
+    if form.validate_on_submit():
+        technical_elective = TechnicalElective(course_num=form.course_num.data, course_title=form.course_title.data,
+                                                course_prefix=form.course_prefix.data, course_description=form.course_description.data,
+                                                student_id=current_user.id
+                                                )
+        technical_elective.save_to_db()
+        flash("Technical Elective successfully added.")
+        return redirect(url_for('routes.technical_electives'))
+    
+    return render_template('create_tech_elective.html', form=form)
+
+
+@bp_routes.route('/research_experience', methods=['GET'])
+@login_required
+def research_experience():
+
+    if current_user.is_faculty():
+        flash('Access Denied: You must be logged in as a student to apply for a position.')
+        return redirect(url_for('routes.index'))
+
+    research_experience = ResearchExperience.query.filter_by(student_id=current_user.id).all()
+    return render_template('prior_experiences.html', experiences=research_experience)
+
+
+@bp_routes.route('/create_research_experience', methods=['GET', 'POST'])
+@login_required
+def create_research_experience():
+    if current_user.is_faculty():
+        flash('Access Denied: You must be logged in as a student to apply for a position.')
+        return redirect(url_for('routes.index'))
+    
+    form = EditResearchExperienceForm()
+    if form.validate_on_submit():
+
+        research_experience = ResearchExperience(student_id=current_user.id, title=form.title.data,
+                                                    company=form.company.data, description=form.description.data,
+                                                    start_date=form.start_date.data, end_date=form.end_date.data)
+        research_experience.save_to_db()
+        flash('Research Experience succesfully added.')
+        return redirect(url_for('routes.research_experience'))
+    
+    return render_template('create_prior_experience.html', form=form)
+
+
+
 @bp_routes.route('/create_position', methods=['GET', 'POST'])
 @login_required
 def create_position():

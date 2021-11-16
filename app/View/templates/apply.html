@@ -2,7 +2,7 @@
 
 {% block app_content %}
     {% if form %}
-        {{ wtf.quick_form(form, action = url_for('routes.apply')) }}
+        {{ wtf.quick_form(form, action = url_for('routes.apply', pos_id=pos_id)) }}
     {% else %}
         <p>Apply form not found</p>
     {% endif %}
