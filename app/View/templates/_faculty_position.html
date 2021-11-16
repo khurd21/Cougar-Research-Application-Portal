@@ -1,0 +1,21 @@
+<!--  -->
+<table class = "table table-hover">
+    <tr valign="center">   
+        <td width="20%"><b>{{ position.title }}</b></td>
+        <td width="10%">
+            <a href="{{ url_for('routes.display_position',pos_id = position.id)}}" class ="btn btn-info btn-block">View Info</a>
+        </td>
+
+        <td width=70%>
+            <p><b>Applicants:</b></p>
+            {% if position.get_students() %}
+                {% for students in position.get_students() %}
+                <!-- routes below would be "{{ url_for('routes.display_applicant_info',student_id = student.id) }}" and perhaps the position as well -->
+                <span><a href="{{ url_for('routes.index')}}"><i class="fa fa-angle-right"></i> {{ student.first_name + ' ' + student.last_name }}</a><br></span>
+                {% endfor %}
+            {% else %}
+                <span><i class="fa fa-angle-right"></i> No students have applied yet<br></span>
+            {% endif %}
+        </td> 
+    </tr>
+</table>

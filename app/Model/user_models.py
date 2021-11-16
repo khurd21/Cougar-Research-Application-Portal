@@ -51,7 +51,7 @@ class User(db.Model, UserMixin):
             'polymorphic_on':type
             }
 
-    
+
 
     def set_password(self, passwrd):
         self.passwd_hash = generate_password_hash(passwrd)
@@ -89,6 +89,8 @@ class Faculty(User):
 # For accessing research experience, technical electives, only add them to the Student Model!
 class Student(User):
 
+    major                       = db.Column(db.String(32))   
+    graduation_date             = db.Column(db.DateTime,default=datetime.utcnow)
     gpa                         = db.Column(db.Float)
     technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
     research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
