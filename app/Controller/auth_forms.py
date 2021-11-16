@@ -42,6 +42,10 @@ class RegisterForm(FlaskForm):
         user = user_models.User.query.filter_by(wsu_id=int(field.data)).first()
         if user is not None:
             raise ValidationError('WSU ID already in use by another account.')
+        try:
+            n = int(field.data)
+        except ValueError:
+            raise ValidationError('Invalid WSU ID. Enter as a number')
 
 
     def validate_email(self, field):

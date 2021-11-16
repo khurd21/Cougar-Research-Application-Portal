@@ -17,6 +17,7 @@ F = user_models.Faculty
 s1 = S()
 s1.username = 'Student123'
 s1.email = 'student123@wsu.edu'
+s1.major = 'Computer Science'
 s1.first_name = 'John'
 s1.last_name = 'Doe'
 s1.set_password('123')
@@ -29,6 +30,7 @@ s1.save_to_db()
 s2 = S()
 s2.username = 'Student223'
 s2.email = 'student223@wsu.edu'
+s2.major = 'Electrical Engineering'
 s2.first_name = 'Mary'
 s2.last_name = 'Jane'
 s2.set_password('123')
@@ -41,6 +43,7 @@ s2.save_to_db()
 s3 = S()
 s3.username = 'Student233'
 s3.email = 'student233@wsu.edu'
+s3.major = 'Mechanical Engineering'
 s3.first_name = 'Marco'
 s3.last_name = 'Polo'
 s3.set_password('123')
