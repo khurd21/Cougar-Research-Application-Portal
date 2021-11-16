@@ -1,20 +1,6 @@
-body {
-    margin: 1px 1px 1px 15px;
-    padding: 1px;
-    font-family: Tahoma;
-    text-align: left;
-  
-}
 .textinput {
     font-family: Tahoma;
     font-size: 10px;
-}
-.nav-container {
-    background:#f6f6f6;
-    font-family: Tahoma;
-    font-size: 12px;
-    height: 32px;
-    text-transform: uppercase;
 }
 
 .button {
@@ -35,4 +21,26 @@ body {
     border : 1px black solid;
     width : 80%;
     font-size: 18px;
+}
+
+.formtitle {
+    width: 90%;
+    font-style: Monospace;
+    margin: 0px;
+    padding: 5px;
+}
+
+.formbody {
+    width: 90%;
+    height: 35%;
+    font-style: Monospace;
+    margin: 0px;
+    padding: 5px;
+}
+
+.formselect {
+    font-style: Monospace;
+    margin: 1px;
+    padding: 5px;
+    text-align: left;
 }

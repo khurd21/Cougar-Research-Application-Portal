@@ -1,9 +1,109 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    {% if form %}
+
+
+{% if form %}
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.username.label }}<br>
+            {{ form.username }}<br> 
+
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.wsu_id.label}}<br>
+            {{form.wsu_id }}
+
+            {% for error in form.wsu_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.first_name.label}}<br>
+            {{form.first_name }}
+
+            {% for error in form.first_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.last_name.label}}<br>
+            {{form.last_name }}
+
+            {% for error in form.last_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.email.label}}<br>
+            {{form.email }}
+
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.phone_number.label}}<br>
+            {{form.phone_number }}
+
+            {% for error in form.phone_number.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            <!-- {{form.password1.label}}<br>
+            {{form.password1 }}
+
+            {% for error in form.password1.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.password2.label}}<br>
+            {{form.password2 }}
+
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %} -->
+
+            {{form.major.label}}<br>
+            {{form.major }}
+
+            {% for error in form.major.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.cum_GPA.label}}<br>
+            {{form.cum_GPA }}
+
+            {% for error in form.cum_GPA.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{form.grad_date.label}}<br>
+            {{form.grad_date }}
+
+            {% for error in form.grad_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+
+        <p class="formselect">{{form.research_topics.label}}
+        {{form.research_topics }}
+
+        <p class="formselect">{{form.languages.label}}
+            {{form.languages }}
+    
+        {{ form.submit }}
+        </p>
+    </form>
+
+{% else %}
+    <p>No form</p>
+{% endif %}
+
+    <!-- {% if form %}
         {{ wtf.quick_form(form, action = url_for('routes.edit')) }}
     {% else %}
         <p>Edit form not found</p>
-    {% endif %}
+    {% endif %} -->
 {% endblock %}
