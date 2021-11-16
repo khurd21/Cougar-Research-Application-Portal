@@ -1,0 +1,11 @@
+<!-- page used to create a prior experience using quick form -->
+{% extends "base.html" %}
+
+{% block app_content%}
+    <h1>Create a Prior Experience</h1>
+    {% if form %}
+        {{ wtf.quick_form(form, action=url_for('routes.index')) }} <!-- create prior experience route goes here -->
+    {% else %}
+        <p>Create Prior Experience form could not be rendered</p>
+    {% endif %}
+{% endblock %}
