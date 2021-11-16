@@ -8,103 +8,87 @@
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <div>
+            <br>
             {{ form.username.label }}<br>
             {{ form.username }}<br> 
 
             {% for error in form.username.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.wsu_id.label}}<br>
-            {{form.wsu_id }}
+            {{form.wsu_id }}<br>
 
             {% for error in form.wsu_id.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.first_name.label}}<br>
-            {{form.first_name }}
+            {{form.first_name }}<br>
 
             {% for error in form.first_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.last_name.label}}<br>
-            {{form.last_name }}
+            {{form.last_name }}<br>
 
             {% for error in form.last_name.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.email.label}}<br>
-            {{form.email }}
+            {{form.email }}<br>
 
             {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.phone_number.label}}<br>
-            {{form.phone_number }}
+            {{form.phone_number }}<br>
 
             {% for error in form.phone_number.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-
-            <!-- {{form.password1.label}}<br>
-            {{form.password1 }}
-
-            {% for error in form.password1.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-
-            {{form.password2.label}}<br>
-            {{form.password2 }}
-
-            {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %} -->
+            {% endfor %}<br>
 
             {{form.major.label}}<br>
-            {{form.major }}
+            {{form.major }}<br>
 
             {% for error in form.major.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.cum_GPA.label}}<br>
-            {{form.cum_GPA }}
+            {{form.cum_GPA }}<br>
 
             {% for error in form.cum_GPA.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
 
             {{form.grad_date.label}}<br>
-            {{form.grad_date }}
+            {{form.grad_date }}<br>
 
             {% for error in form.grad_date.errors %}
             <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+            {% endfor %}<br>
         </div>
-
 
         <p class="formselect">{{form.research_topics.label}}
         {{form.research_topics }}
 
         <p class="formselect">{{form.languages.label}}
             {{form.languages }}
+
+            <a href="" class ="btn btn-warning">Edit Tech Electives</a> <!-- Route to edit Tech Electives -->
+
+            <a href="" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
     
-        {{ form.submit }}
+        {{ form.submit(class="btn btn-success") }}<br><br><br><br>
         </p>
     </form>
 
 {% else %}
-    <p>No form</p>
+    <p>Edit form could not be rendered</p>
 {% endif %}
-
-    <!-- {% if form %}
-        {{ wtf.quick_form(form, action = url_for('routes.edit')) }}
-    {% else %}
-        <p>Edit form not found</p>
-    {% endif %} -->
 
 {% endblock %}
