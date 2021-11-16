@@ -3,10 +3,11 @@
 
 {% block app_content %}
     <h1>Your Technical Electives</h1>
-    <a href="" class ="btn btn-primary btn-block">Add a Technical Elective</a> <!-- will use the create_tech_elective route -->
+    <a href="{{ url_for('routes.create_technical_elective') }}" class ="btn btn-primary btn-block">Add a Technical Elective</a> <!-- will use the create_tech_elective route -->
+    <br>
     {% if electives %} <!-- electives is the list of all of a student's technical electives-->
         {% for elective in electives %}
-            {% include '_prior_experience.html'%} <!-- experience is a single technical elective -->
+            {% include '_tech_elective.html'%} <!-- experience is a single technical elective -->
         {% endfor %}
     {% else %}
         <p> You currently have no Technical Electives.</p>

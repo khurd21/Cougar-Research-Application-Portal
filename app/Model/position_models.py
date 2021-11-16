@@ -64,7 +64,8 @@ class Position(db.Model):
                         )
 
     def get_students(self):
-        return self.students
+        applications = Application.query.filter_by(position_id=self.id).all()
+        return [x for x in applications]
     
     def get_research_fields(self):
         return self.research_fields
@@ -86,6 +87,7 @@ class Application(db.Model):
     id         = db.Column(db.Integer, primary_key=True)
     position_id= db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    student_name = db.Column(db.String(32), nullable=False)
     description= db.Column(db.String(256), nullable=False)
     ref_name   = db.Column(db.String(32), nullable=False)
     ref_email  = db.Column(db.String(64), nullable=False)

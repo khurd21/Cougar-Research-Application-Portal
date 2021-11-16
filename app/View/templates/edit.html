@@ -7,6 +7,13 @@
 
     <form action="" method="post">
         {{ form.hidden_tag() }}
+
+
+            <a href="{{ url_for('routes.technical_electives') }}" class ="btn btn-warning">Edit Technical Electives</a> <!-- Route to edit Tech Electives -->
+
+            <a href="{{ url_for('routes.research_experience') }}" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
+        <br><br>
+
         <div>
             <br>
             {{ form.username.label }}<br>
@@ -58,37 +65,37 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}<br>
 
-            {{form.cum_GPA.label}}<br>
-            {{form.cum_GPA }}<br>
+            {{form.gpa.label}}<br>
+            {{form.gpa }}<br>
 
-            {% for error in form.cum_GPA.errors %}
+            {% for error in form.gpa.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}<br>
 
-            {{form.grad_date.label}}<br>
-            {{form.grad_date }}<br>
+            {{form.graduation_date.label}}<br>
+            {{form.graduation_date }}<br>
 
-            {% for error in form.grad_date.errors %}
+            {% for error in form.graduation_date.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}<br>
         </div>
 
-        <p class="formselect">{{form.research_topics.label}}
-        {{form.research_topics }}
-
-        <p class="formselect">{{form.languages.label}}
-            {{form.languages }}
-
-            <a href="" class ="btn btn-warning">Edit Tech Electives</a> <!-- Route to edit Tech Electives -->
-
-            <a href="" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
-    
-        {{ form.submit(class="btn btn-success") }}<br><br><br><br>
+        <p class="formselect">{{form.interested_fields.label}}
+        {{form.interested_fields }}
         </p>
+
+        <p class="formselect">{{form.programming_languages.label}}
+        {{form.programming_languages }}
+        </p>
+
+        {{ form.submit(class="btn btn-success") }}<br>
+
     </form>
 
 {% else %}
     <p>Edit form could not be rendered</p>
 {% endif %}
+
+<br><br><br><br>
 
 {% endblock %}

@@ -32,7 +32,7 @@
 
     {% if current_user.is_faculty() == False %}
         <!-- url_for Apply route will implemented later -->
-        <a href="" class ="btn btn-success">Apply</a>
+        <a href="{{ url_for('routes.apply', pos_id=position.id) }}" class ="btn btn-success">Apply</a>
         <br>
     {% endif %}
 

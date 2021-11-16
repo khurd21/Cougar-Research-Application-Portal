@@ -3,7 +3,8 @@
 
 {% block app_content %}
     <h1>Your Prior Experiences</h1>
-    <a href="" class ="btn btn-primary btn-block">Add a Prior Experience</a> <!-- will use the create_experience route -->
+    <a href="{{ url_for('routes.create_research_experience') }}" class ="btn btn-primary btn-block">Add a Prior Experience</a> <!-- will use the create_experience route -->
+    <br>
     {% if experiences %} <!-- experiences is the list of all of a student's prior experiences -->
         {% for experience in experiences %}
             {% include '_prior_experience.html'%} <!-- experience is a single prior experience -->
