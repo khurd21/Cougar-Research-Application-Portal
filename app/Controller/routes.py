@@ -25,12 +25,14 @@ def index():
     positions = Position.query.all()
     return render_template('index.html', research_positions=positions)
 
+
 @bp_routes.route('/position/<pos_id>', methods=['GET'])
 @login_required
 def display_position(pos_id):
     position = Position.query.filter_by(id=int(pos_id)).first()
     user = User.query.filter_by(id=position.faculty_id).first()
     return render_template('position.html', position=position, user=user)
+
 
 @bp_routes.route('/view_applicants', methods=['GET'])
 @login_required
@@ -43,6 +45,7 @@ def view_applicants():
     
     return render_template('faculty_positions.html', positions=positions)
 
+
 @bp_routes.route('/student/<student_id>', methods=['GET'])
 @login_required
 def display_applicant_info(student_id):
@@ -53,7 +56,8 @@ def display_applicant_info(student_id):
     student = User.query.filter_by(id=int(student_id)).first()
     
     return render_template('student.html', student=student)
-    
+
+
 @bp_routes.route('/apply/<pos_id>', methods=['GET', 'POST'])
 @login_required
 def apply(pos_id):
@@ -72,7 +76,8 @@ def apply(pos_id):
         return redirect(url_for('routes.index'))
     
     return render_template('apply.html', form=appForm)
-    
+
+
 @bp_routes.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
@@ -85,17 +90,26 @@ def edit():
     print(f'Type of user: {type(user)}')
 
     eForm = EditForm()
-    # eForm.first_name.data           = user.first_name
-    # eForm.major.data                = user.major
-    # eForm.cum_GPA.data              = user.gpa
-    # eForm.grad_date.data            = user.graduation_date
-    # eForm.languages.data            = user.programming_languages
-    # #eForm.prior_experience.data     = user.research_experience
+    eForm.username.data             = user.username
+    eForm.wsu_id.data               = user.wsu_id
+    eForm.first_name.data           = user.first_name
+    eForm.last_name.data            = user.last_name
+    eForm.email.data                = user.email
+    eForm.phone_number.data         = user.phone_number
+    eForm.major.data                = user.major
+    eForm.cum_GPA.data              = user.gpa
+    eForm.grad_date.data            = user.graduation_date
+    eForm.languages.data            = user.programming_languages
+    # eForm.prior_experience.data     = user.research_experience
     # eForm.research_topics.data      = user.interested_fields
     # eForm.tech_electives.data       = user.technical_electives
     
     if eForm.validate_on_submit():
+        user.username              = eForm.username.data
         user.first_name            = eForm.first_name.data
+        user.last_name             = eForm.last_name.data
+        user.email                 = eForm.email.data
+        user.phone_number          = eForm.phone_number.data
         user.major                 = eForm.major.data
         user.gpa                   = eForm.cum_GPA.data
         user.graduation_data       = eForm.grad_date.data
