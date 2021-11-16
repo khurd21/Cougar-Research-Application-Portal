@@ -87,43 +87,19 @@ def edit():
         return redirect(url_for('routes.index'))
 
     user = User.query.filter_by(id = current_user.id).first()
-    print(f'Type of user: {type(user)}')
-
-    eForm = EditForm()
-    eForm.username.data             = user.username
-    eForm.wsu_id.data               = user.wsu_id
-    eForm.first_name.data           = user.first_name
-    eForm.last_name.data            = user.last_name
-    eForm.email.data                = user.email
-    eForm.phone_number.data         = user.phone_number
-    eForm.major.data                = user.major
-    eForm.cum_GPA.data              = user.gpa
-    eForm.grad_date.data            = user.graduation_date
-    eForm.languages.data            = user.programming_languages
-    # eForm.prior_experience.data     = user.research_experience
-    # eForm.research_topics.data      = user.interested_fields
-    # eForm.tech_electives.data       = user.technical_electives
+    eForm = EditForm(obj=user)
     
     if eForm.validate_on_submit():
-        user.username              = eForm.username.data
-        user.first_name            = eForm.first_name.data
-        user.last_name             = eForm.last_name.data
-        user.email                 = eForm.email.data
-        user.phone_number          = eForm.phone_number.data
-        user.major                 = eForm.major.data
-        user.gpa                   = eForm.cum_GPA.data
-        user.graduation_data       = eForm.grad_date.data
-        user.programming_languages = eForm.languages.data
-       # user.research_experience   = eForm.prior_experience.data
-        user.interested_fields     = eForm.research_topics.data
-       # user.technical_electives   = eForm.tech_electives.data
-        user.save_to_db()
+        eForm.populate_obj(user)
+        db.session.commit()
+        # save_to_db() ?
         
         flash("Account information has been edited.")
         return redirect(url_for('routes.index'))
         
     return render_template('edit.html', form=eForm)
-        
+
+
 @bp_routes.route('/create_position', methods=['GET', 'POST'])
 @login_required
 def create_position():

@@ -21,57 +21,76 @@ def get_major_choices():
 
 
 class EditForm(FlaskForm):
-    username            = wtforms.StringField('Username',   validators=[validators.DataRequired()])
-    wsu_id              = wtforms.StringField('WSU ID',     validators=[validators.DataRequired(), validators.Length(max=10)])
-    first_name          = wtforms.StringField('First Name', validators=[validators.DataRequired()])
-    last_name           = wtforms.StringField('Last Name',  validators=[validators.DataRequired()])
-    email               = wtforms.StringField('Email',      validators=[validators.DataRequired(), validators.Email()])
-    phone_number        = wtforms.StringField('Phone No.',  validators=[validators.DataRequired()])
-    # TODO: major               = wtforms.SelectField('Major', choices=get_major_choices())
-    major               = wtforms.StringField('Major', validators=[validators.DataRequired()])
-    cum_GPA             = wtforms.FloatField('Cumulative GPA', validators=[validators.DataRequired()])
-    grad_date           = wtforms.StringField('Graduation Date [mm/dd/yyyy]', validators=[validators.DataRequired()])
 
-    # TODO: URGENT Move tech_electives to a table
-    #tech_electives      = wtforms.SelectMultipleField('Technical Electives', query_factory=lambda: TechnicalElective.query.all(), get_label=lambda x: x.course_title,)
-    #prior_experience    = wtforms.TextAreaField('Prior Research Experience', validators=[validators.DataRequired()])
-    research_topics     = fields.QuerySelectMultipleField('Research Topics of Interest',
-                                                        query_factory=lambda: ResearchField.query.all(),
-                                                        get_label=lambda x: x.name,
-                                                        widget=ListWidget(prefix_label=False),
-                                                        option_widget=CheckboxInput()
-                                                        )                                                 
-    languages           = fields.QuerySelectMultipleField('Programming Languages', 
-                                                        query_factory=lambda: ProgrammingLanguage.query.all(),
-                                                        get_label=lambda x: x.language,
-                                                        widget=ListWidget(prefix_label=False),
-                                                        option_widget=CheckboxInput()
-                                                        )
-    submit              = wtforms.SubmitField('Submit Changes')
+    username = wtforms.StringField('Username', validators=[validators.DataRequired()])
+    wsu_id = wtforms.StringField('WSU ID', validators=[validators.DataRequired(), validators.Length(max=10)])
+    first_name = wtforms.StringField('First Name', validators=[validators.DataRequired()])
+    last_name = wtforms.StringField('Last Name', validators=[validators.DataRequired()])
+    email = wtforms.StringField('Email', validators=[validators.DataRequired(), validators.Email()])
+    phone_number = wtforms.StringField('Phone No.', validators=[validators.DataRequired()])
+    major = wtforms.StringField('Major', validators=[validators.DataRequired()])
+    grad_dat = wtforms.DateField('Graduation Date', format='%Y-%m-%d', validators=[validators.DataRequired()])
+    cum_GPA = wtforms.FloatField('Cumulative GPA', validators=[validators.DataRequired(), validators.NumberRange(min=0.0, max=5.0)])
+
+    programming_languages = fields.QuerySelectMultipleField('Programming Languages',
+                                                            query_factory=lambda: ProgrammingLanguage.query.all(),
+                                                            get_label=lambda x: x.language,
+                                                            widget=ListWidget(prefix_label=False),
+                                                            option_widget=CheckboxInput()
+                                                            )
+
+    technical_electives = fields.QuerySelectMultipleField('Technical Electives',
+                                                            query_factory=lambda: TechnicalElective.query.all(),
+                                                            get_label=lambda x: x.course_title,
+                                                            widget=ListWidget(prefix_label=False),
+                                                            option_widget=CheckboxInput()
+                                                            )
     
+    
+    
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = user_models.User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('Username already exists. Please choose a different username.')
+    
+    def validate_wsu_id(self, wsu_id):
+        if wsu_id.data != current_user.wsu_id:
+            user = user_models.User.query.filter_by(wsu_id=wsu_id.data).first()
+            if user:
+                raise ValidationError('WSU ID already exists. Please choose a different WSU ID.')
+    
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = user_models.User.query.filter_by(email=email.data).first()
+
+
+    submit = wtforms.SubmitField('Submit')
+
 
     def validate_username(self, field):
         user = user_models.User.query.filter_by(username=field.data).first()
-        if user is not None and user.username != current_user.username:
-            raise ValidationError('Username already in use by another account.')
+        print(f'CURRENT USER: {current_user.username} FIELD DATA: {field.data}')
+        if user is not None and current_user.username != field.data:
+            raise ValidationError('Username already in use.')
 
 
     def validate_wsu_id(self, field):
         user = user_models.User.query.filter_by(wsu_id=int(field.data)).first()
-        if user is not None and user.wsu_id != current_user.wsu_id:
-            raise ValidationError('WSU ID already in use by another account.')
+        if user is not None and current_user.wsu_id != int(field.data):
+            raise ValidationError('WSU ID already in use.')
 
 
     def validate_email(self, field):
         user = user_models.User.query.filter_by(email=field.data).first()
-        if user is not None and user.email != current_user.email:
-            raise ValidationError('Email already in use by another account.')
+        if user is not None and current_user.email != field.data:
+            raise ValidationError('Email already in use.')
 
 
     def validate_phone_number(self, field):
         
         user = user_models.User.query.filter_by(phone_number=field.data).first()
-        if user is not None and user.phone_number != current_user.phone_number:
+        if user is not None and current_user.phone_number != field.data:
             raise ValidationError('Phone number already in use by another account.')
 
         if len(field.data) > 16:
@@ -86,20 +105,3 @@ class EditForm(FlaskForm):
             input_number = phone.parse("+1"+field.data)
             if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
-
-
-    def validate_grad_date(self, field):
-        try:
-            date = datetime.strptime(field.data, '%m/%d/%Y')
-        except ValueError:
-            raise ValidationError('Invalid date format.')
-
-
-    def validate_cum_GPA(self, field):
-        try:
-            cum_GPA = float(field.data)
-        except ValueError:
-            raise ValidationError('Invalid GPA format. Make sure it is a real number.')
-
-        if cum_GPA < 0 or cum_GPA > 5:
-            raise ValidationError('Invalid GPA. GPA must be between 0 and 5.')
