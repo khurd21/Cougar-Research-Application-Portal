@@ -36,8 +36,9 @@
     - [2.2.1 Model](#221-model)
     - [2.2.2 Controller](#222-controller)
     - [2.2.3 View and User Interface Design](#223-view-and-user-interface-design)
-- [3. Progress Report](#3-progress-report)
-- [4. References](#4-references)
+- [3. Test Plans](#3-test-plans)
+- [4. Progress Report](#4-progress-report)
+- [5. References](#5-references)
 
 <a name="revision-history"> </a>
 
@@ -347,12 +348,25 @@ The role of the view is to render the information retrieved through the controll
 ![](readme_imgs/user_interface_imgs/edit_technical_electives.png)  
 
 
-# 3. Progress Report
+# 3. Test Plans  
 
-In Iteration 1, the foundation of the project has been set up. The project is divided into three major sections: Model, Controller, and View. In Model, there are ResearchField, Position, User, and Faculty (from User) models. 
-- In Controller, there are forms and routes. The forms are Register and Login FlaskForms. There are authorization routes, which contain routes pertinent to user authentication. There are also regular routes, which contain all other routes. The auth routes contain Login, Logout, and Register routes. The regular routes contain Index, Display Position, and Create Position routes.
-- In the view, there is a CSS stylesheet and a set of HTML templates that render form or model elements to the screen upon a certain route being entered. 
+For iteration 3 we will need to add test cases for the following locations:
+  - Tests for current route implementation (the page links go to the correct route)
+  - Tests for database functionality (Models are correctly added and associations work as expected.)
+  - Manually testing for the user interface (Design is good and no problems with styling.)
 
-# 4. References
+# 4. Progress Report
+
+In Iteration 2, we implemented more features regarding applying for a position and viewing the applicants of a position. Additionally, we
+completed the edit fields for student information, however we still need to implement the edit and delete buttons for the students whom have applied
+and for the faculty whom have posted open positions. Additionally, we need to add the student's current status for the applied position:
+pending, interview, rejected, approved.  
+
+- In the edit forms, a student can update their technical electives and research experience pages. This will eventually be displayed on their
+profile when submitting an application for a research position, along with other information such as gpa, graduation date, etc.  
+- Faculty can now view the names of the students who have applied for their open research positions. However, they cannot view their full application.  
+- Made changes to the UI in some forms that were showing overlap between sections of the form.
+
+# 5. References
 
 No references were used in this project.
