@@ -303,7 +303,7 @@ The role of the view is to render the information retrieved through the controll
 
 </center>
 
-![](readme_imgs/user_interface_imgs/create_position1.png)
+![](readme_imgs/user_interface_imgs/create_position.png)
 
 <center>
 
@@ -312,6 +312,40 @@ The role of the view is to render the information retrieved through the controll
 </center>
 
 ![](readme_imgs/user_interface_imgs/create_position2.png)
+
+
+<center>
+  
+#### Active Research Positions
+ 
+</center>
+
+![](readme_imgs/user_interface_imgs/active_research_positions.png)
+
+<center>
+
+#### Edit Prior Experience
+
+</center>
+
+![](readme_imgs/user_interface_imgs/edit_prior_experience.png)
+
+<center>
+  
+#### Edit Student Info
+  
+</center>
+
+![](readme_imgs/user_interface_imgs/edit_student_info.png)
+
+<center>
+
+#### Edit Technical Electives
+
+</center>
+
+![](readme_imgs/user_interface_imgs/edit_technical_electives.png)  
+
 
 # 3. Progress Report
 
