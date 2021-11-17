@@ -90,7 +90,7 @@ The proposed decomposition was made more efficient by using polymorphism, which 
 
 ![](readme_imgs/uml_imgs/UML_component_diagram.png)
 
-The follow UML diagram shows the models and the interactions between the models and tables implemented in the project. 
+The following UML diagram shows the models and the interactions between the models and tables implemented in the project. 
 
 ![](readme_imgs/uml_imgs/UML_database_diagram.png)
 
