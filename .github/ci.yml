@@ -1,0 +1,32 @@
+name: Run Python Tests
+on:
+  push:
+    branches:
+      - test
+      - dev/kylehurd
+      - milestone1
+      - milestone2
+  pull_request:
+    branches:
+      - test
+      - dev/kylehurd
+      - milestone1
+      - milestone2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Python3
+        uses: action/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: python tests/test_models.py
+
+  
