@@ -126,10 +126,17 @@ Polymorphic class of the user class that only contains attributes that only adhe
 
 | Attributes | Description |
 | -- | -- |
+| major             | a string of the user's major. |
+| graduation_date   | a DateTime of the expected graduation date (mm/dd/yyyy). |
+| gpa               | a float value of the student's current grade point average. |
+| technical_electives | a one-to-many relationship between the Student and TechnicalElective Model. |
+| research_experience | a one-to-many relationship between the Student and ResearchExperience Model. |
+| application_forms | a one-to-many relationship between the Student and Application Model. |
+| programming_languages | a many-to-many relationship between the Student and ProgrammingLanguage Model. |
 | applied_positions | a many-to-many relationship between the Student users and the positions that they have applied to in the database. |
 | interested_fields | a many-to-many relationship between the Students users and the research fields that they are interested in that are in the database. |
 
-<b>ResearchField</b>
+- ### <b>ResearchField</b>
 
 Model that contains all the Research Fields that Students are interested in, and ones that posts are related to. 
 
@@ -140,7 +147,7 @@ Model that contains all the Research Fields that Students are interested in, and
 | positions | many-to-many relationship between both the research field and the research positions in the database. 
 | students | many-to-many relationship between both the research field and the students users and the research fields that are in the database | |
 
-<b>Position</b>
+- ### <b>Position</b>
 
 Class that contains all information/attributes related to a Research Position which are created by a Faculty user and both Students and Faculty are able to view specific attributes from it. 
 
@@ -154,9 +161,62 @@ Class that contains all information/attributes related to a Research Position wh
 | time_commitment | the amount of hours to commit to the research position |
 | faculty_name | the name of the faculty user that created the research position |
 | faculty_id | the id of the faculty user that created the research position |
+| application_forms | a one-to-many relationship between Position and Application Models. |
 | required_qualifications | the body descriptions that mentions the requirements that the student users must meet prior to applying to the research position |
 | research_fields | many-to-many relationship between the research positions and the research field tags |
-| students | many-to-many relationship between the research positions and the student users that have applied to said research positions |
+| students | many-to-many relationship between the research positions and the student users that have applied to said research positions |  
+
+- ### <b>Application</b>  
+
+Model containing information necessary for an application. The application form is filled out by a Student and sent to the Position for
+which they applied.  
+
+| Attributes | Description |
+| -- | -- |
+| id | the id of the Application for the database. |
+| position_id | a one-to-many relationship between the Position and Application Model. |
+| student_id  | a one-to-many relationship between the Student and Application Model. |
+| student_name | a string containing the applicant's name. |
+| description | a string containing the reason for applying for said position. |
+| ref_name | a string containing the reference's name. |
+| ref_email | a string containing the reference's email. |  
+
+- ### <b>ProgrammingLanguage</b>
+
+Model containing information necessary for students to post their interested programming languages.
+
+| Attributes | Description |
+| -- | -- |
+| id | the id of the ProgrammingLanguage Model for the database. |
+| language | a string representing a specific programming language. |
+| students | a many-to-many relationship between Student and ProgrammingLanguage Model. |
+
+- ### <b>ResearchExperience</b>
+
+Model containing information necessary for student to post their research experience.
+
+| Attributes | Description |
+| -- | -- |
+| id | the id of the ResearchExperience for the database. |
+| student_id | a one-to-many relationship between Student and ResearchExperience Model. |
+| title | a string containing the title of the research experience. |
+| company | a string containing the company name for which the research experience took place. |
+| description | a string containing the descritpion of duties/other things that occured during the duration of the position. |
+| start_date | a DateTime containing the date in which the position started. |
+| end_date | a DateTime containing the date in which the position ended. |  
+
+- ### <b>TechnicalElective</b>  
+
+Model containing information regarding a technical elective a student has taken.  
+
+| Attribute | Description |
+| -- | -- |
+| id | the id of the TechnicalElective for the database. |
+| student_id | a one-to-many relationship between Student and TechnicalElective Model. |
+| course_num | an integer containing the course number. |
+| course_prefix | a string containing the prefix of the course. |
+| course_title | a string containing the title of the course taken. |
+| course_description | a string containing a description of what subjects or topics were studied for the course. |
 
 ### 2.2.2 Controller
 
