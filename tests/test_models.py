@@ -47,22 +47,29 @@ class TestModels(unittest.TestCase):
         s1.set_password('123')
         s1.save_to_db()
 
+        ## Both queries should return the same object
         s1_q = user_models.Student.query.filter_by(username='test_student').first()
+        s2_q = user_models.User.query.filter_by(username='test_student').first()
         self.assertEqual(s1, s1_q)
+        self.assertEqual(s1,s2_q)
         return
 
 
     def test_create_faculty_account(self):
         
         f1 = user_models.Faculty(username='test_faculty', email='test_faculty@test.com',
-                                    department='test_department', phone_number='1234567890',
-                                    first_name='test', last_name='faculty',
-                                    wsu_id=123446789, gpa=4.0)
+                                    phone_number='1234567890', wsu_id=123446789,
+                                    first_name='test', last_name='faculty'
+                                    )
         f1.set_password('123')
         f1.save_to_db()
-        f1_q = user_models.Student.query.filter_by(username='test_faculty').first()
+
+        ## Both queries should return the same object
+        f1_q = user_models.Faculty.query.filter_by(username='test_faculty').first()
+        f2_q = user_models.User.query.filter_by(username='test_faculty').first()
         self.assertEqual(f1, f1_q)
+        self.assertEqual(f1,f2_q)
         return
 
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    unittest.main(verbosity=VERBOSITY)

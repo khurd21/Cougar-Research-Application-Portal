@@ -1,6 +1,7 @@
 # __init__.py
 # Initializer for the tests to use
 
+
 from config import Config
 import os
 

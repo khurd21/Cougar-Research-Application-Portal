@@ -14,12 +14,10 @@ jobs:
       - name: Install Python3
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8
+          python-version: '3.x'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Tests
-        run: python tests/test_models.py
-
-  
+        run: python -m unittest 
