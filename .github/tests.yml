@@ -2,17 +2,10 @@ name: Run Python Tests
 on:
   push:
     branches:
-      - test
       - dev/kylehurd
-      - milestone1
-      - milestone2
   pull_request:
     branches:
-      - test
       - dev/kylehurd
-      - milestone1
-      - milestone2
-
 jobs:
   build:
     runs-on: ubuntu-latest
