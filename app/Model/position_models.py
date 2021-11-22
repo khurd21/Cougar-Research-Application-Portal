@@ -64,7 +64,7 @@ class Position(db.Model):
                         )
 
     def get_students(self):
-        return students
+        return self.students
     
     def get_research_fields(self):
         return self.research_fields
