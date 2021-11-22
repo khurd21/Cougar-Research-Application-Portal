@@ -42,8 +42,7 @@ def view_applicants():
         flash('Access Denied: not logged in as Faculty')
         return redirect(url_for('routes.index'))
     
-    positions = Position.query.filter_by(faculty_id=current_user.id).all()
-    
+    positions = current_user.posted_positions
     return render_template('faculty_positions.html', positions=positions)
 
 
@@ -85,6 +84,9 @@ def apply(pos_id):
                                     student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}'
                                     )
         application.save_to_db()
+        current_user.application_forms.append(application)
+        current_user.applied_positions.append(position)
+        db.session.commit()
         flash('Application successfully submitted.')
         return redirect(url_for('routes.index'))
     
@@ -99,13 +101,12 @@ def edit():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
 
-    user = User.query.filter_by(id = current_user.id).first()
+    user = User.query.filter_by(id=current_user.id).first()
     eForm = EditForm(obj=user)
     
     if eForm.validate_on_submit():
         eForm.populate_obj(user)
         db.session.commit()
-        # save_to_db() ?
         
         flash("Account information has been edited.")
         return redirect(url_for('routes.index'))
@@ -121,7 +122,7 @@ def technical_electives():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
 
-    technical_electives = TechnicalElective.query.filter_by(student_id=current_user.id).all()
+    technical_electives = current_user.technical_electives
     return render_template('tech_electives.html', electives=technical_electives)
 
 
@@ -141,6 +142,8 @@ def create_technical_elective():
                                                 student_id=current_user.id
                                                 )
         technical_elective.save_to_db()
+        current_user.technical_electives.append(technical_elective)
+        db.session.commit()
         flash("Technical Elective successfully added.")
         return redirect(url_for('routes.technical_electives'))
     
@@ -155,7 +158,7 @@ def research_experience():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
 
-    research_experience = ResearchExperience.query.filter_by(student_id=current_user.id).all()
+    research_experience = current_user.research_experience 
     return render_template('prior_experiences.html', experiences=research_experience)
 
 
@@ -173,6 +176,8 @@ def create_research_experience():
                                                     company=form.company.data, description=form.description.data,
                                                     start_date=form.start_date.data, end_date=form.end_date.data)
         research_experience.save_to_db()
+        current_user.research_experience.append(research_experience)
+        db.session.commit()
         flash('Research Experience succesfully added.')
         return redirect(url_for('routes.research_experience'))
     
@@ -205,6 +210,8 @@ def create_position():
                             )
 
         position.save_to_db()
+        current_user.applied_positions.append(position)
+        db.session.commit()
         flash('Position successfully created.')
         return redirect(url_for('routes.index'))
 

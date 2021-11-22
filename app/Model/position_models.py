@@ -64,8 +64,7 @@ class Position(db.Model):
                         )
 
     def get_students(self):
-        applications = Application.query.filter_by(position_id=self.id).all()
-        return [x for x in applications]
+        return students
     
     def get_research_fields(self):
         return self.research_fields

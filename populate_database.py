@@ -127,6 +127,8 @@ p1.time_commitment = 20
 p1.research_fields = fields[-4:-1]
 p1.title = 'Nunc faucibus'
 p1.save_to_db()
+f1.posted_positions.append(p1)
+db.session.commit()
 
 
 p2 = position_models.Position(faculty_id=f1.id)
@@ -146,6 +148,8 @@ p2.time_commitment = 20
 p2.research_fields = fields[:-3]
 p2.title = 'Porttitor leo'
 p2.save_to_db()
+f1.posted_positions.append(p2)
+db.session.commit()
 
 
 p3 = position_models.Position(faculty_id=f2.id)
@@ -163,6 +167,8 @@ p3.time_commitment = 20
 p3.research_fields = fields[-3:-1]
 p3.title = 'Ut ornare'
 p3.save_to_db()
+f2.posted_positions.append(p3)
+db.session.commit()
 
 
 
@@ -205,6 +211,8 @@ exp1.description = 'At varius vel pharetra vel turpis nunc eget lorem. ' \
         'adipiscing elit pellentesque. Egestas congue quisque egestas diam in arcu' \
             'cursus euismod quis. Nisl nisi scelerisque eu ultrices vitae auctor eu.'
 exp1.save_to_db()
+s1.research_experience.append(exp1)
+db.session.commit()
 
 
 exp2 = experience_models.ResearchExperience(student_id=s2.id)
@@ -216,7 +224,8 @@ exp2.description = 'Ultricies leo integer malesuada nunc vel risus. Arcu non odi
     'lacinia at. Ullamcorper sit amet risus nullam eget felis eget nunc lobortis. Malesuada' \
         'fames ac turpis egestas integer eget aliquet nibh. Ut aliquam purus sit amet luctus venenatis lectus.'
 exp2.save_to_db()
-    
+s2.research_experience.append(exp2)
+db.session.commit()    
 
 exp3 = experience_models.ResearchExperience(student_id=s1.id)
 exp3.company = 'Washington State University'
@@ -228,6 +237,8 @@ exp3.description = 'Integer quis auctor elit sed vulputate. Convallis aenean et 
         'facilisis. Pellentesque habitant morbi tristique senectus. Iaculis nunc sed augue lacus viverra.' \
             'Amet venenatis urna cursus eget nunc scelerisque viverra mauris.'
 exp3.save_to_db()
+s1.research_experience.append(exp3)
+db.session.commit()
 
 
 exp4 = experience_models.ResearchExperience(student_id=s3.id)
@@ -237,6 +248,9 @@ exp4.start_date = datetime(2015, 1, 1)
 exp4.end_date = datetime(2015, 12, 31)
 exp4.description = 'Est velit egestas dui id ornare arcu odio ut. Et netus et malesuada fames ac.' \
     'Nec feugiat nisl pretium fusce id velit ut tortor pretium. Quisque id diam vel quam elementum pulvinar etiam non quam.'
+exp4.save_to_db()
+s3.research_experience.append(exp4)
+db.session.commit()
 
 
 tech1 = experience_models.TechnicalElective(student_id=s1.id)
@@ -247,6 +261,8 @@ tech1.course_description = 'Lorem ipsum dolor sit amet, consectetur adipiscing e
     'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco' \
         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.'
 tech1.save_to_db()
+s1.technical_electives.append(tech1)
+db.session.commit()
 
 
 tech2 = experience_models.TechnicalElective(student_id=s2.id)
@@ -258,6 +274,8 @@ tech2.course_description = 'Lorem ipsum dolor sit amet, consectetur adipiscing e
         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.' \
             'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 tech2.save_to_db()
+s2.technical_electives.append(tech2)
+db.session.commit()
 
 
 tech3 = experience_models.TechnicalElective(student_id=s2.id)
@@ -268,6 +286,8 @@ tech3.course_description = 'Ultricies leo integer malesuada nunc vel risus. Arcu
     'lacinia at. Ullamcorper sit amet risus nullam eget felis eget nunc lobortis. Malesuada' \
         'fames ac turpis egestas integer eget aliquet nibh. Ut aliquam purus sit amet luctus venenatis lectus.' 
 tech3.save_to_db()
+s2.technical_electives.append(tech3)
+db.session.commit()
 
 
 tech4 = experience_models.TechnicalElective(student_id=s3.id)
@@ -279,6 +299,8 @@ tech4.course_description = 'Est velit egestas dui id ornare arcu odio ut. Et net
         'Sed viverra ipsum nunc aliquet bibendum enim facilisis. Pellentesque habitant morbi tristique senectus.' \
             'Iaculis nunc sed augue lacus viverra. Amet venenatis urna cursus eget nunc scelerisque viverra mauris.'
 tech4.save_to_db()
+s3.technical_electives.append(tech4)
+db.session.commit()
 
 
 app1 = position_models.Application(student_id=s1.id, position_id=p1.id)
@@ -290,6 +312,9 @@ app1.student_name = f'{s1.first_name} {s1.last_name}'
 app1.ref_name = 'Dr. Calico Cat'
 app1.ref_email = 'calico_cat@edi.edu'
 app1.save_to_db()
+s1.application_forms.append(app1)
+s1.applied_positions.append(p1)
+db.session.commit()
 
 
 app2 = position_models.Application(student_id=s2.id, position_id=p2.id)
@@ -300,6 +325,9 @@ app2.student_name = f'{s2.first_name} {s2.last_name}'
 app2.ref_name = 'Jackson Donner'
 app2.ref_email = 'jackson_donner@test.com'
 app2.save_to_db()
+s2.application_forms.append(app2)
+s2.applied_positions.append(p2)
+db.session.commit()
 
 
 app3 = position_models.Application(student_id=s1.id, position_id=p3.id)
@@ -310,7 +338,8 @@ app3.student_name = f'{s1.first_name} {s1.last_name}'
 app3.ref_name = 'Dr. Helmer Glue'
 app3.ref_email = 'helmerg@ghi.edu'
 app3.save_to_db()
-
+s1.application_forms.append(app3)
+s1.applied_positions.append(p3)
 db.session.commit()
 
 
