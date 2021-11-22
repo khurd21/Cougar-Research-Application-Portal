@@ -49,6 +49,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous == False and current_user.is_faculty() == False %}
                     <li><a href=" {{ url_for('routes.edit') }}"><i class="fa fa-file-text-o"></i> Edit Student Info</a></li>
+                    <li><a href=" {{ url_for('routes.recommended_positions') }}"><i class="fa fa-file-text-o"></i>Recommended Positions</a></li>
                     {% endif %}
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('auth.login')}}"><i class="fa fa-sign-in"></i>  Login</a></li>

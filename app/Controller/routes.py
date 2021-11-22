@@ -34,12 +34,24 @@ def recommended_positions():
         return redirect(url_for('routes.index'))
     
     positions = Position.query.all()
+    
     recommended_positions = []
+    user_fields = []
+    position_fields = []
+    
+    for field in current_user.interested_fields:
+        user_fields.append(field.id)
     for p in positions:
-        for field in p.research_fields:
-            if current_user.interested_fields.contains(field):
+        fields = p.research_fields
+        for f in fields:
+            position_fields.append(f.id)
+        for f in position_fields:
+            matchNum = user_fields.count(f)
+            if matchNum > 0:
                 recommended_positions.append(p)
-    return render_template('recommended_positions.html', research_positions=recommended_positions)
+                break
+            
+    return render_template('index.html', research_positions=recommended_positions)
 
 @bp_routes.route('/position/<pos_id>', methods=['GET'])
 @login_required
