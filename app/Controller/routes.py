@@ -26,6 +26,20 @@ def index():
     positions = Position.query.all()
     return render_template('index.html', research_positions=positions)
 
+@bp_routes.route('/recommended_positions', methods=['GET'])
+@login_required
+def recommended_positions():
+    if current_user.is_faculty():
+        flash('Access Denied: not logged in as Student')
+        return redirect(url_for('routes.index'))
+    
+    positions = Position.query.all()
+    recommended_positions = []
+    for p in positions:
+        for field in p.research_fields:
+            if current_user.interested_fields.contains(field):
+                recommended_positions.append(p)
+    return render_template('recommended_positions.html', research_positions=recommended_positions)
 
 @bp_routes.route('/position/<pos_id>', methods=['GET'])
 @login_required
