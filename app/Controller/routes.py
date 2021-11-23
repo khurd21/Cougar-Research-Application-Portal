@@ -210,7 +210,7 @@ def create_position():
                             )
 
         position.save_to_db()
-        current_user.applied_positions.append(position)
+        current_user.posted_positions.append(position)
         db.session.commit()
         flash('Position successfully created.')
         return redirect(url_for('routes.index'))
