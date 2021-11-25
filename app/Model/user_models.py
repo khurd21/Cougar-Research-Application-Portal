@@ -93,8 +93,8 @@ class Student(User):
     graduation_date             = db.Column(db.DateTime,default=datetime.utcnow)
     gpa                         = db.Column(db.Float)
     technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
-    research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
-    application_forms           = db.relationship('Application', backref='student', lazy=True)
+    research_experience         = db.relationship('ResearchExperience', lazy=True)
+    application_forms           = db.relationship('Application', lazy=True)
 
 
     programming_languages = db.relationship('ProgrammingLanguage',
