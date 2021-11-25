@@ -1,39 +1,28 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-<h1>{{  }}</h1> <!-- Applicant's Name -->
+<h1>{{ student.first_name }} {{ student.last_name }}</h1> <!-- Applicant's Name -->
 <body>
     <p>
-        <b>Phone Number:  </b>{{  }} <!-- Applicant's Number -->
+        <p><b>Contact Information:</b></p>
+        <b>Phone Number:  </b>{{ student.phone_number }} <!-- Applicant's Number -->
         <br>
-        <b>Email:  </b>{{  }} <!-- Applicant's email -->
+        <b>Email:  </b>{{ student.email }} <!-- Applicant's email -->
     </p>
 
     <p>
-        <b>Application Description:</b><br>
-        {{  }} <!-- Applicant's description on why they would like to work for them -->
+        <p><b>Education:</b></p>
+        <b>Major:  </b>{{ student.major }} <!-- Applicant's Major -->
+        <br>
+        <b>GPA:  </b>{{ student.gpa }} <!-- Applicant's GPA -->
+        <br>
+        <b>Graduation Date:  </b>{{ moment(student.graduation_date).format('L') }} <!-- Applicant's Grad Date -->
+        <br>
     </p>
 
-	<p>
-		<b>Reference Contact Information:</b><br>
-		{{  }} <!-- Applicant Reference's contact information ( name: email ) -->
-	</p>
-
-    {% if current_user.id == position.faculty_id %}
-		 <td width=10%>
-            <a href="" class ="btn btn-success">Hire</a> <!-- Route for Hiring Applicant -->
-            <br>
-            <br>
-            <a href="" class ="btn btn-warning">Approve for Interview</a> <!-- Routes for Approving for Interview -->
-			<br>
-            <br>
-            <a href="" class ="btn btn-danger">Decline</a><!-- Routes for Declining Applicant -->
-            <br>
-		</td>
-    {% endif %}
-
+    
 
     <br>
-    <a href="{{ url_for('routes.view_applicants') }}" class ="button"> Return to APositions page</a>
+    <a href="{{ url_for('routes.view_applicants') }}" class ="button"> Return to Applicants page</a>
 </body>
 {% endblock %}

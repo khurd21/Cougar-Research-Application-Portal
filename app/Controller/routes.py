@@ -56,7 +56,7 @@ def display_applicant_info(student_id):
     
     student = User.query.filter_by(id=int(student_id)).first()
     
-    return render_template('student.html', student=student)
+    return render_template('applicant_info.html', student=student)
 
 
 @bp_routes.route('/apply/<pos_id>', methods=['GET', 'POST'])
