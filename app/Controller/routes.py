@@ -216,3 +216,34 @@ def create_position():
         return redirect(url_for('routes.index'))
 
     return render_template('create.html', form=pform)
+
+
+
+@bp_routes.route('/delete_position/<pos_id>', methods=['POST', 'DELETE', 'GET'])
+@login_required
+def delete_position(pos_id):
+    
+    if not current_user.is_faculty():
+        flash('Access Denied: not logged in as faculty.')
+        return redirect(url_for('routes.position', id=pos_id))
+    
+    position = Position.query.filter_by(id=pos_id).first()
+    if not position in current_user.posted_positions:
+        flash('Access Denied: you are not the owner of this position.')
+        return redirect(url_for('routes.position', id=pos_id))
+
+    ## MIGHT HAVE TO CHANGE THE STUDENTS APPLICATION TO THIS POSITION TO A PREDEFINED ONE SAYING NO LONGER AVAILABLE
+    for applicant in position.application_forms:
+        position.application_forms.remove(applicant)
+
+    for student in position.students:
+        position.students.remove(student)
+
+    for field in position.research_fields:
+        position.research_fields.remove(field)
+
+    db.session.delete(position)
+    db.session.commit()
+
+    flash('Post deleted.')
+    return redirect(url_for('routes.index'))
