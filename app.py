@@ -24,6 +24,7 @@ def init_db(*args, **kwargs):
         for field in fields:
             db.session.add(position_models.ResearchField(name=field))
         db.session.commit()
+    
     return None
 
 @app.before_request

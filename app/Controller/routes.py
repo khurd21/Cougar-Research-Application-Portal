@@ -1,4 +1,5 @@
 from flask import Blueprint
+from app.Model import position_models
 from app.Model.experience_models import TechnicalElective, ResearchExperience
 from config import Config
 from flask_login import current_user, login_required
@@ -232,12 +233,12 @@ def delete_position(pos_id):
         flash('Access Denied: you are not the owner of this position.')
         return redirect(url_for('routes.position', id=pos_id))
 
-    ## MIGHT HAVE TO CHANGE THE STUDENTS APPLICATION TO THIS POSITION TO A PREDEFINED ONE SAYING NO LONGER AVAILABLE
-    for applicant in position.application_forms:
-        position.application_forms.remove(applicant)
-
     for student in position.students:
         position.students.remove(student)
+
+    for applicant in position.application_forms:
+        position.application_forms.remove(applicant)
+        db.session.delete(applicant)
 
     for field in position.research_fields:
         position.research_fields.remove(field)

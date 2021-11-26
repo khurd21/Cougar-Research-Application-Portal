@@ -42,7 +42,7 @@
             <a href="" class ="btn btn-warning">Edit</a>
 			<br>
             <br>
-            <a href="" class ="btn btn-danger">Delete</a>
+            <a href="{{ url_for('routes.delete_position', pos_id=position.id) }}" class ="btn btn-danger">Delete</a>
             <br>
 		</td>
     {% endif %}
