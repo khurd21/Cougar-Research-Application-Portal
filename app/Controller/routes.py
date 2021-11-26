@@ -1,3 +1,4 @@
+from threading import currentThread
 from flask import Blueprint
 from app.Model import position_models
 from app.Model.experience_models import TechnicalElective, ResearchExperience
@@ -25,12 +26,13 @@ bp_routes.static_folder = Config.STATIC_FOLDER
 @login_required
 def index():
     positions = Position.query.all()
-
     if not current_user.is_faculty():
         for deleted_pos in current_user.deleted_positions:
             flash(f'"{deleted_pos.position_title}" has been deleted. Last status: {deleted_pos.last_status}')
-            current_user.deleted_positions.remove(deleted_pos)
             db.session.delete(deleted_pos)
+            db.session.commit()
+
+        current_user.deleted_positions.clear() 
         db.session.commit()
 
     return render_template('index.html', research_positions=positions)
@@ -243,26 +245,23 @@ def delete_position(pos_id):
         flash('Access Denied: you are not the owner of this position.')
         return redirect(url_for('routes.position', id=pos_id))
 
-    for student in position.students:
-        position.students.remove(student)
-
     for applicant in position.application_forms:
 
         status = position_models.Status.query.filter_by(id=applicant.status_id).first()
-
         student = user_models.User.query.filter_by(id=applicant.student_id).first()
+
         if student:
             deleted_pos = position_models.DeletedPosition(student_id=student.id, position_title=position.title, last_status=status.status)
             deleted_pos.save_to_db()
             student.deleted_positions.append(deleted_pos)
             db.session.commit()
+            student.save_to_db()
 
-        position.application_forms.remove(applicant)
         db.session.delete(applicant)
 
-
-    for field in position.research_fields:
-        position.research_fields.remove(field)
+    position.students.clear()
+    position.application_forms.clear()
+    position.research_fields.clear()
 
     db.session.delete(position)
     db.session.commit()
