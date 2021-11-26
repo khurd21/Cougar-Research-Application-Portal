@@ -79,17 +79,33 @@ class Position(db.Model):
         return f'<Position id: {self.id} title: {self.title} faculty_id: {self.faculty_id}>'
 
 
+class Status(db.Model):
+
+    id          = db.Column(db.Integer, primary_key=True)
+    status      = db.Column(db.String(8))
+    applications= db.Column(db.Integer, db.ForeignKey('application.id'), nullable=True)
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+    def __repr__(self):
+        return f'<Status id: {self.id} status: {self.status}>'
+
 
 
 class Application(db.Model):
 
-    id         = db.Column(db.Integer, primary_key=True)
-    position_id= db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    student_name = db.Column(db.String(32), nullable=False)
-    description= db.Column(db.String(256), nullable=False)
-    ref_name   = db.Column(db.String(32), nullable=False)
-    ref_email  = db.Column(db.String(64), nullable=False)
+    id          = db.Column(db.Integer, primary_key=True)
+    position_id = db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
+    student_id  = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    student_name= db.Column(db.String(32), nullable=False)
+    description = db.Column(db.String(256), nullable=False)
+    ref_name    = db.Column(db.String(32), nullable=False)
+    ref_email   = db.Column(db.String(64), nullable=False)
+    status_id   = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False) 
 
 
     def save_to_db(self):

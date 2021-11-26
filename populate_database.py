@@ -105,6 +105,17 @@ if position_models.ResearchField.query.count() == 0:
     db.session.commit()
 
 
+statuses = ['Pending', 'Interview', 'Accepted', 'Rejected']
+if position_models.Status.query.count() == 0:
+    for status in statuses:
+        db.session.add(position_models.Status(status=status))
+    db.session.commit()
+
+
+statuses_q    = position_models.Status.query.all()
+for status in statuses_q:
+    assert status.status in statuses
+
 
 languages   = experience_models.ProgrammingLanguage.query.all()
 fields      = position_models.ResearchField.query.all()
@@ -303,6 +314,7 @@ s3.technical_electives.append(tech4)
 db.session.commit()
 
 
+pending = position_models.Status.query.filter_by(status='Pending').first()
 app1 = position_models.Application(student_id=s1.id, position_id=p1.id)
 app1.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie.' \
     'Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.' \
@@ -311,6 +323,7 @@ app1.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie
 app1.student_name = f'{s1.first_name} {s1.last_name}'
 app1.ref_name = 'Dr. Calico Cat'
 app1.ref_email = 'calico_cat@edi.edu'
+app1.status_id = pending.id
 app1.save_to_db()
 s1.application_forms.append(app1)
 s1.applied_positions.append(p1)
@@ -324,6 +337,7 @@ app2.description = 'Facilisis magna etiam tempor orci eu. Tortor id aliquet' \
 app2.student_name = f'{s2.first_name} {s2.last_name}'
 app2.ref_name = 'Jackson Donner'
 app2.ref_email = 'jackson_donner@test.com'
+app2.status_id = pending.id
 app2.save_to_db()
 s2.application_forms.append(app2)
 s2.applied_positions.append(p2)
@@ -337,6 +351,7 @@ app3.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie
 app3.student_name = f'{s1.first_name} {s1.last_name}'
 app3.ref_name = 'Dr. Helmer Glue'
 app3.ref_email = 'helmerg@ghi.edu'
+app3.status_id = pending.id
 app3.save_to_db()
 s1.application_forms.append(app3)
 s1.applied_positions.append(p3)
@@ -346,6 +361,8 @@ db.session.commit()
 test_app = position_models.Application.query.filter_by(student_id=s1.id).all()
 assert len(test_app) == 2
 for t in test_app:
+    p_q = position_models.Status.query.filter_by(status='Pending').first()
+    assert t.status_id == p_q.id
     print(t)
 
 
@@ -353,6 +370,7 @@ for t in test_app:
 print(f'Student 1: \n{s1}')
 print(f'RE: {s1.research_experience}')
 print(f'AP: {s1.applied_positions}')
+print(f'ST: {[x.status_id for x in s1.application_forms]}')
 print(f'TE: {s1.technical_electives}')
 print(f'IF: {s1.interested_fields}')
 
@@ -360,6 +378,7 @@ print(f'IF: {s1.interested_fields}')
 print(f'Student 2: \n{s2}')
 print(f'RE: {s2.research_experience}')
 print(f'AP: {s2.applied_positions}')
+print(f'ST: {[x.status_id for x in s2.application_forms]}')
 print(f'TE: {s2.technical_electives}')
 print(f'IF: {s2.interested_fields}')
 
@@ -367,5 +386,6 @@ print(f'IF: {s2.interested_fields}')
 print(f'Student 3: \n{s3}')
 print(f'RE: {s3.research_experience}')
 print(f'AP: {s3.applied_positions}')
+print(f'ST: {[x.status_id for x in s3.application_forms]}')
 print(f'TE: {s3.technical_electives}')
 print(f'IF: {s3.interested_fields}')

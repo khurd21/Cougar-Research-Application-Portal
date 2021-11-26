@@ -25,6 +25,14 @@ bp_routes.static_folder = Config.STATIC_FOLDER
 @login_required
 def index():
     positions = Position.query.all()
+
+    if not current_user.is_faculty():
+        for deleted_pos in current_user.deleted_positions:
+            flash(f'"{deleted_pos.position_title}" has been deleted. Last status: {deleted_pos.last_status}')
+            current_user.deleted_positions.remove(deleted_pos)
+            db.session.delete(deleted_pos)
+        db.session.commit()
+
     return render_template('index.html', research_positions=positions)
 
 
@@ -80,9 +88,11 @@ def apply(pos_id):
     appForm = ApplicationForm()
 
     if appForm.validate_on_submit():
+        pending     = position_models.Status.query.filter_by(status='Pending').first()
         application = Application(description=appForm.description.data, ref_name=appForm.ref_name.data,
                                     ref_email = appForm.ref_email.data, position_id=pos_id,
-                                    student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}'
+                                    student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}',
+                                    status_id = pending.id
                                     )
         application.save_to_db()
         current_user.application_forms.append(application)
@@ -238,11 +248,12 @@ def delete_position(pos_id):
 
     for applicant in position.application_forms:
 
-        deleted_pos = position_models.DeletedPosition(position_title=position.title, last_status=applicant.status)
-        deleted_pos.save_to_db()
+        status = position_models.Status.query.filter_by(id=applicant.status_id).first()
 
-        student = user_models.User.query.filter_by(id=student_id).first()
+        student = user_models.User.query.filter_by(id=applicant.student_id).first()
         if student:
+            deleted_pos = position_models.DeletedPosition(student_id=student.id, position_title=position.title, last_status=status.status)
+            deleted_pos.save_to_db()
             student.deleted_positions.append(deleted_pos)
             db.session.commit()
 
