@@ -237,8 +237,18 @@ def delete_position(pos_id):
         position.students.remove(student)
 
     for applicant in position.application_forms:
+
+        deleted_pos = position_models.DeletedPosition(position_title=position.title, last_status=applicant.status)
+        deleted_pos.save_to_db()
+
+        student = user_models.User.query.filter_by(id=student_id).first()
+        if student:
+            student.deleted_positions.append(deleted_pos)
+            db.session.commit()
+
         position.application_forms.remove(applicant)
         db.session.delete(applicant)
+
 
     for field in position.research_fields:
         position.research_fields.remove(field)
