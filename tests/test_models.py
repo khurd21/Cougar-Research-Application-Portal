@@ -13,6 +13,7 @@ import unittest
 import app.Model.user_models as user_models
 import app.Model.experience_models as experience_models
 import app.Model.position_models as position_models
+import app.Controller.routes as routes
 
 VERBOSITY = 2
 
@@ -120,8 +121,6 @@ class TestModels(unittest.TestCase):
         a1 = create_application(s1, p1)
         a1.save_to_db()
 
-
-        ## TODO: Add this to routes wherever we add new position or application
         s1.applied_positions.append(p1)
         p1.application_forms.append(a1)
         db.session.commit()
