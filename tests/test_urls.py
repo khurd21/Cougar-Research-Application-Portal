@@ -11,7 +11,7 @@ S = user_models.Student
 F = user_models.Faculty
 
 # Response Codes
-RESPONSE_CODE_SUCCESS = 200
+STATUS_CODE_SUCCESS = 200
 
 
 class TestConfig(Config):
@@ -119,7 +119,7 @@ def test_register_page(test_client):
     THEN check that the response is valid
     '''
     response = test_client.get('/register')
-    assert response.status_code == RESPONSE_CODE_SUCCESS
+    assert response.status_code == STATUS_CODE_SUCCESS
     assert b'Register' in response.data
 
 
@@ -129,4 +129,38 @@ def test_register(test_client, init_database):
     WHEN the '/register' form is submitted (POST)
     THEN check that the response is valid and the database is updated correctly
     '''
+    response = test_client.post('/register',
+                                data=dict(first_name='John',
+                                    last_name='Doe',
+                                    email='john.doe@gmail.com',
+                                    phone_number='5322018899',
+                                    username='johndoe',
+                                    password1='123',
+                                    password2='123',
+                                    wsu_id=91533467),
+                                follow_redirects=True
+                                )
+    assert response.status_code == STATUS_CODE_SUCCESS
+    assert b'Cougar Research Application Portal' in response.data
+
+
+def test_invalid_login(test_client, init_database):
+    '''
+    GIVEN a Flask application configured for testing
+    WHEN the '/login' form is submitted (POST) with correct credentials
+    THEN check that the response is valid and login is successful
+    '''
+    response = test_client.post('/login',
+                                data=dict(username='InvalidUser',
+                                    password='123',
+                                    remember_me=False),
+                                follow_redirects=True
+                                )
+    assert response.status_code == STATUS_CODE_SUCCESS
+    assert b'Invalid username or password' in response.data
+    assert b'Sign In' in response.data
+    assert b'Click to Create Account' in response.data
+
+
+def test_login_logout():
     pass

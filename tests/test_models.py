@@ -44,6 +44,10 @@ def create_application(student, position):
                                         )
 
 
+def create_status():
+    return position_models.Status(status='Pending')
+
+
 class TestModels(unittest.TestCase):
 
     def setUp(self):
@@ -119,6 +123,9 @@ class TestModels(unittest.TestCase):
         p1 = create_position(f1)
         p1.save_to_db()
         a1 = create_application(s1, p1)
+        status1 = create_status()
+        status1.save_to_db()
+        a1.status_id = status1.id
         a1.save_to_db()
 
         s1.applied_positions.append(p1)
@@ -127,6 +134,7 @@ class TestModels(unittest.TestCase):
 
         a1_q = position_models.Application.query.filter_by(student_id=s1.id, position_id=p1.id).first()
         self.assertEqual(a1, a1_q)
+        self.assertEqual(a1.status_id, status1.id)
         self.assertIn(p1, s1.applied_positions)
         self.assertIn(a1, p1.application_forms)
         return
