@@ -24,6 +24,13 @@ def init_db(*args, **kwargs):
         for field in fields:
             db.session.add(position_models.ResearchField(name=field))
         db.session.commit()
+
+    if position_models.Status.query.count() == 0:
+        statuses = ['Pending', 'Interview', 'Accepted', 'Rejected']
+        for status in statuses:
+            db.session.add(position_models.Status(status=status))
+        db.session.commit()
+    
     return None
 
 @app.before_request

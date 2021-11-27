@@ -93,8 +93,9 @@ class Student(User):
     graduation_date             = db.Column(db.DateTime,default=datetime.utcnow)
     gpa                         = db.Column(db.Float)
     technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
-    research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
-    application_forms           = db.relationship('Application', backref='student', lazy=True)
+    research_experience         = db.relationship('ResearchExperience', lazy=True)
+    application_forms           = db.relationship('Application', lazy=True)
+    deleted_positions           = db.relationship('DeletedPosition', lazy=True)
 
 
     programming_languages = db.relationship('ProgrammingLanguage',
@@ -110,6 +111,7 @@ class Student(User):
                             secondary=tables.interested_fields, lazy='subquery',
                             back_populates='students'
                             )
+
 
     __mapper_args__ = {
             'polymorphic_identity': 'student'

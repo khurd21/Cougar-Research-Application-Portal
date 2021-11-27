@@ -1,4 +1,6 @@
+from threading import currentThread
 from flask import Blueprint
+from app.Model import position_models
 from app.Model.experience_models import TechnicalElective, ResearchExperience
 from config import Config
 from flask_login import current_user, login_required
@@ -12,6 +14,7 @@ from app.Controller.application_forms import ApplicationForm
 from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm
 
 import app.Model.user_models as user_models
+import app.Controller.status_form as status_form
 from datetime import datetime
 
 bp_routes = Blueprint('routes', __name__)
@@ -24,6 +27,15 @@ bp_routes.static_folder = Config.STATIC_FOLDER
 @login_required
 def index():
     positions = Position.query.all()
+    if not current_user.is_faculty():
+        for deleted_pos in current_user.deleted_positions:
+            flash(f'"{deleted_pos.position_title}" has been deleted. Last status: {deleted_pos.last_status}')
+            db.session.delete(deleted_pos)
+            db.session.commit()
+
+        current_user.deleted_positions.clear() 
+        db.session.commit()
+
     return render_template('index.html', research_positions=positions)
 
 
@@ -42,21 +54,33 @@ def view_applicants():
         flash('Access Denied: not logged in as Faculty')
         return redirect(url_for('routes.index'))
     
-    positions = Position.query.filter_by(faculty_id=current_user.id).all()
-    
+    positions = current_user.posted_positions
     return render_template('faculty_positions.html', positions=positions)
 
 
-@bp_routes.route('/student/<student_id>', methods=['GET'])
+@bp_routes.route('/student/<student_id>/<pos_id>', methods=['GET', 'POST'])
 @login_required
-def display_applicant_info(student_id):
+def display_applicant_info(student_id, pos_id):
     if not current_user.is_faculty():
         flash('Access Denied: not logged in as Faculty')
         return redirect(url_for('routes.index'))
     
     student = User.query.filter_by(id=int(student_id)).first()
-    
-    return render_template('student.html', student=student)
+    position = Position.query.filter_by(id=int(pos_id)).first()
+    application = None
+    for app in student.application_forms:
+        if app.position_id == int(pos_id):
+            application = app
+
+    form = status_form.UpdateStatusForm()
+    if form.validate_on_submit():
+        application.status_id = form.statuses.data.id
+        db.session.commit()
+
+    return render_template('applicant_info.html',
+            student=student, position=position,
+            application=application, form=form
+            )
 
 
 @bp_routes.route('/apply/<pos_id>', methods=['GET', 'POST'])
@@ -80,11 +104,16 @@ def apply(pos_id):
     appForm = ApplicationForm()
 
     if appForm.validate_on_submit():
+        pending     = position_models.Status.query.filter_by(status='Pending').first()
         application = Application(description=appForm.description.data, ref_name=appForm.ref_name.data,
                                     ref_email = appForm.ref_email.data, position_id=pos_id,
-                                    student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}'
+                                    student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}',
+                                    status_id = pending.id
                                     )
         application.save_to_db()
+        current_user.application_forms.append(application)
+        current_user.applied_positions.append(position)
+        db.session.commit()
         flash('Application successfully submitted.')
         return redirect(url_for('routes.index'))
     
@@ -99,13 +128,12 @@ def edit():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
 
-    user = User.query.filter_by(id = current_user.id).first()
+    user = User.query.filter_by(id=current_user.id).first()
     eForm = EditForm(obj=user)
     
     if eForm.validate_on_submit():
         eForm.populate_obj(user)
         db.session.commit()
-        # save_to_db() ?
         
         flash("Account information has been edited.")
         return redirect(url_for('routes.index'))
@@ -121,7 +149,7 @@ def technical_electives():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
 
-    technical_electives = TechnicalElective.query.filter_by(student_id=current_user.id).all()
+    technical_electives = current_user.technical_electives
     return render_template('tech_electives.html', electives=technical_electives)
 
 
@@ -141,6 +169,8 @@ def create_technical_elective():
                                                 student_id=current_user.id
                                                 )
         technical_elective.save_to_db()
+        current_user.technical_electives.append(technical_elective)
+        db.session.commit()
         flash("Technical Elective successfully added.")
         return redirect(url_for('routes.technical_electives'))
     
@@ -155,7 +185,7 @@ def research_experience():
         flash('Access Denied: You must be logged in as a student to apply for a position.')
         return redirect(url_for('routes.index'))
 
-    research_experience = ResearchExperience.query.filter_by(student_id=current_user.id).all()
+    research_experience = current_user.research_experience 
     return render_template('prior_experiences.html', experiences=research_experience)
 
 
@@ -173,6 +203,8 @@ def create_research_experience():
                                                     company=form.company.data, description=form.description.data,
                                                     start_date=form.start_date.data, end_date=form.end_date.data)
         research_experience.save_to_db()
+        current_user.research_experience.append(research_experience)
+        db.session.commit()
         flash('Research Experience succesfully added.')
         return redirect(url_for('routes.research_experience'))
     
@@ -205,7 +237,48 @@ def create_position():
                             )
 
         position.save_to_db()
+        current_user.posted_positions.append(position)
+        db.session.commit()
         flash('Position successfully created.')
         return redirect(url_for('routes.index'))
 
     return render_template('create.html', form=pform)
+
+
+
+@bp_routes.route('/delete_position/<pos_id>', methods=['POST', 'DELETE', 'GET'])
+@login_required
+def delete_position(pos_id):
+    
+    if not current_user.is_faculty():
+        flash('Access Denied: not logged in as faculty.')
+        return redirect(url_for('routes.position', id=pos_id))
+    
+    position = Position.query.filter_by(id=pos_id).first()
+    if not position in current_user.posted_positions:
+        flash('Access Denied: you are not the owner of this position.')
+        return redirect(url_for('routes.position', id=pos_id))
+
+    for applicant in position.application_forms:
+
+        status = position_models.Status.query.filter_by(id=applicant.status_id).first()
+        student = user_models.User.query.filter_by(id=applicant.student_id).first()
+
+        if student:
+            deleted_pos = position_models.DeletedPosition(student_id=student.id, position_title=position.title, last_status=status.status)
+            deleted_pos.save_to_db()
+            student.deleted_positions.append(deleted_pos)
+            db.session.commit()
+            student.save_to_db()
+
+        db.session.delete(applicant)
+
+    position.students.clear()
+    position.application_forms.clear()
+    position.research_fields.clear()
+
+    db.session.delete(position)
+    db.session.commit()
+
+    flash('Post deleted.')
+    return redirect(url_for('routes.index'))

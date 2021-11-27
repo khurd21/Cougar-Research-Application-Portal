@@ -32,13 +32,13 @@
         <div class="container-fluid">
             <div class="" id="bs-example-navbar-collapse-1"> 
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a class="navbar-brand" href="https://wsu.edu/" target="_blank" rel="noopener noreferrer">
-                            <img src ="{{ url_for('static', filename='imgs/WSU.png') }}" width="150%", height="300%" class="img-fluid">
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav">
+					<li>
+						<a class="navbar-brand" href="https://wsu.edu/" target="_blanks" rel="noopener noreferrer">
+							<div class="logo-image">
+								<img src ="{{ url_for('static', filename='imgs/WSU.png') }}" width="150%", height="150%" class="img-fluid">
+							</div>
+						</a>
+					</li>
                     <li><a href="{{ url_for('routes.index') }}"><i class="fa fa-home"></i>  Home </a></li>
                     {% if current_user.is_anonymous == False and current_user.is_faculty() == True %}
                     <li><a href="{{ url_for('routes.create_position') }}"><i class="fa fa-pencil"></i>  Create Position </a></li>
@@ -78,7 +78,7 @@
 
     {%- block footer %}
     <div class="navbar navbar-nav navbar-fixed-bottom" style="background-color: white;">
-        <div class="container text-center" >
+        <div class="container text-center">
             <footer>&copy; Copy&Submit, Cougar Research Application Portal</footer>
         </div>
     </div>
