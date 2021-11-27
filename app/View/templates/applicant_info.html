@@ -1,28 +1,95 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+{% if student and position and application %}
 <h1>{{ student.first_name }} {{ student.last_name }}</h1> <!-- Applicant's Name -->
+<p>
+    <b>Application For:</b> {{ position.title }}
+</p>
+<hr>
 <body>
-    <p>
-        <p><b>Contact Information:</b></p>
-        <b>Phone Number:  </b>{{ student.phone_number }} <!-- Applicant's Number -->
-        <br>
-        <b>Email:  </b>{{ student.email }} <!-- Applicant's email -->
-    </p>
+    <table class="table table-borderless">
+        <tr valign="center">
+            <td width="50%">
+                <h3><b>Contact Information</b></h3>
+                &emsp;<b>Phone Number:  </b>{{ student.phone_number }} <!-- Applicant's Number -->
+                <br>
+                &emsp;<b>Email:  </b>{{ student.email }} <!-- Applicant's email -->
+            </td>
+            <td width="50%">
+                <h3><b>Education</b></h3>
+                &emsp;<b>Major:  </b>{{ student.major }} <!-- Applicant's Major -->
+                <br>
+                &emsp;<b>GPA:  </b>{{ student.gpa }} <!-- Applicant's GPA -->
+                <br>
+                &emsp;<b>Graduation Date:  </b>{{ moment(student.graduation_date).format('L') }} <!-- Applicant's Grad Date -->
+                <br>
+            </td>
+        </tr>
+    </table>
 
-    <p>
-        <p><b>Education:</b></p>
-        <b>Major:  </b>{{ student.major }} <!-- Applicant's Major -->
-        <br>
-        <b>GPA:  </b>{{ student.gpa }} <!-- Applicant's GPA -->
-        <br>
-        <b>Graduation Date:  </b>{{ moment(student.graduation_date).format('L') }} <!-- Applicant's Grad Date -->
-        <br>
-    </p>
+    <table class="table table-borderless">
+        <tr valign="center">
+            <td width="100%">
+                <h3><b>Technical Electives</b></h3>
 
-    
+                {% for elective in student.technical_electives %}
+                    {% include '_tech_elective.html' %} 
+                {% endfor %}
+            </td>
+        </tr>
+        <tr valign="center">
+            <td width="100%">
+                <h3><b>Research Experience</b></h3>
+
+                {% for experience in student.research_experience %}
+                    {% include '_prior_experience.html' %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr valign="center">
+            <td width="100%">
+                <h3><b>Application</b></h3>
+
+                &emsp;<b>Reference: </b> {{ application.ref_name }}
+                <br>
+                &emsp;<b>Reference Email: </b> <a href="mailto:{{ application.ref_email }}">{{ application.ref_email }}</a>
+                <br><br>
+                &emsp;<b>Reason for applying: </b> {{ application.description }}
+                <br>
+
+            </td>
+        </tr>
+    </table>
+
+    {% if form %}
+    <table class="table table-borderless">
+        <tr valign="center">
+            <td= width="100%">
+
+                <form action="" method="post">
+
+                    {{ form.hidden_tag() }}
+                    <h3><b>Update Status</b></h3>
+
+                    <h4>{{ form.statuses }}</h4>
+                    {{ form.submit(class='btn btn-success') }}
+                </form>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
 
     <br>
     <a href="{{ url_for('routes.view_applicants') }}" class ="button"> Return to Applicants page</a>
+
+    <br><br><br><br>
 </body>
+
+{% else %}
+<p>
+    applicant_info form could not be rendered.
+</p>
+{% endif %}
+
 {% endblock %}

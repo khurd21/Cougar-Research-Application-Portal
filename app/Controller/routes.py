@@ -14,6 +14,7 @@ from app.Controller.application_forms import ApplicationForm
 from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm
 
 import app.Model.user_models as user_models
+import app.Controller.status_form as status_form
 from datetime import datetime
 
 bp_routes = Blueprint('routes', __name__)
@@ -57,16 +58,29 @@ def view_applicants():
     return render_template('faculty_positions.html', positions=positions)
 
 
-@bp_routes.route('/student/<student_id>', methods=['GET'])
+@bp_routes.route('/student/<student_id>/<pos_id>', methods=['GET', 'POST'])
 @login_required
-def display_applicant_info(student_id):
+def display_applicant_info(student_id, pos_id):
     if not current_user.is_faculty():
         flash('Access Denied: not logged in as Faculty')
         return redirect(url_for('routes.index'))
     
     student = User.query.filter_by(id=int(student_id)).first()
-    
-    return render_template('applicant_info.html', student=student)
+    position = Position.query.filter_by(id=int(pos_id)).first()
+    application = None
+    for app in student.application_forms:
+        if app.position_id == int(pos_id):
+            application = app
+
+    form = status_form.UpdateStatusForm()
+    if form.validate_on_submit():
+        application.status_id = form.statuses.data.id
+        db.session.commit()
+
+    return render_template('applicant_info.html',
+            student=student, position=position,
+            application=application, form=form
+            )
 
 
 @bp_routes.route('/apply/<pos_id>', methods=['GET', 'POST'])
