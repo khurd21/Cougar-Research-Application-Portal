@@ -79,17 +79,33 @@ class Position(db.Model):
         return f'<Position id: {self.id} title: {self.title} faculty_id: {self.faculty_id}>'
 
 
+class Status(db.Model):
+
+    id          = db.Column(db.Integer, primary_key=True)
+    status      = db.Column(db.String(8))
+    applications= db.Column(db.Integer, db.ForeignKey('application.id'), nullable=True)
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+    def __repr__(self):
+        return f'<Status id: {self.id} status: {self.status}>'
+
 
 
 class Application(db.Model):
 
-    id         = db.Column(db.Integer, primary_key=True)
-    position_id= db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    student_name = db.Column(db.String(32), nullable=False)
-    description= db.Column(db.String(256), nullable=False)
-    ref_name   = db.Column(db.String(32), nullable=False)
-    ref_email  = db.Column(db.String(64), nullable=False)
+    id          = db.Column(db.Integer, primary_key=True)
+    position_id = db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
+    student_id  = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    student_name= db.Column(db.String(32), nullable=False)
+    description = db.Column(db.String(256), nullable=False)
+    ref_name    = db.Column(db.String(32), nullable=False)
+    ref_email   = db.Column(db.String(64), nullable=False)
+    status_id   = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False) 
 
 
     def save_to_db(self):
@@ -99,3 +115,22 @@ class Application(db.Model):
     
     def __repr__(self):
         return f'<Application id: {self.id} pos_id: {self.position_id} stu_id: {self.student_id} description: {self.description[:16]}>'
+
+
+## TODO: When students view their applied positions, display to them the deleted positions from deleted_positions association
+##       from Student Model. Delete after displaying
+class DeletedPosition(db.Model):
+
+    id              = db.Column(db.Integer, primary_key=True)
+    student_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    position_title  = db.Column(db.String(32))
+    last_status     = db.Column(db.String(8))
+
+    
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    
+    def __repr__(self):
+        return f'<DeletedPosition id: {self.id} last_status: {self.last_status} pos_title: {self.position_title[:5]}>'
