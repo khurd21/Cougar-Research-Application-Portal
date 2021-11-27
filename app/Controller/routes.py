@@ -11,7 +11,7 @@ from app import db
 from flask_login import current_user, login_user, logout_user, login_required
 from app.Controller.position_forms import CreatePositionForm
 from app.Controller.application_forms import ApplicationForm
-from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm
+from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm, EditPositionForm
 
 import app.Model.user_models as user_models
 import app.Controller.status_form as status_form
@@ -244,7 +244,30 @@ def create_position():
 
     return render_template('create.html', form=pform)
 
+@bp_routes.route('/edit_position/<pos_id>', methods=['GET', 'POST'])
+@login_required
+def edit_position(pos_id):
 
+    post = Position.query.filter_by(id=int(pos_id)).first()
+
+    if post is None:
+        flash('Position not found.')
+        return redirect(url_for('routes.index'))
+        
+    if current_user.id != post.faculty_id:
+        flash('Access Denied: You must be logged in as this position\'s faculty member to edit it.')
+        return redirect(url_for('routes.index'))
+
+    eForm = EditPositionForm(obj=post)
+    
+    if eForm.validate_on_submit():
+        eForm.populate_obj(post)
+        db.session.commit()
+        
+        flash("Position information has been edited.")
+        return redirect(url_for('routes.index'))
+        
+    return render_template('edit_position.html', form=eForm)
 
 @bp_routes.route('/delete_position/<pos_id>', methods=['POST', 'DELETE', 'GET'])
 @login_required

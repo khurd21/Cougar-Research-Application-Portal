@@ -45,24 +45,6 @@ class EditForm(FlaskForm):
                                                             widget=ListWidget(prefix_label=False),
                                                             option_widget=CheckboxInput()
                                                             )
-    
-    
-    
-    def validate_username(self, username):
-        if username.data != current_user.username:
-            user = user_models.User.query.filter_by(username=username.data).first()
-            if user:
-                raise ValidationError('Username already exists. Please choose a different username.')
-    
-    def validate_wsu_id(self, wsu_id):
-        if wsu_id.data != current_user.wsu_id:
-            user = user_models.User.query.filter_by(wsu_id=wsu_id.data).first()
-            if user:
-                raise ValidationError('WSU ID already exists. Please choose a different WSU ID.')
-    
-    def validate_email(self, email):
-        if email.data != current_user.email:
-            user = user_models.User.query.filter_by(email=email.data).first()
 
 
     submit = wtforms.SubmitField('Submit')
@@ -139,3 +121,23 @@ class EditResearchExperienceForm(FlaskForm):
         if field.data < self.start_date.data:
             raise ValidationError('End date must be after start date.')
 
+class EditPositionForm(FlaskForm):
+    title = wtforms.StringField('Title', validators=[validators.DataRequired(), validators.Length(max=32)])
+    description = wtforms.TextAreaField('Description', validators=[validators.DataRequired(), validators.Length(max=1000)])
+    start_date = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
+    end_date = wtforms.DateTimeField('End Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
+    time_commitment = wtforms.IntegerField('Time Commitment', validators=[validators.DataRequired(), validators.NumberRange(min=1,max=100)])
+    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=256)])
+
+    research_fields = fields.QuerySelectMultipleField('Research Fields',
+                                                            query_factory=lambda: ResearchField.query.all(),
+                                                            get_label=lambda x: x.name,
+                                                            widget=ListWidget(prefix_label=False),
+                                                            option_widget=CheckboxInput()
+                                                            )
+    
+    submit = wtforms.SubmitField('Submit')
+
+    def validate_end_date(self, field):
+        if field.data < self.start_date.data:
+            raise ValidationError('End date must be after start date.')

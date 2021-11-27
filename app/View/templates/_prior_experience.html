@@ -6,7 +6,9 @@
         <td width="15%"><b>{{ experience.company }}</b></td>
         <td width=50%>{{ experience.description }}</td>
         <td width=10%>{{ moment(experience.start_date).format('L') }} - {{ moment(experience.end_date).format('L') }}</td> 
+      
         {% if not current_user.is_faculty() %}
+      
         <td width=10%>
             <br>
             <a href="" class ="btn btn-warning btn-block">Edit</a> <!-- Route to Edit this specific Prior Experience -->
