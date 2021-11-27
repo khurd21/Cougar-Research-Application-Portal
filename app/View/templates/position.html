@@ -39,7 +39,7 @@
     {% if current_user.id == position.faculty_id %}
          <!-- the action would be the url_for the "edit application" route with userid-->
 		 <td width=10%>
-            <a href="" class ="btn btn-warning">Edit</a>
+            <a href="{{ url_for('routes.edit_position', pos_id = position.id) }}" class ="btn btn-warning">Edit</a>
 			<br>
             <br>
             <a href="" class ="btn btn-danger">Delete</a>

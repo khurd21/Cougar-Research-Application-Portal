@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+
+{% if form %}
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div>
+            <br>
+            {{ form.title.label }}<br>
+            {{ form.title }}<br> 
+
+            {% for error in form.title.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.description.label }}<br>
+            {{ form.description(class="formbody") }}<br> 
+
+            {% for error in form.description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.required_qualifications.label }}<br>
+            {{ form.required_qualifications(class="formbody") }}<br> 
+
+            {% for error in form.required_qualifications.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.start_date.label }}<br>
+            {{ form.start_date }}<br> 
+
+            {% for error in form.start_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.end_date.label }}<br>
+            {{ form.end_date }}<br> 
+
+            {% for error in form.end_date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.time_commitment.label }}<br>
+            {{ form.time_commitment }}<br> 
+
+            {% for error in form.time_commitment.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </div>
+
+        <p class="formselect">{{form.research_fields.label}}
+        {{form.research_fields }}
+        </p>
+
+        {{ form.submit(class="btn btn-success") }}<br>
+
+    </form>
+
+{% else %}
+    <p>Edit Position Form could not be rendered</p>
+{% endif %}
+
+<br><br><br><br>
+
+{% endblock %}
