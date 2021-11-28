@@ -47,6 +47,16 @@ def display_position(pos_id):
     return render_template('position.html', position=position, user=user)
 
 
+@bp_routes.route('/view_applied_positions', methods=['GET'])
+@login_required
+def view_applied_positions():
+    if current_user.is_faculty():
+        flash('Access Denied: not logged in as Student')
+        return redirect(url_for('routes.index'))
+    
+    return render_template('student_positions.html', positions=current_user.applied_positions)
+
+
 @bp_routes.route('/view_applicants', methods=['GET'])
 @login_required
 def view_applicants():

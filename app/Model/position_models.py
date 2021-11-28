@@ -65,9 +65,18 @@ class Position(db.Model):
 
     def get_students(self):
         return self.students
-    
+
+
     def get_research_fields(self):
         return self.research_fields
+
+
+    def get_application_for_student(self, student_id):
+        if user_models.Student.query.filter_by(id=student_id).first() in self.students:
+            for application in self.application_forms:
+                if application.student_id == student_id:
+                    return application
+        return None
 
 
     def save_to_db(self):
@@ -112,7 +121,15 @@ class Application(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    
+
+    def get_status(self):
+        return Status.query.filter_by(id=self.status_id).first()
+
+
+    def get_position(self):
+        return Position.query.filter_by(id=self.position_id)
+
+
     def __repr__(self):
         return f'<Application id: {self.id} pos_id: {self.position_id} stu_id: {self.student_id} description: {self.description[:16]}>'
 

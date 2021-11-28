@@ -1,0 +1,16 @@
+<!--
+    Page in which a Student can view the positions they have applied for.
+-->
+
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Your Applied Positions</h1>
+    {% if positions %}
+        {% for position in positions %}
+            {% include '_position.html' %}
+        {% endfor %}
+    {% else %}
+        <p>You currently have not applied for any positions.</p>
+    {% endif %}
+{% endblock %}

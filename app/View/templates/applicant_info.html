@@ -27,6 +27,24 @@
                 <br>
             </td>
         </tr>
+        <tr valign="center">
+            <td width="50%">
+                <h3><b>Programming Languages</b></h3>
+                {% for language in student.programming_languages %}
+                    <p>
+                        &emsp;{{language.language}}
+                    </p>
+                {% endfor %}
+            </td>
+            <td width="50%">
+                <h3><b>Research Topics</b></h3>
+                {% for experience in student.research_experience %}
+                    <p>
+                        &emsp;{{experience.title}}
+                    </p>
+                {% endfor %}
+            </td>
+        </tr>
     </table>
 
     <table class="table table-borderless">
