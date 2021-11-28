@@ -4,7 +4,8 @@
 {% if student and position and application %}
 <h1>{{ student.first_name }} {{ student.last_name }}</h1> <!-- Applicant's Name -->
 <p>
-    <b>Application For:</b> {{ position.title }}
+    <b>Application For:</b> {{ position.title }}<br>
+    <b>Current Status:</b> {{ status.status }}
 </p>
 <hr>
 <body>

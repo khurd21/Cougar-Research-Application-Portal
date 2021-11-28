@@ -71,15 +71,18 @@ def display_applicant_info(student_id, pos_id):
     for app in student.application_forms:
         if app.position_id == int(pos_id):
             application = app
+    status = position_models.Status.query.filter_by(id=int(application.status_id)).first()
 
     form = status_form.UpdateStatusForm()
     if form.validate_on_submit():
         application.status_id = form.statuses.data.id
+        status = position_models.Status.query.filter_by(id=int(form.statuses.data.id)).first()
         db.session.commit()
 
     return render_template('applicant_info.html',
             student=student, position=position,
-            application=application, form=form
+            application=application, form=form,
+            status=status
             )
 
 
