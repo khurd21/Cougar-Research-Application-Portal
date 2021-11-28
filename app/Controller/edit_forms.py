@@ -127,7 +127,7 @@ class EditPositionForm(FlaskForm):
     start_date = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
     end_date = wtforms.DateTimeField('End Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
     time_commitment = wtforms.IntegerField('Time Commitment', validators=[validators.DataRequired(), validators.NumberRange(min=1,max=100)])
-    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=256)])
+    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=512)])
 
     research_fields = fields.QuerySelectMultipleField('Research Fields',
                                                             query_factory=lambda: ResearchField.query.all(),

@@ -51,7 +51,7 @@ class Position(db.Model):
     application_forms= db.relationship('Application', backref='position', lazy=True)
 
 
-    required_qualifications = db.Column(db.String(256))
+    required_qualifications = db.Column(db.String(512))
 
     research_fields = db.relationship('ResearchField',
                         secondary=tables.fields, lazy='subquery',
