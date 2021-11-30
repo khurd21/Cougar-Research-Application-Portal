@@ -305,3 +305,53 @@ def delete_position(pos_id):
 
     flash('Post deleted.')
     return redirect(url_for('routes.index'))
+
+@bp_routes.route('/edit_research_experience/<rexp_id>', methods=['GET', 'POST'])
+@login_required
+def edit_research_experience(rexp_id):
+
+    experience = ResearchExperience.query.filter_by(id=int(rexp_id)).first()
+
+    if experience is None:
+        flash('Research Experience not found.')
+        return redirect(url_for('routes.index'))
+        
+    if current_user.id != experience.student_id:
+        flash('Access Denied: You must be logged in as this Research Experience\'s student user to edit it.')
+        return redirect(url_for('routes.index'))
+
+    eForm = EditResearchExperienceForm(obj=experience)
+    
+    if eForm.validate_on_submit():
+        eForm.populate_obj(experience)
+        db.session.commit()
+        
+        flash("Research Experience information has been edited.")
+        return redirect(url_for('routes.research_experience'))
+        
+    return render_template('edit_research_experience.html', form=eForm)
+
+@bp_routes.route('/edit_technical_elective/<elect_id>', methods=['GET', 'POST'])
+@login_required
+def edit_technical_elective(elect_id):
+
+    elective = TechnicalElective.query.filter_by(id=int(elect_id)).first()
+
+    if elective is None: 
+        flash('Technical Elective not found.')
+        return redirect(url_for('routes.index'))
+        
+    if current_user.id != elective.student_id:
+        flash('Access Denied: You must be logged in as this Technical Elective\'s student user to edit it.')
+        return redirect(url_for('routes.index'))
+
+    eForm = EditTechnicalElectiveForm(obj=elective)
+    
+    if eForm.validate_on_submit():
+        eForm.populate_obj(elective)
+        db.session.commit()
+        
+        flash("Technical Elective information has been edited.")
+        return redirect(url_for('routes.technical_electives'))
+        
+    return render_template('edit_tech_elective.html', form=eForm)
