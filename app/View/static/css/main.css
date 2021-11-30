@@ -37,9 +37,24 @@
     padding: 5px;
 }
 
+.subformtitle {
+    width: 35%;
+    font-style: Monospace;
+    margin: 0px;
+    padding: 5px;
+}
+
 .formbody {
     width: 90%;
     height: 100px;
+    font-style: Monospace;
+    margin: 0px;
+    padding: 5px;
+}
+
+.bigformbody {
+    width: 90%;
+    height: 175px;
     font-style: Monospace;
     margin: 0px;
     padding: 5px;

@@ -10,7 +10,7 @@
             </td>
             {% if not current_user.is_faculty() %}
             <td width=30%>
-                <a href="" class ="btn btn-warning btn-block">Edit</a> <!-- Route to Edit this specific Technical Elective-->
+                <a href="{{ url_for('routes.edit_technical_elective', elect_id = elective.id) }}" class ="btn btn-warning btn-block">Edit</a> <!-- Route to Edit this specific Technical Elective-->
                 <a href="" class ="btn btn-danger btn-block">Delete</a><br> <!-- Route to Delete this specific Technical Elective -->
             </td>
             {% endif %}

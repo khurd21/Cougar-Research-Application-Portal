@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+
+{% if form %}
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div>
+            <br>
+            {{ form.course_prefix.label }}<br>
+            {{ form.course_prefix }}<br> 
+
+            {% for error in form.course_prefix.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.course_num.label }}<br>
+            {{ form.course_num }}<br> 
+
+            {% for error in form.course_num.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.course_title.label }}<br>
+            {{ form.course_title(class = "subformtitle") }}<br> 
+
+            {% for error in form.course_title.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+            {{ form.course_description.label }}<br>
+            {{ form.course_description(class = "bigformbody") }}<br> 
+
+            {% for error in form.course_description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+
+        {{ form.submit(class="btn btn-success") }}<br>
+    </form>
+{% else %}
+    <p>Edit Technical Elective Form could not be rendered</p>
+{% endif %}
+
+<br><br><br><br>
+
+{% endblock %}
