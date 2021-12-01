@@ -8,7 +8,7 @@ from flask_login import LoginManager
 
 from config import Config
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={"autoflush": False})
 moment = Moment()
 bootstrap = Bootstrap()
 login = LoginManager()

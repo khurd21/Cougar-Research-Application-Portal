@@ -77,16 +77,19 @@ def display_applicant_info(student_id, pos_id):
     
     student = User.query.filter_by(id=int(student_id)).first()
     position = Position.query.filter_by(id=int(pos_id)).first()
-    application = None
-    for app in student.application_forms:
-        if app.position_id == int(pos_id):
-            application = app
+    application = Application.query.filter_by(student_id=student.id).filter_by(position_id=position.id).first()
+
+    if application is None:
+        flash('Application does not exist.')
+        return redirect(url_for('routes.view_applicants'))
+
     status = position_models.Status.query.filter_by(id=int(application.status_id)).first()
 
     form = status_form.UpdateStatusForm()
     if form.validate_on_submit():
         application.status_id = form.statuses.data.id
         status = position_models.Status.query.filter_by(id=int(form.statuses.data.id)).first()
+        flash(f'Status Updated: {status.status}')
         db.session.commit()
 
     return render_template('applicant_info.html',
@@ -126,6 +129,7 @@ def apply(pos_id):
         application.save_to_db()
         current_user.application_forms.append(application)
         current_user.applied_positions.append(position)
+        position.application_forms.append(application)
         db.session.commit()
         flash('Application successfully submitted.')
         return redirect(url_for('routes.index'))
@@ -318,6 +322,45 @@ def delete_position(pos_id):
 
     flash('Post deleted.')
     return redirect(url_for('routes.index'))
+
+
+@bp_routes.route('/delete_application/<app_id>', methods=['POST','DELETE'])
+@login_required
+def delete_application(app_id):
+    
+    if current_user.is_faculty():
+        flash('Access Denied: Faculty cannot delete a student application.')
+        return redirect(url_for('routes.index'))
+    
+    application = Application.query.filter_by(id=int(app_id)).filter_by(student_id=current_user.id).first()
+    if not application:
+        flash('Access Denied: Student does not have access to this application.')
+        return redirect(url_for('routes.index'))
+   
+
+    position = position_models.Position.query.filter_by(id=application.position_id).first()
+    status   = position_models.Status.query.filter_by(id=application.status_id).first()
+    faculty  = user_models.Faculty.query.filter_by(id=position.faculty_id).first()
+
+    deleted_application = position_models.DeletedApplication(faculty_id=position.faculty_id,
+                                                            student_name=f'{current_user.first_name} {current_user.last_name}',
+                                                            position_name=position.title,
+                                                            )
+
+    deleted_application.save_to_db()
+    faculty.deleted_applications.append(deleted_application)
+
+    current_user.applied_positions.remove(position)
+    current_user.application_forms.remove(application)
+    position.application_forms.remove(application)
+    #faculty.posted_positions.remove(application)
+
+    db.session.delete(application)
+    db.session.commit()
+
+    flash('Application deleted.')
+    return redirect(url_for('routes.index'))
+
 
 @bp_routes.route('/edit_research_experience/<rexp_id>', methods=['GET', 'POST'])
 @login_required

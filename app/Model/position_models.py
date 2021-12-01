@@ -1,7 +1,7 @@
 from app import login, db
 from datetime import datetime
 from app.Model import user_models, tables
-
+from functools import reduce
 
 
 class ResearchField(db.Model):
@@ -71,12 +71,10 @@ class Position(db.Model):
         return self.research_fields
 
 
-    def get_application_for_student(self, student_id):
-        if user_models.Student.query.filter_by(id=student_id).first() in self.students:
-            for application in self.application_forms:
-                if application.student_id == student_id:
-                    return application
-        return None
+    def get_application_for_student(self,position_id, student_id):
+        position = Position.query.filter_by(id=position_id).first()
+        application = Application.query.filter_by(position_id=position.id).filter_by(student_id=student_id).first()
+        return application
 
 
     def save_to_db(self):
@@ -151,3 +149,20 @@ class DeletedPosition(db.Model):
     
     def __repr__(self):
         return f'<DeletedPosition id: {self.id} last_status: {self.last_status} pos_title: {self.position_title[:5]}>'
+
+
+class DeletedApplication(db.Model):
+
+    id              = db.Column(db.Integer, primary_key=True)
+    faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    student_name    = db.Column(db.String(32), nullable=False)
+    position_name   = db.Column(db.String(64), nullable=False)
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+    def __repr__(self):
+        return f'<DeletedApplication id: {self.id} faculty_id: {self.faculty_id} student_name: {self.student_name} position_name: {self.position_name}>'

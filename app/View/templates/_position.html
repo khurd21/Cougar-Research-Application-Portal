@@ -1,9 +1,18 @@
 <!--  -->
+
+
 <table class = "table table-hover">
     <tr valign="center">   
         <td width="20%"><b>{{ position.title }}</b></td>
         <td width="10%">
             <a href="{{ url_for('routes.display_position',pos_id = position.id)}}" class ="btn btn-info btn-block">View Info</a>
+			{% if not current_user.is_faculty() %}
+			{% set application = position.get_application_for_student(position.id, current_user.id) %}
+			<form action="{{ url_for('routes.delete_application', app_id=application.id) }}" method="POST">
+					<input type="submit" value="Delete">
+				</form>
+			{% endif %}
+
         </td>
 
         <td width=70%>
@@ -14,7 +23,7 @@
                 {% if students %}
                     {% for student in students %}
                     <span>
-                        <a href="{{ url_for('routes.display_applicant_info', student_id=student.id, pos_id=position.id)}}">
+                        <a href="{{ url_for('routes.display_applicant_info', student_id=student.id, pos_id=position.id) }}">
                             <i class="fa fa-angle-right"></i> 
                             {{ student.first_name }} {{ student.last_name }}
                         </a>
@@ -24,21 +33,17 @@
                 {% else %}
                     <span><i class="fa fa-angle-right"></i> No students have applied for this position<br></span>
                 {% endif %}
-                {% endwith %}
+				{% endwith %}
 
             {% else %}
                 <p>
                     <b>Current Status:</b>
-                    {% with application = position.get_application_for_student(current_user.id) %}
-
                     {% if application %}
                         {{ application.get_status().status }}
                     {% else %}
                         <span><i class="fa fa-angle-right"></i>Error. No status found.<br></span>
                     {% endif %}
                 </p>
-
-                {% endwith %}
             {% endif %}
         </td> 
     </tr>
