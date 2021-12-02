@@ -6,7 +6,7 @@ from app.Model import user_models
 from wtforms.validators import ValidationError
 from wtforms.widgets import CheckboxInput, ListWidget
 import phonenumbers as phone
-
+ 
 from flask_login import current_user
 
 import wtforms
@@ -88,46 +88,13 @@ class EditForm(FlaskForm):
             if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
 
-
-
-class EditTechnicalElectiveForm(FlaskForm):
-
-    course_title    = wtforms.StringField('Course Title', validators=[validators.DataRequired()])
-    course_prefix   = wtforms.StringField('Course Prefix', validators=[validators.DataRequired()])
-    course_num      = wtforms.StringField('Course Number', validators=[validators.DataRequired()])
-    course_description = wtforms.TextAreaField('Course Description', validators=[validators.DataRequired()])
-    submit          = wtforms.SubmitField('Submit')
-
-
-    def validate_course_num(self, field):
-        try:
-            data = int(field.data)
-        except ValueError:
-            raise ValidationError('Course number must be an integer.')
-
-
-
-class EditResearchExperienceForm(FlaskForm):
-
-    title = wtforms.StringField('Title', validators=[validators.DataRequired()])
-    company = wtforms.StringField('Organization', validators=[validators.DataRequired()])
-    start_date = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
-    end_date = wtforms.DateTimeField('End Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
-    description = wtforms.TextAreaField('Description', validators=[validators.DataRequired()])
-    submit = wtforms.SubmitField('Submit')
-
-
-    def validate_end_date(self, field):
-        if field.data < self.start_date.data:
-            raise ValidationError('End date must be after start date.')
-
 class EditPositionForm(FlaskForm):
     title = wtforms.StringField('Title', validators=[validators.DataRequired(), validators.Length(max=32)])
     description = wtforms.TextAreaField('Description', validators=[validators.DataRequired(), validators.Length(max=1000)])
     start_date = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
     end_date = wtforms.DateTimeField('End Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
     time_commitment = wtforms.IntegerField('Time Commitment', validators=[validators.DataRequired(), validators.NumberRange(min=1,max=100)])
-    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=256)])
+    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=512)])
 
     research_fields = fields.QuerySelectMultipleField('Research Fields',
                                                             query_factory=lambda: ResearchField.query.all(),
@@ -136,6 +103,29 @@ class EditPositionForm(FlaskForm):
                                                             option_widget=CheckboxInput()
                                                             )
     
+    submit = wtforms.SubmitField('Submit')
+
+    def validate_end_date(self, field):
+        if field.data < self.start_date.data:
+            raise ValidationError('End date must be after start date.')
+
+class EditTechnicalElectiveForm(FlaskForm):
+
+    course_prefix      = wtforms.StringField('Course Prefix', validators=[validators.DataRequired(), validators.Length(max=8)])
+    course_num         = wtforms.IntegerField('Course Number', validators=[validators.DataRequired()])
+    course_title       = wtforms.StringField('Course Title', validators=[validators.DataRequired(), validators.Length(max=32)])
+    course_description = wtforms.TextAreaField('Course Description', validators=[validators.DataRequired(), validators.Length(max=512)])
+
+    submit = wtforms.SubmitField('Submit')
+
+class EditResearchExperienceForm(FlaskForm):
+
+    title        = wtforms.StringField('Title', validators=[validators.DataRequired(), validators.Length(max=64)])
+    company      = wtforms.StringField('Organization', validators=[validators.DataRequired(), validators.Length(max=32)])
+    description  = wtforms.TextAreaField('Description', validators=[validators.DataRequired(), validators.Length(max=512)])
+    start_date   = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
+    end_date     = wtforms.DateTimeField('End Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
+
     submit = wtforms.SubmitField('Submit')
 
     def validate_end_date(self, field):

@@ -11,7 +11,6 @@ from datetime import datetime
 
 @login.user_loader
 def user_loader(id):
-    print(f"id:{id}")
     return User.query.filter_by(id = int(id)).first()
 
 
@@ -116,3 +115,9 @@ class Student(User):
     __mapper_args__ = {
             'polymorphic_identity': 'student'
             }
+
+    def get_position_for_application(self, app_id):
+        application = position_models.Application.query.filter_by(id=int(app_id)).first()
+        if application in self.application_forms:
+            return position_models.Position.query.filter_by(id=application.position_id).first()
+        return None

@@ -327,6 +327,7 @@ app1.status_id = pending.id
 app1.save_to_db()
 s1.application_forms.append(app1)
 s1.applied_positions.append(p1)
+p1.application_forms.append(app1)
 db.session.commit()
 
 
@@ -341,6 +342,7 @@ app2.status_id = pending.id
 app2.save_to_db()
 s2.application_forms.append(app2)
 s2.applied_positions.append(p2)
+p2.application_forms.append(app2)
 db.session.commit()
 
 
@@ -355,6 +357,7 @@ app3.status_id = pending.id
 app3.save_to_db()
 s1.application_forms.append(app3)
 s1.applied_positions.append(p3)
+p3.application_forms.append(app3)
 db.session.commit()
 
 
