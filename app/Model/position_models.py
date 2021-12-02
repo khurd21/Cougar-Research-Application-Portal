@@ -149,20 +149,3 @@ class DeletedPosition(db.Model):
     
     def __repr__(self):
         return f'<DeletedPosition id: {self.id} last_status: {self.last_status} pos_title: {self.position_title[:5]}>'
-
-
-class DeletedApplication(db.Model):
-
-    id              = db.Column(db.Integer, primary_key=True)
-    faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    student_name    = db.Column(db.String(32), nullable=False)
-    position_name   = db.Column(db.String(64), nullable=False)
-
-
-    def save_to_db(self):
-        db.session.add(self)
-        db.session.commit()
-
-
-    def __repr__(self):
-        return f'<DeletedApplication id: {self.id} faculty_id: {self.faculty_id} student_name: {self.student_name} position_name: {self.position_name}>'

@@ -78,7 +78,6 @@ class User(db.Model, UserMixin):
 class Faculty(User):
 
     posted_positions = db.relationship('Position', backref='faculty_info', lazy=True)
-    deleted_applications = db.relationship('DeletedApplication', lazy=True)
 
     __mapper_args__ = {
             'polymorphic_identity': 'faculty'

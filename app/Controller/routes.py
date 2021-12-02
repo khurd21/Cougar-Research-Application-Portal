@@ -14,6 +14,7 @@ from app.Controller.application_forms import ApplicationForm
 from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm, EditPositionForm
 
 import app.Model.user_models as user_models
+import app.Model.experience_models as experience_models
 import app.Controller.status_form as status_form
 from datetime import datetime
 
@@ -110,7 +111,8 @@ def apply(pos_id):
     if position is None:
         flash('Position not found')
         return redirect(url_for('routes.index'))
-
+    faculty = user_models.User.query.filter_by(id=position.faculty_id).first()
+    
     application = Application.query.filter_by(position_id=int(pos_id), student_id=current_user.id).first() 
     if application is not None:
         flash(f'You have already applied for this position: {position.title}')
@@ -118,7 +120,6 @@ def apply(pos_id):
 
 
     appForm = ApplicationForm()
-
     if appForm.validate_on_submit():
         pending     = position_models.Status.query.filter_by(status='Pending').first()
         application = Application(description=appForm.description.data, ref_name=appForm.ref_name.data,
@@ -134,7 +135,7 @@ def apply(pos_id):
         flash('Application successfully submitted.')
         return redirect(url_for('routes.index'))
     
-    return render_template('apply.html', form=appForm, pos_id=pos_id)
+    return render_template('apply.html', form=appForm, pos_id=pos_id, position=position, user=faculty)
 
 
 @bp_routes.route('/edit', methods=['GET', 'POST'])
@@ -342,24 +343,55 @@ def delete_application(app_id):
     status   = position_models.Status.query.filter_by(id=application.status_id).first()
     faculty  = user_models.Faculty.query.filter_by(id=position.faculty_id).first()
 
-    deleted_application = position_models.DeletedApplication(faculty_id=position.faculty_id,
-                                                            student_name=f'{current_user.first_name} {current_user.last_name}',
-                                                            position_name=position.title,
-                                                            )
-
-    deleted_application.save_to_db()
-    faculty.deleted_applications.append(deleted_application)
-
     current_user.applied_positions.remove(position)
     current_user.application_forms.remove(application)
     position.application_forms.remove(application)
-    #faculty.posted_positions.remove(application)
 
     db.session.delete(application)
     db.session.commit()
 
     flash('Application deleted.')
     return redirect(url_for('routes.index'))
+
+
+@bp_routes.route('/delete_prior_experience/<exp_id>', methods=['POST', 'DELETE'])
+@login_required
+def delete_prior_experience(exp_id):
+    
+    if current_user.is_faculty():
+        flash('Access Denied: Must be logged in as student')
+        return redirect(url_for('routes.index'))
+
+    prior_experience = experience_models.ResearchExperience.query.filter_by(id=exp_id).first()
+    if not prior_experience in current_user.research_experience:
+        flash('Access Denied: You don\'t have permission to modify this research experience.')
+        return redirect(url_for('routes.research_experience'))
+
+    current_user.research_experience.remove(prior_experience)
+    db.session.delete(prior_experience)
+    db.session.commit()
+    flash(f'Research Experience Deleted: {prior_experience.title}')
+    return redirect(url_for('routes.research_experience'))
+
+
+@bp_routes.route('/delete_technical_elective/<tech_id>', methods=['POST', 'DELETE'])
+@login_required
+def delete_technical_elective(tech_id):
+
+    if current_user.is_faculty():
+        flash('Access Denied: Must be logged in as a student')
+        return redirect(url_for('routes.index'))
+
+    technical_elective = experience_models.TechnicalElective.query.filter_by(id=tech_id).first()
+    if not technical_elective in current_user.technical_electives:
+        flash('Access Denied: You dont\'t have permission to modify this technical elective.')
+        return redirect(url_for('routes.technical_electives'))
+
+    current_user.technical_electives.remove(technical_elective)
+    db.session.delete(technical_elective)
+    db.session.commit()
+    flash(f'Technical Elective Deleted: {technical_elective.course_title}')
+    return redirect(url_for('routes.technical_electives'))
 
 
 @bp_routes.route('/edit_research_experience/<rexp_id>', methods=['GET', 'POST'])
@@ -386,6 +418,7 @@ def edit_research_experience(rexp_id):
         return redirect(url_for('routes.research_experience'))
         
     return render_template('edit_research_experience.html', form=eForm)
+
 
 @bp_routes.route('/edit_technical_elective/<elect_id>', methods=['GET', 'POST'])
 @login_required

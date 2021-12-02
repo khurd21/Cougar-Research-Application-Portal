@@ -111,8 +111,8 @@ class EditPositionForm(FlaskForm):
 
 class EditTechnicalElectiveForm(FlaskForm):
 
-    course_num         = wtforms.IntegerField('Course Number', validators=[validators.DataRequired()])
     course_prefix      = wtforms.StringField('Course Prefix', validators=[validators.DataRequired(), validators.Length(max=8)])
+    course_num         = wtforms.IntegerField('Course Number', validators=[validators.DataRequired()])
     course_title       = wtforms.StringField('Course Title', validators=[validators.DataRequired(), validators.Length(max=32)])
     course_description = wtforms.TextAreaField('Course Description', validators=[validators.DataRequired(), validators.Length(max=512)])
 
