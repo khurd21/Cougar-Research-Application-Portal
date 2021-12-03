@@ -124,7 +124,6 @@ fields      = position_models.ResearchField.query.all()
 p1 = position_models.Position(faculty_id=f1.id)
 p1.start_date = datetime.utcnow()
 p1.end_date = datetime.utcnow() + timedelta(days=30)
-p1.faculty_name = f1.first_name
 p1.required_qualifications = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' \
         ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 
@@ -145,7 +144,6 @@ db.session.commit()
 p2 = position_models.Position(faculty_id=f1.id)
 p2.start_date = datetime.utcnow()
 p2.end_date = datetime.utcnow() + timedelta(days=600)
-p2.faculty_name = f1.first_name
 p2.required_qualifications = 'Viverra accumsan in nisl nisi scelerisque. Lorem ipsum dolor sit amet.' \
         ' Placerat duis ultricies lacus sed. Neque egestas congue quisque egestas diam in arcu' \
         ' cursus euismod. Mi bibendum neque egestas congue quisque egestas diam in arcu.' \
@@ -166,7 +164,6 @@ db.session.commit()
 p3 = position_models.Position(faculty_id=f2.id)
 p3.start_date = datetime.utcnow()
 p3.end_date = datetime.utcnow() + timedelta(days=29)
-p3.faculty_name = f2.first_name
 p3.required_qualifications = 'Auctor neque vitae tempus quam. Integer enim neque volutpat' \
         ' ac tincidunt vitae semper. Sed viverra tellus in hac habitasse platea. Semper' \
         ' quis lectus nulla at volutpat diam ut venenatis. Nibh sed pulvinar proin gravida.'

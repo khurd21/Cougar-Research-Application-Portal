@@ -19,35 +19,13 @@ def get_major_choices():
     tuple_majors = [(major.id, major.name) for major in majors]
     return tuple_majors
 
-
 class EditForm(FlaskForm):
-
     username = wtforms.StringField('Username', validators=[validators.DataRequired()])
     wsu_id = wtforms.StringField('WSU ID', validators=[validators.DataRequired(), validators.Length(max=10)])
     first_name = wtforms.StringField('First Name', validators=[validators.DataRequired()])
     last_name = wtforms.StringField('Last Name', validators=[validators.DataRequired()])
     email = wtforms.StringField('Email', validators=[validators.DataRequired(), validators.Email()])
     phone_number = wtforms.StringField('Phone No.', validators=[validators.DataRequired()])
-    major = wtforms.StringField('Major', validators=[validators.DataRequired()])
-    graduation_date = wtforms.DateField('Graduation Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
-    gpa = wtforms.FloatField('Cumulative GPA', validators=[validators.DataRequired(), validators.NumberRange(min=0.0, max=5.0)])
-
-    programming_languages = fields.QuerySelectMultipleField('Programming Languages',
-                                                            query_factory=lambda: ProgrammingLanguage.query.all(),
-                                                            get_label=lambda x: x.language,
-                                                            widget=ListWidget(prefix_label=False),
-                                                            option_widget=CheckboxInput()
-                                                            )
-
-    interested_fields = fields.QuerySelectMultipleField('Research Topics',
-                                                            query_factory=lambda: ResearchField.query.all(),
-                                                            get_label=lambda x: x.name,
-                                                            widget=ListWidget(prefix_label=False),
-                                                            option_widget=CheckboxInput()
-                                                            )
-
-
-    submit = wtforms.SubmitField('Submit')
 
 
     def validate_username(self, field):
@@ -87,8 +65,38 @@ class EditForm(FlaskForm):
             input_number = phone.parse("+1"+field.data)
             if not (phone.is_valid_number(input_number)):
                 raise ValidationError('Invalid phone number.')
+    
+
+class FacultyEditForm(EditForm):
+
+    submit = wtforms.SubmitField('Submit')
+
+
+class StudentEditForm(EditForm):
+
+    major = wtforms.StringField('Major', validators=[validators.DataRequired()])
+    graduation_date = wtforms.DateField('Graduation Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
+    gpa = wtforms.FloatField('Cumulative GPA', validators=[validators.DataRequired(), validators.NumberRange(min=0.0, max=5.0)])
+
+    programming_languages = fields.QuerySelectMultipleField('Programming Languages',
+                                                            query_factory=lambda: ProgrammingLanguage.query.all(),
+                                                            get_label=lambda x: x.language,
+                                                            widget=ListWidget(prefix_label=False),
+                                                            option_widget=CheckboxInput()
+                                                            )
+
+    interested_fields = fields.QuerySelectMultipleField('Research Topics',
+                                                            query_factory=lambda: ResearchField.query.all(),
+                                                            get_label=lambda x: x.name,
+                                                            widget=ListWidget(prefix_label=False),
+                                                            option_widget=CheckboxInput()
+                                                            )
+
+
+    submit = wtforms.SubmitField('Submit')
 
 class EditPositionForm(FlaskForm):
+    
     title = wtforms.StringField('Title', validators=[validators.DataRequired(), validators.Length(max=32)])
     description = wtforms.TextAreaField('Description', validators=[validators.DataRequired(), validators.Length(max=1000)])
     start_date = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
