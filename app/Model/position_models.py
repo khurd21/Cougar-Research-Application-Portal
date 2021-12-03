@@ -1,7 +1,7 @@
 from app import login, db
 from datetime import datetime
 from app.Model import user_models, tables
-
+from functools import reduce
 
 
 class ResearchField(db.Model):
@@ -50,7 +50,7 @@ class Position(db.Model):
     application_forms= db.relationship('Application', backref='position', lazy=True)
 
 
-    required_qualifications = db.Column(db.String(256))
+    required_qualifications = db.Column(db.String(512))
 
     research_fields = db.relationship('ResearchField',
                         secondary=tables.fields, lazy='subquery',
@@ -64,9 +64,16 @@ class Position(db.Model):
 
     def get_students(self):
         return self.students
-    
+
+
     def get_research_fields(self):
         return self.research_fields
+
+
+    def get_application_for_student(self,position_id, student_id):
+        position = Position.query.filter_by(id=position_id).first()
+        application = Application.query.filter_by(position_id=position.id).filter_by(student_id=student_id).first()
+        return application
 
 
     def save_to_db(self):
@@ -111,7 +118,15 @@ class Application(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    
+
+    def get_status(self):
+        return Status.query.filter_by(id=self.status_id).first()
+
+
+    def get_position(self):
+        return Position.query.filter_by(id=self.position_id)
+
+
     def __repr__(self):
         return f'<Application id: {self.id} pos_id: {self.position_id} stu_id: {self.student_id} description: {self.description[:16]}>'
 

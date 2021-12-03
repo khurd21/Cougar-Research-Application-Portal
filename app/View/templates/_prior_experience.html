@@ -13,7 +13,11 @@
             <br>
             <a href="{{ url_for('routes.edit_research_experience', rexp_id = experience.id) }}" class ="btn btn-warning btn-block">Edit</a> <!-- Route to Edit this specific Prior Experience -->
             <br>
-            <a href="" class ="btn btn-danger btn-block">Delete</a> <!-- Route to Delete this specific Prior Experience -->
+			<form
+				action="{{ url_for('routes.delete_prior_experience', exp_id=experience.id) }}" 
+				method="POST">
+					<input type="submit" value="Delete" class="btn btn-danger btn-block">
+			</form>
         </td>
         {% endif %}
     </tr>

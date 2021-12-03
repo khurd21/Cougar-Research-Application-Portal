@@ -4,7 +4,8 @@
 {% if student and position and application %}
 <h1>{{ student.first_name }} {{ student.last_name }}</h1> <!-- Applicant's Name -->
 <p>
-    <b>Application For:</b> {{ position.title }}
+    <b>Application For:</b> {{ position.title }}<br>
+    <b>Current Status:</b> {{ status.status }}
 </p>
 <hr>
 <body>
@@ -24,6 +25,24 @@
                 <br>
                 &emsp;<b>Graduation Date:  </b>{{ moment(student.graduation_date).format('L') }} <!-- Applicant's Grad Date -->
                 <br>
+            </td>
+        </tr>
+        <tr valign="center">
+            <td width="50%">
+                <h3><b>Programming Languages</b></h3>
+                {% for language in student.programming_languages %}
+                    <p>
+                        &emsp;{{language.language}}
+                    </p>
+                {% endfor %}
+            </td>
+            <td width="50%">
+                <h3><b>Research Topics</b></h3>
+                {% for experience in student.research_experience %}
+                    <p>
+                        &emsp;{{experience.title}}
+                    </p>
+                {% endfor %}
             </td>
         </tr>
     </table>

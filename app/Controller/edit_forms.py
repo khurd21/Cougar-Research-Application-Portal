@@ -102,7 +102,7 @@ class EditPositionForm(FlaskForm):
     start_date = wtforms.DateTimeField('Start Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
     end_date = wtforms.DateTimeField('End Date [mm/dd/yyyy]', format='%m/%d/%Y', validators=[validators.DataRequired()])
     time_commitment = wtforms.IntegerField('Time Commitment', validators=[validators.DataRequired(), validators.NumberRange(min=1,max=100)])
-    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=256)])
+    required_qualifications = wtforms.TextAreaField('Required Qualifications', validators=[validators.DataRequired(), validators.Length(max=512)])
 
     research_fields = fields.QuerySelectMultipleField('Research Fields',
                                                             query_factory=lambda: ResearchField.query.all(),
@@ -119,8 +119,8 @@ class EditPositionForm(FlaskForm):
 
 class EditTechnicalElectiveForm(FlaskForm):
 
-    course_num         = wtforms.IntegerField('Course Number', validators=[validators.DataRequired()])
     course_prefix      = wtforms.StringField('Course Prefix', validators=[validators.DataRequired(), validators.Length(max=8)])
+    course_num         = wtforms.IntegerField('Course Number', validators=[validators.DataRequired()])
     course_title       = wtforms.StringField('Course Title', validators=[validators.DataRequired(), validators.Length(max=32)])
     course_description = wtforms.TextAreaField('Course Description', validators=[validators.DataRequired(), validators.Length(max=512)])
 

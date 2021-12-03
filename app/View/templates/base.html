@@ -43,6 +43,8 @@
                     {% if current_user.is_anonymous == False and current_user.is_faculty() == True %}
                     <li><a href="{{ url_for('routes.create_position') }}"><i class="fa fa-pencil"></i>  Create Position </a></li>
                     <li><a href="{{ url_for('routes.view_applicants') }}"><i class="fa fa-file-text-o"></i> View Applicants</a></li> <!-- Route for view applicants would go here -->
+                    {% elif current_user.is_anonymous == False and not current_user.is_faculty() == True %}
+                    <li><a href="{{ url_for('routes.view_applied_positions') }}"><i class="fa fa-file-text-o"></i> View Applications</a></li>
                     {% endif %}
                 </ul>
 
