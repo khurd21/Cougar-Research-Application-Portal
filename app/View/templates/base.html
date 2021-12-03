@@ -47,14 +47,11 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_anonymous == False and current_user.is_faculty() == False %}
-                    <li><a href=" {{ url_for('routes.edit') }}"><i class="fa fa-file-text-o"></i> Edit Student Info</a></li>
-                    {% endif %}
-                    {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for('auth.login')}}"><i class="fa fa-sign-in"></i>  Login</a></li>
+                    {% if current_user.is_anonymous == False %}
+                        <li><a href=" {{ url_for('routes.edit') }}"><i class="fa fa-file-text-o"></i> Edit Account Info</a></li>
+                        <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i>  Logout</a></li>
                     {% else %}
-                    <!-- Include a view profile and status link under here for future milstones-->
-                    <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i>  Logout</a></li>
+                        <li><a href="{{ url_for('auth.login')}}"><i class="fa fa-sign-in"></i>  Login</a></li>
                     {% endif %}
                 </ul>
             </div>

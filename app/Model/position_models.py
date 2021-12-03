@@ -46,7 +46,6 @@ class Position(db.Model):
     end_date        = db.Column(db.DateTime)
     time_commitment = db.Column(db.Integer)
     #faculty_object?
-    faculty_name    = db.Column(db.String(32))
     faculty_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     application_forms= db.relationship('Application', backref='position', lazy=True)
 

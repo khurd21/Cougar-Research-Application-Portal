@@ -11,7 +11,7 @@ from app import db
 from flask_login import current_user, login_user, logout_user, login_required
 from app.Controller.position_forms import CreatePositionForm
 from app.Controller.application_forms import ApplicationForm
-from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm, EditPositionForm
+from app.Controller.edit_forms import EditTechnicalElectiveForm, EditResearchExperienceForm, EditPositionForm, FacultyEditForm, StudentEditForm
 
 import app.Model.user_models as user_models
 import app.Controller.status_form as status_form
@@ -123,13 +123,16 @@ def apply(pos_id):
 @bp_routes.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-
-    if current_user.is_faculty():
-        flash('Access Denied: You must be logged in as a student to apply for a position.')
-        return redirect(url_for('routes.index'))
-
     user = User.query.filter_by(id=current_user.id).first()
-    eForm = EditForm(obj=user)
+
+    if user is None:
+        flash('User could not be found to edit')
+        return redirect(url_for('routes.index'))
+    
+    if current_user.is_faculty():
+        eForm = FacultyEditForm(obj=user)
+    else:
+        eForm = StudentEditForm(obj=user)
     
     if eForm.validate_on_submit():
         eForm.populate_obj(user)
@@ -139,8 +142,6 @@ def edit():
         return redirect(url_for('routes.index'))
         
     return render_template('edit.html', form=eForm)
-
-
 
 @bp_routes.route('/technical_electives', methods=['GET'])
 @login_required
