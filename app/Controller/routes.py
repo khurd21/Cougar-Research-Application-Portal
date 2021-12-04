@@ -7,7 +7,7 @@ from app.Model.user_models import User
 from flask import render_template, flash, redirect, url_for, request
 from app import db
 from flask_login import current_user, login_user, logout_user, login_required
-from app.Controller.position_forms import CreatePositionForm
+from app.Controller.position_forms import CreatePositionForm, SortForm
 from app.Controller.application_forms import ApplicationForm
 from app.Controller.edit_forms import EditForm, EditTechnicalElectiveForm, EditResearchExperienceForm
 
@@ -19,39 +19,41 @@ bp_routes.template_folder = Config.TEMPLATE_FOLDER #'..\\View\\templates'
 bp_routes.static_folder = Config.STATIC_FOLDER
 
 ## FUTURE: With faculty, sort so faculty id is on top? Or only show faculty's post?
-@bp_routes.route('/', methods=['GET'])
-@bp_routes.route('/index', methods=['GET'])
+@bp_routes.route('/', methods=['GET', 'POST'])
+@bp_routes.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    positions = Position.query.all()
-    return render_template('index.html', research_positions=positions)
+    sForm = SortForm()
+    positions =[]
+    
+    if current_user.is_faculty() == False:
+        if sForm.validate_on_submit():
+            choice = sForm.sort_choice.data
 
-@bp_routes.route('/recommended_positions', methods=['GET'])
-@login_required
-def recommended_positions():
-    if current_user.is_faculty():
-        flash('Access Denied: not logged in as Student')
-        return redirect(url_for('routes.index'))
+            positions = eval(choice)
+                
+        else:
+            positions = Position.query.all()   
+            
+        applied_positions = eval('reversed(sorted(positions, key=lambda position: position.id in [x.position_id for x in current_user.application_forms]))')
+    else:
+        flash('You must be logged in as a student.')
+        
     
+
+    return render_template('index.html', research_positions=positions, applied_positions = applied_positions, form=sForm)
+
+def getRecommendedPositions():
+    display_positions = []
     positions = Position.query.all()
-    
-    recommended_positions = []
-    user_fields = []
-    position_fields = []
-    
-    for field in current_user.interested_fields:
-        user_fields.append(field.id)
     for p in positions:
         fields = p.research_fields
-        for f in fields:
-            position_fields.append(f.id)
-        for f in position_fields:
-            matchNum = user_fields.count(f)
-            if matchNum > 0:
-                recommended_positions.append(p)
+        for field in current_user.interested_fields:
+            if fields.count(field) > 0:
+                display_positions.append(p)
                 break
             
-    return render_template('index.html', research_positions=recommended_positions)
+    return display_positions
 
 @bp_routes.route('/position/<pos_id>', methods=['GET'])
 @login_required
