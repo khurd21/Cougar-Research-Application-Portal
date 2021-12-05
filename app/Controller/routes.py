@@ -24,26 +24,22 @@ bp_routes.static_folder = Config.STATIC_FOLDER
 @login_required
 def index():
     sForm = SortForm()
-    positions =[]
+    positions = []
     
     if current_user.is_faculty() == False:
         if sForm.validate_on_submit():
             choice = sForm.sort_choice.data
-
-            positions = eval(choice)
+            positions = list(eval(choice))
+            #applied_positions = list(eval('reversed(sorted(positions, key=lambda position: position.id in [x.position_id for x in current_user.application_forms]))'))
                 
         else:
             positions = Position.query.all()   
-            
-        applied_positions = eval('reversed(sorted(positions, key=lambda position: position.id in [x.position_id for x in current_user.application_forms]))')
     else:
-        flash('You must be logged in as a student.')
-        
-    
+        positions = Position.query.all()
 
-    return render_template('index.html', research_positions=positions, applied_positions = applied_positions, form=sForm)
+    return render_template('index.html', research_positions=positions, form=sForm)
 
-def getRecommendedPositions():
+def get_recommended_positions():
     display_positions = []
     positions = Position.query.all()
     for p in positions:

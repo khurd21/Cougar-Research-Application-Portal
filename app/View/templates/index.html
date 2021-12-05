@@ -6,20 +6,15 @@
 
     <h1>Cougar Research Application Portal</h1>
 
-    
-    {% if form %}
+    {% if form and not current_user.is_faculty() %}
         {{ wtf.quick_form(form, action = url_for('routes.index')) }}
         <br><br>
-    {% else %}
-        <p>FORM COULD NOT BE RENDERED!!!</p>
     {% endif %}
     
     {% if research_positions %}
         <!-- researchPositions represents all open researchPositions in database -->
         {% for position in research_positions %}
-            {% with var = "true" if position in applied_positions else "false" %}
-                {% include '_positions.html' %}
-            {% endwith %}
+            {% include '_positions.html' %}
         {% endfor %}
     {% else %}
         <p>There are currently no available positions</p>
