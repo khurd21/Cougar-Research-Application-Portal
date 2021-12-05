@@ -11,6 +11,7 @@ from wtforms.widgets import CheckboxInput, ListWidget
 import wtforms
 import wtforms.validators as validators
 import wtforms_sqlalchemy.fields as fields
+from wtforms import SelectField, SubmitField
 
 #required = validators.DataRequired()
 
@@ -65,7 +66,11 @@ class CreatePositionForm(FlaskForm):
         except ValueError:
             raise ValidationError('Time commitment must be an integer (hours per week)')
 
+class SortForm(FlaskForm):
+    sort_choice = wtforms.SelectField('Sort Choice',choices = [('Position.query.all()', 'All Research Positions'), ('get_recommended_positions()', 'Recommended Research Positions'), ('current_user.applied_positions','Applied Research Positions')])
+    submit = wtforms.SubmitField('Refresh') 
     
+    #go through each position and say for position.research
 
 
 

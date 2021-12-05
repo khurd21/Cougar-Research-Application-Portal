@@ -8,11 +8,12 @@
         <td width="10%">
             <a href="{{ url_for('routes.display_position',pos_id = position.id)}}" class ="btn btn-info btn-block">View Info</a>
             {% if current_user.is_faculty() == False %}
-            <!-- the action would be the url_for the "apply to application" route with userid-->
                 <br>
-                <a href="{{ url_for('routes.apply',pos_id = position.id) }}" class ="btn btn-success btn-block">Apply</a>
-                <!-- IF the student has already applied to the said position -->
-                <!-- <a href="" class ="btn btn-secondary btn-block">Applied</a> -->
+                {% if position in current_user.applied_positions %}
+                    <a href="{{ url_for('routes.apply',pos_id = position.id) }}" class ="btn btn-warning btn-block">Applied</a>
+                {% else %}
+                    <a href="{{ url_for('routes.apply',pos_id = position.id) }}" class ="btn btn-success btn-block">Apply</a>
+                {% endif %}
             {% endif %}
             {% if current_user.id == position.faculty_id %}
             <!-- the action would be the url_for the "edit application" route with userid-->

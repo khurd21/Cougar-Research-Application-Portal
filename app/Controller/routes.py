@@ -9,7 +9,7 @@ from app.Model.user_models import User
 from flask import render_template, flash, redirect, url_for, request
 from app import db
 from flask_login import current_user, login_user, logout_user, login_required
-from app.Controller.position_forms import CreatePositionForm
+from app.Controller.position_forms import CreatePositionForm, SortForm
 from app.Controller.application_forms import ApplicationForm
 from app.Controller.edit_forms import EditTechnicalElectiveForm, EditResearchExperienceForm, EditPositionForm, FacultyEditForm, StudentEditForm
 
@@ -23,22 +23,41 @@ bp_routes.template_folder = Config.TEMPLATE_FOLDER #'..\\View\\templates'
 bp_routes.static_folder = Config.STATIC_FOLDER
 
 ## FUTURE: With faculty, sort so faculty id is on top? Or only show faculty's post?
-@bp_routes.route('/', methods=['GET'])
-@bp_routes.route('/index', methods=['GET'])
+@bp_routes.route('/', methods=['GET', 'POST'])
+@bp_routes.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    positions = Position.query.all()
+    sForm = SortForm()
+    positions = []
+    
     if not current_user.is_faculty():
         for deleted_pos in current_user.deleted_positions:
             flash(f'"{deleted_pos.position_title}" has been deleted. Last status: {deleted_pos.last_status}')
             db.session.delete(deleted_pos)
             db.session.commit()
-
+        if sForm.validate_on_submit():
+            choice = sForm.sort_choice.data
+            positions = eval(choice)
+        else:
+            positions = Position.query.all()   
         current_user.deleted_positions.clear() 
         db.session.commit()
+    else:
+        positions = Position.query.all()
 
-    return render_template('index.html', research_positions=positions)
+    return render_template('index.html', research_positions=positions, form=sForm)
 
+def get_recommended_positions():
+    display_positions = []
+    positions = Position.query.all()
+    for p in positions:
+        fields = p.research_fields
+        for field in current_user.interested_fields:
+            if fields.count(field) > 0:
+                display_positions.append(p)
+                break
+            
+    return display_positions
 
 @bp_routes.route('/position/<pos_id>', methods=['GET'])
 @login_required
