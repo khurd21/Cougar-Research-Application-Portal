@@ -67,7 +67,7 @@ class CreatePositionForm(FlaskForm):
             raise ValidationError('Time commitment must be an integer (hours per week)')
 
 class SortForm(FlaskForm):
-    sort_choice = wtforms.SelectField('Sort Choice',choices = [('Position.query.all()', 'All Positions'), ('get_recommended_positions()', 'Recommended Positions'), ('reversed(sorted(positions, key=lambda position: position.id in [x.position_id for x in current_user.application_forms]))','Applied Positions')])
+    sort_choice = wtforms.SelectField('Sort Choice',choices = [('Position.query.all()', 'All Research Positions'), ('get_recommended_positions()', 'Recommended Research Positions'), ('current_user.applied_positions','Applied Research Positions')])
     submit = wtforms.SubmitField('Refresh') 
     
     #go through each position and say for position.research

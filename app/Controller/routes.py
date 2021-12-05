@@ -37,7 +37,7 @@ def index():
             db.session.commit()
         if sForm.validate_on_submit():
             choice = sForm.sort_choice.data
-            positions = list(eval(choice))
+            positions = eval(choice)
         else:
             positions = Position.query.all()   
         current_user.deleted_positions.clear() 
