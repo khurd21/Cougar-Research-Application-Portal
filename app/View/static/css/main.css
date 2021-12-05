@@ -12,6 +12,13 @@
     border: 1px solid lightgray;
 }
 
+.logo-image{
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    margin-top: -6px;
+}
+
 .positiontable tr:hover {
     background-color: lightgray;
 }
@@ -30,9 +37,24 @@
     padding: 5px;
 }
 
+.subformtitle {
+    width: 35%;
+    font-style: Monospace;
+    margin: 0px;
+    padding: 5px;
+}
+
 .formbody {
     width: 90%;
-    height: 35%;
+    height: 100px;
+    font-style: Monospace;
+    margin: 0px;
+    padding: 5px;
+}
+
+.bigformbody {
+    width: 90%;
+    height: 175px;
     font-style: Monospace;
     margin: 0px;
     padding: 5px;
@@ -43,4 +65,13 @@
     margin: 1px;
     padding: 5px;
     text-align: left;
+}
+
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
 }

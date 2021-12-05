@@ -6,7 +6,8 @@
     <h1>Register an Account</h1>
     {% if form %}
         {{ wtf.quick_form(form, action=url_for('auth.register')) }}
+		<br><br><br>
     {% else %}
-        <p>FORM COULD NOT BE RENDERED!!!</p>
+        <p>register form could not be rendered</p>
     {% endif %}
 {% endblock %}

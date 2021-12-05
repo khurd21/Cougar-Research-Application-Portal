@@ -105,6 +105,17 @@ if position_models.ResearchField.query.count() == 0:
     db.session.commit()
 
 
+statuses = ['Pending', 'Interview', 'Accepted', 'Rejected']
+if position_models.Status.query.count() == 0:
+    for status in statuses:
+        db.session.add(position_models.Status(status=status))
+    db.session.commit()
+
+
+statuses_q    = position_models.Status.query.all()
+for status in statuses_q:
+    assert status.status in statuses
+
 
 languages   = experience_models.ProgrammingLanguage.query.all()
 fields      = position_models.ResearchField.query.all()
@@ -113,7 +124,6 @@ fields      = position_models.ResearchField.query.all()
 p1 = position_models.Position(faculty_id=f1.id)
 p1.start_date = datetime.utcnow()
 p1.end_date = datetime.utcnow() + timedelta(days=30)
-p1.faculty_name = f1.first_name
 p1.required_qualifications = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' \
         ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 
@@ -127,12 +137,13 @@ p1.time_commitment = 20
 p1.research_fields = fields[-4:-1]
 p1.title = 'Nunc faucibus'
 p1.save_to_db()
+f1.posted_positions.append(p1)
+db.session.commit()
 
 
 p2 = position_models.Position(faculty_id=f1.id)
 p2.start_date = datetime.utcnow()
 p2.end_date = datetime.utcnow() + timedelta(days=600)
-p2.faculty_name = f1.first_name
 p2.required_qualifications = 'Viverra accumsan in nisl nisi scelerisque. Lorem ipsum dolor sit amet.' \
         ' Placerat duis ultricies lacus sed. Neque egestas congue quisque egestas diam in arcu' \
         ' cursus euismod. Mi bibendum neque egestas congue quisque egestas diam in arcu.' \
@@ -146,12 +157,13 @@ p2.time_commitment = 20
 p2.research_fields = fields[:-3]
 p2.title = 'Porttitor leo'
 p2.save_to_db()
+f1.posted_positions.append(p2)
+db.session.commit()
 
 
 p3 = position_models.Position(faculty_id=f2.id)
 p3.start_date = datetime.utcnow()
 p3.end_date = datetime.utcnow() + timedelta(days=29)
-p3.faculty_name = f2.first_name
 p3.required_qualifications = 'Auctor neque vitae tempus quam. Integer enim neque volutpat' \
         ' ac tincidunt vitae semper. Sed viverra tellus in hac habitasse platea. Semper' \
         ' quis lectus nulla at volutpat diam ut venenatis. Nibh sed pulvinar proin gravida.'
@@ -163,6 +175,8 @@ p3.time_commitment = 20
 p3.research_fields = fields[-3:-1]
 p3.title = 'Ut ornare'
 p3.save_to_db()
+f2.posted_positions.append(p3)
+db.session.commit()
 
 
 
@@ -205,6 +219,8 @@ exp1.description = 'At varius vel pharetra vel turpis nunc eget lorem. ' \
         'adipiscing elit pellentesque. Egestas congue quisque egestas diam in arcu' \
             'cursus euismod quis. Nisl nisi scelerisque eu ultrices vitae auctor eu.'
 exp1.save_to_db()
+s1.research_experience.append(exp1)
+db.session.commit()
 
 
 exp2 = experience_models.ResearchExperience(student_id=s2.id)
@@ -216,7 +232,8 @@ exp2.description = 'Ultricies leo integer malesuada nunc vel risus. Arcu non odi
     'lacinia at. Ullamcorper sit amet risus nullam eget felis eget nunc lobortis. Malesuada' \
         'fames ac turpis egestas integer eget aliquet nibh. Ut aliquam purus sit amet luctus venenatis lectus.'
 exp2.save_to_db()
-    
+s2.research_experience.append(exp2)
+db.session.commit()    
 
 exp3 = experience_models.ResearchExperience(student_id=s1.id)
 exp3.company = 'Washington State University'
@@ -228,6 +245,8 @@ exp3.description = 'Integer quis auctor elit sed vulputate. Convallis aenean et 
         'facilisis. Pellentesque habitant morbi tristique senectus. Iaculis nunc sed augue lacus viverra.' \
             'Amet venenatis urna cursus eget nunc scelerisque viverra mauris.'
 exp3.save_to_db()
+s1.research_experience.append(exp3)
+db.session.commit()
 
 
 exp4 = experience_models.ResearchExperience(student_id=s3.id)
@@ -237,6 +256,9 @@ exp4.start_date = datetime(2015, 1, 1)
 exp4.end_date = datetime(2015, 12, 31)
 exp4.description = 'Est velit egestas dui id ornare arcu odio ut. Et netus et malesuada fames ac.' \
     'Nec feugiat nisl pretium fusce id velit ut tortor pretium. Quisque id diam vel quam elementum pulvinar etiam non quam.'
+exp4.save_to_db()
+s3.research_experience.append(exp4)
+db.session.commit()
 
 
 tech1 = experience_models.TechnicalElective(student_id=s1.id)
@@ -247,6 +269,8 @@ tech1.course_description = 'Lorem ipsum dolor sit amet, consectetur adipiscing e
     'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco' \
         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.'
 tech1.save_to_db()
+s1.technical_electives.append(tech1)
+db.session.commit()
 
 
 tech2 = experience_models.TechnicalElective(student_id=s2.id)
@@ -258,6 +282,8 @@ tech2.course_description = 'Lorem ipsum dolor sit amet, consectetur adipiscing e
         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.' \
             'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 tech2.save_to_db()
+s2.technical_electives.append(tech2)
+db.session.commit()
 
 
 tech3 = experience_models.TechnicalElective(student_id=s2.id)
@@ -268,6 +294,8 @@ tech3.course_description = 'Ultricies leo integer malesuada nunc vel risus. Arcu
     'lacinia at. Ullamcorper sit amet risus nullam eget felis eget nunc lobortis. Malesuada' \
         'fames ac turpis egestas integer eget aliquet nibh. Ut aliquam purus sit amet luctus venenatis lectus.' 
 tech3.save_to_db()
+s2.technical_electives.append(tech3)
+db.session.commit()
 
 
 tech4 = experience_models.TechnicalElective(student_id=s3.id)
@@ -279,8 +307,11 @@ tech4.course_description = 'Est velit egestas dui id ornare arcu odio ut. Et net
         'Sed viverra ipsum nunc aliquet bibendum enim facilisis. Pellentesque habitant morbi tristique senectus.' \
             'Iaculis nunc sed augue lacus viverra. Amet venenatis urna cursus eget nunc scelerisque viverra mauris.'
 tech4.save_to_db()
+s3.technical_electives.append(tech4)
+db.session.commit()
 
 
+pending = position_models.Status.query.filter_by(status='Pending').first()
 app1 = position_models.Application(student_id=s1.id, position_id=p1.id)
 app1.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie.' \
     'Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.' \
@@ -289,7 +320,12 @@ app1.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie
 app1.student_name = f'{s1.first_name} {s1.last_name}'
 app1.ref_name = 'Dr. Calico Cat'
 app1.ref_email = 'calico_cat@edi.edu'
+app1.status_id = pending.id
 app1.save_to_db()
+s1.application_forms.append(app1)
+s1.applied_positions.append(p1)
+p1.application_forms.append(app1)
+db.session.commit()
 
 
 app2 = position_models.Application(student_id=s2.id, position_id=p2.id)
@@ -299,7 +335,12 @@ app2.description = 'Facilisis magna etiam tempor orci eu. Tortor id aliquet' \
 app2.student_name = f'{s2.first_name} {s2.last_name}'
 app2.ref_name = 'Jackson Donner'
 app2.ref_email = 'jackson_donner@test.com'
+app2.status_id = pending.id
 app2.save_to_db()
+s2.application_forms.append(app2)
+s2.applied_positions.append(p2)
+p2.application_forms.append(app2)
+db.session.commit()
 
 
 app3 = position_models.Application(student_id=s1.id, position_id=p3.id)
@@ -309,14 +350,19 @@ app3.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie
 app3.student_name = f'{s1.first_name} {s1.last_name}'
 app3.ref_name = 'Dr. Helmer Glue'
 app3.ref_email = 'helmerg@ghi.edu'
+app3.status_id = pending.id
 app3.save_to_db()
-
+s1.application_forms.append(app3)
+s1.applied_positions.append(p3)
+p3.application_forms.append(app3)
 db.session.commit()
 
 
 test_app = position_models.Application.query.filter_by(student_id=s1.id).all()
 assert len(test_app) == 2
 for t in test_app:
+    p_q = position_models.Status.query.filter_by(status='Pending').first()
+    assert t.status_id == p_q.id
     print(t)
 
 
@@ -324,6 +370,7 @@ for t in test_app:
 print(f'Student 1: \n{s1}')
 print(f'RE: {s1.research_experience}')
 print(f'AP: {s1.applied_positions}')
+print(f'ST: {[x.status_id for x in s1.application_forms]}')
 print(f'TE: {s1.technical_electives}')
 print(f'IF: {s1.interested_fields}')
 
@@ -331,6 +378,7 @@ print(f'IF: {s1.interested_fields}')
 print(f'Student 2: \n{s2}')
 print(f'RE: {s2.research_experience}')
 print(f'AP: {s2.applied_positions}')
+print(f'ST: {[x.status_id for x in s2.application_forms]}')
 print(f'TE: {s2.technical_electives}')
 print(f'IF: {s2.interested_fields}')
 
@@ -338,5 +386,6 @@ print(f'IF: {s2.interested_fields}')
 print(f'Student 3: \n{s3}')
 print(f'RE: {s3.research_experience}')
 print(f'AP: {s3.applied_positions}')
+print(f'ST: {[x.status_id for x in s3.application_forms]}')
 print(f'TE: {s3.technical_electives}')
 print(f'IF: {s3.interested_fields}')

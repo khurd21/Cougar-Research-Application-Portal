@@ -1,0 +1,34 @@
+{% if position and user %}
+
+<h1>{{ position.title }}</h1>
+<body>
+    <p><b>Position Faculty Member: </b>{{ user.first_name }} {{ user.last_name }}</p>
+
+    <p>
+        <b>Phone Number:  </b>{{ user.phone_number }}
+        <br>
+        <b>Email:  </b>{{ user.email}}
+    </p>
+
+    <p><b>Time Commitment:</b> {{ position.time_commitment }}</p>
+
+    <p>
+        <b>Related Fields:</b><br>
+        {% for field in position.get_research_fields() %}
+            - {{ field.name }}<br>
+        {% endfor %}
+    </p>
+
+    <p>
+        <b>Description:</b><br>
+        {{ position.description }}
+    </p>
+
+	<p>
+		<b>Required Qualifications:</b><br>
+		{{ position.required_qualifications }}
+	</p>
+
+{% else %}
+	<h1>Position Not Found.</h1>
+{% endif %}

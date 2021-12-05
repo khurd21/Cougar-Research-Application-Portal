@@ -18,9 +18,9 @@
             {% if current_user.id == position.faculty_id %}
             <!-- the action would be the url_for the "edit application" route with userid-->
                 <br>
-                <a href="" class ="btn btn-warning btn-block">Edit</a>
+                <a href="{{ url_for('routes.edit_position', pos_id = position.id) }}" class ="btn btn-warning btn-block">Edit</a>
                 <br>
-                <a href="" class ="btn btn-danger btn-block">Delete</a>  
+                <a href="{{ url_for('routes.delete_position', pos_id=position.id) }}" class ="btn btn-danger btn-block">Delete</a>  
             {% endif %}
         </td>
 

@@ -26,6 +26,3 @@ applied_positions   = db.Table('applied_positions',
                                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                                 db.Column('position_id', db.Integer, db.ForeignKey('position.id'), primary_key=True),
                                 )
-
-
-# db.Column('status', <Pending, Accepted, Rejected, Interview>, nullable=False)

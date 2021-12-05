@@ -11,7 +11,6 @@ from datetime import datetime
 
 @login.user_loader
 def user_loader(id):
-    print(f"id:{id}")
     return User.query.filter_by(id = int(id)).first()
 
 
@@ -93,8 +92,9 @@ class Student(User):
     graduation_date             = db.Column(db.DateTime,default=datetime.utcnow)
     gpa                         = db.Column(db.Float)
     technical_electives         = db.relationship('TechnicalElective', backref='student', lazy=True)
-    research_experience         = db.relationship('ResearchExperience', backref='student', lazy=True)
-    application_forms           = db.relationship('Application', backref='student', lazy=True)
+    research_experience         = db.relationship('ResearchExperience', lazy=True)
+    application_forms           = db.relationship('Application', lazy=True)
+    deleted_positions           = db.relationship('DeletedPosition', lazy=True)
 
 
     programming_languages = db.relationship('ProgrammingLanguage',
@@ -111,6 +111,13 @@ class Student(User):
                             back_populates='students'
                             )
 
+
     __mapper_args__ = {
             'polymorphic_identity': 'student'
             }
+
+    def get_position_for_application(self, app_id):
+        application = position_models.Application.query.filter_by(id=int(app_id)).first()
+        if application in self.application_forms:
+            return position_models.Position.query.filter_by(id=application.position_id).first()
+        return None
