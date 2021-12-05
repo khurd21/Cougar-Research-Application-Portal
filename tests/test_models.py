@@ -32,7 +32,7 @@ def create_faculty():
 
 def create_position(faculty):
     return position_models.Position(title='test_position', description='test_description',
-                                    faculty_name=f'{faculty.first_name} {faculty.last_name}', faculty_id=faculty.id,
+                                    faculty_id=faculty.id,
                                     required_qualifications='test_qualifications', start_date=datetime.utcnow(),
                                     end_date=datetime.utcnow() + timedelta(days=1)
                                     )

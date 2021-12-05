@@ -123,9 +123,8 @@ def apply(pos_id):
     if appForm.validate_on_submit():
         pending     = position_models.Status.query.filter_by(status='Pending').first()
         application = Application(description=appForm.description.data, ref_name=appForm.ref_name.data,
-                                    ref_email = appForm.ref_email.data, position_id=pos_id,
-                                    student_id=current_user.id, student_name=f' {current_user.first_name} {current_user.last_name}',
-                                    status_id = pending.id
+                                    ref_email=appForm.ref_email.data, position_id=pos_id,
+                                    student_id=current_user.id, status_id=pending.id,
                                     )
         application.save_to_db()
         current_user.application_forms.append(application)
@@ -352,7 +351,7 @@ def delete_application(app_id):
     db.session.commit()
 
     flash('Application deleted.')
-    return redirect(url_for('routes.index'))
+    return redirect(url_for('routes.view_applied_positions'))
 
 
 @bp_routes.route('/delete_prior_experience/<exp_id>', methods=['POST', 'DELETE'])
