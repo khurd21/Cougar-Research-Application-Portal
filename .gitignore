@@ -102,6 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+.vscode
 .env
 .venv
 env/
@@ -130,3 +131,8 @@ dmypy.json
 
 # Mac
 .DS_Store
+python_statements.py
+
+#Database
+crap.db
+output.s

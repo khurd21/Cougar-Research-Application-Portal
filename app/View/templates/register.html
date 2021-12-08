@@ -1,0 +1,13 @@
+<!-- page used to register a defined user (i.e., Faculty member or Student) 
+     Takes a register form object called "form" -->
+{% extends "base.html" %}
+
+{% block app_content%}
+    <h1>Register an Account</h1>
+    {% if form %}
+        {{ wtf.quick_form(form, action=url_for('auth.register')) }}
+		<br><br><br>
+    {% else %}
+        <p>register form could not be rendered</p>
+    {% endif %}
+{% endblock %}
