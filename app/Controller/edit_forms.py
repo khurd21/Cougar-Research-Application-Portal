@@ -13,7 +13,7 @@ import wtforms
 import wtforms.validators as validators
 import wtforms_sqlalchemy.fields as fields
 
-# TODO: Major as a table
+
 def get_major_choices():
     majors = user_models.Major.query.all()
     tuple_majors = [(major.id, major.name) for major in majors]

@@ -1,34 +1,52 @@
 {% if position and user %}
 
-<h1>{{ position.title }}</h1>
+<h1><b>{{ position.title }}</b></h1>
+<p>
+    <b>Application from: </b> {{ user.first_name }} {{ user.last_name }}
+</p>
+
 <body>
-    <p><b>Position Faculty Member: </b>{{ user.first_name }} {{ user.last_name }}</p>
+    <table class="table table-borderless">
+        <tr valign="center">
+            <td style="float:left;" width="33%">
+                <h3><b>Contact Information </b></h3>
+                <b>Email: </b>{{ user.email }}<br>
+                <b>Phone Number: </b> {{ user.phone_number }}
+            </td>
+            <td style="float:left;" width="33%">
+                <h3><b>Time Commitment </b></h3>
+                <b>Required Hours: </b> {{ position.time_commitment }}<br>
+                <b>Timeframe: </b> {{ moment(position.start_date).format('L') }} - {{ moment(position.end_date).format('L') }}
+            </td>
+            <td style="float:left;" width="33%">
+                <h3><b>Related Research Fields</b></h3>
+                {% for field in position.get_research_fields() %}
+                    <p>
+                        &emsp;{{field.name}}
+                    </p>
+                {% endfor %}
+            </td>
 
-    <p>
-        <b>Phone Number:  </b>{{ user.phone_number }}
-        <br>
-        <b>Email:  </b>{{ user.email}}
-    </p>
+        </tr>
+        <tr valign="center"> 
+            <td width="90%">
+                <h3><b>Description</b></h3><hr>
+                <p>
+                    {{position.description}}
+                </p>
+            </td>
+        </tr>
 
-    <p><b>Time Commitment:</b> {{ position.time_commitment }}</p>
+        <tr valign="center">
+            <td width="90%">
+                <h3><b>Required Qualifications</b></h3>
+                <p>
+                    {{position.required_qualifications}}
+                </p>
+            </td>
 
-    <p>
-        <b>Related Fields:</b><br>
-        {% for field in position.get_research_fields() %}
-            - {{ field.name }}<br>
-        {% endfor %}
-    </p>
-
-    <p>
-        <b>Description:</b><br>
-        {{ position.description }}
-    </p>
-
-	<p>
-		<b>Required Qualifications:</b><br>
-		{{ position.required_qualifications }}
-	</p>
-
+        </tr>
+    </table>
 {% else %}
 	<h1>Position Not Found.</h1>
 {% endif %}

@@ -14,13 +14,13 @@
          <!-- the action would be the url_for the "edit application" route with userid-->
 		 <td width=10%>
             <a href="{{ url_for('routes.edit_position', pos_id = position.id) }}" class ="btn btn-warning">Edit</a>
-			<br>
+            <br>
             <br>
             <a href="{{ url_for('routes.delete_position', pos_id=position.id) }}" class ="btn btn-danger">Delete</a>
             <br>
 		</td>
     {% endif %}
     <br>
-    <a href="{{ url_for('routes.index') }}" class ="button"> Return to main page</a>
+    <a href="{{ url_for('routes.index') }}"> Return to main page</a>
 </body>
 {% endblock %}

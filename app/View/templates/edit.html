@@ -2,17 +2,16 @@
 
 {% block app_content %}
 
-
+<h1>Edit Account Information</h1><hr>
 {% if form %}
-
     <form action="" method="post">
         {{ form.hidden_tag() }}
 
-            {% if current_user.is_faculty() == False %}
-                <a href="{{ url_for('routes.technical_electives') }}" class ="btn btn-warning">Edit Technical Electives</a> <!-- Route to edit Tech Electives -->
+        {% if current_user.is_faculty() == False %}
+            <a href="{{ url_for('routes.technical_electives') }}" class ="btn btn-warning">Edit Technical Electives</a> <!-- Route to edit Tech Electives -->
 
-                <a href="{{ url_for('routes.research_experience') }}" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
-            {% endif %}
+            <a href="{{ url_for('routes.research_experience') }}" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
+        {% endif %}
         <br><br>
 
         <div>
@@ -99,9 +98,6 @@
         {% endif %}
 
         {{ form.submit(class="btn btn-success") }}<br>
-
-
-
     </form>
 
 {% else %}
