@@ -1,0 +1,35 @@
+<!-- Page used to render each position on the index page,
+     takes in a research position object called "position" -->
+<table class = "table table-hover">
+    <tr valign="center">   
+        <td width="20%"><b>{{ position.title }}</b></td>
+          
+        <!-- "read more" collapsable menu for position description -->
+        <td width="10%">
+            <a href="{{ url_for('routes.display_position',pos_id = position.id)}}" class ="btn btn-info btn-block">View Info</a>
+            {% if current_user.is_faculty() == False %}
+                <br>
+                {% if position in current_user.applied_positions %}
+                    <a href="{{ url_for('routes.apply',pos_id = position.id) }}" class ="btn btn-warning btn-block" disabled="disabled">Applied</a>
+                {% else %}
+                    <a href="{{ url_for('routes.apply',pos_id = position.id) }}" class ="btn btn-success btn-block">Apply</a>
+                {% endif %}
+            {% endif %}
+            {% if current_user.id == position.faculty_id %}
+            <!-- the action would be the url_for the "edit application" route with userid-->
+                <br>
+                <a href="{{ url_for('routes.edit_position', pos_id = position.id) }}" class ="btn btn-warning btn-block">Edit</a>
+                <br>
+                <a href="{{ url_for('routes.delete_position', pos_id=position.id) }}" class ="btn btn-danger btn-block">Delete</a>  
+            {% endif %}
+        </td>
+
+        <!-- Add research fields for post around here in a <td> with width of 20% -->
+        <td width=70%>
+            {% for field in position.get_research_fields() %}
+			<span><i class="fa fa-angle-right"></i> {{ field.name }}<br></span>
+            {% endfor %}
+        </td> 
+        <!-- There will eventually be an edit button feature hear for the post.writer -->
+    </tr>
+</table>

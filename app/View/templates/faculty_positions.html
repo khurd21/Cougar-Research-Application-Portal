@@ -1,0 +1,14 @@
+<!-- Page where a faculty member can view all their positiions along with information
+     regarding them as well as the applicants -->
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Your Active Research Positions</h1>
+    {% if positions %}
+        {% for position in positions %}
+            {% include '_position.html'%}
+        {% endfor %}
+    {% else %}
+        <p> You currently have for Active Research Positions.</p>
+    {% endif %}
+{% endblock %}

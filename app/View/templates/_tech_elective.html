@@ -1,0 +1,26 @@
+<!-- Will display the information regarding a student technical elective
+     in a table format -->
+     <table class = "table table-hover">
+        <tr valign="center">   
+            <td width="20%">
+                <b>{{ elective.course_prefix }} {{ elective.course_num }} - {{ elective.course_title }}</b>
+            </td>
+            <td width="10%">
+                <b>Grade: </b> {{ elective.get_grade() }}
+            </td>
+            <td width="60%">
+                {{ elective.course_description }}
+            </td>
+            {% if not current_user.is_faculty() %}
+            <td width=30%>
+                <a href="{{ url_for('routes.edit_technical_elective', elect_id = elective.id) }}" class ="btn btn-warning btn-block">Edit</a> <!-- Route to Edit this specific Technical Elective-->
+				<br>
+				<form
+					action="{{ url_for('routes.delete_technical_elective', tech_id=elective.id) }}"
+					method="POST">
+						<input type="submit" value="Delete" class="btn btn-danger btn-block">
+				</form>
+            </td>
+            {% endif %}
+        </tr>
+    </table>
