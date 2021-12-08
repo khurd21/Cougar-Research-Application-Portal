@@ -7,94 +7,109 @@
     <form action="" method="post">
         {{ form.hidden_tag() }}
 
-        {% if current_user.is_faculty() == False %}
-            <a href="{{ url_for('routes.technical_electives') }}" class ="btn btn-warning">Edit Technical Electives</a> <!-- Route to edit Tech Electives -->
+        <!------------------------------------------->
 
-            <a href="{{ url_for('routes.research_experience') }}" class ="btn btn-warning">Edit Prior Experience</a> <!-- Route to edit Prior Experience -->
-        {% endif %}
-        <br><br>
+        <table class="table table-borderless">
+            <tr valign="center">
+                <td style="float:left;" width="33%">
+                    <h3><b>{{ form.username.label }} </b></h3>
+                    {{ form.username }}
+                    {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}<br>
+        
+                </td>
+                <td style="float:left;" width="33%">
+                    <h3><b> {{ form.wsu_id.label }} </b></h3>
+                    {{ form.wsu_id }}
+                    {% for error in form.wsu_id.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}<br>
+                </td>
+                <td style="float:left;" width="33%">
+                    <h3><b>{{ form.first_name.label }}</b></h3>
+                    {{ form.first_name }}
+                    {% for error in form.first_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
 
-        <div>
-            <br>
-            {{ form.username.label }}<br>
-            {{ form.username }}<br> 
-
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-
-            {{form.wsu_id.label}}<br>
-            {{form.wsu_id }}<br>
-
-            {% for error in form.wsu_id.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-
-            {{form.first_name.label}}<br>
-            {{form.first_name }}<br>
-
-            {% for error in form.first_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-
-            {{form.last_name.label}}<br>
-            {{form.last_name }}<br>
-
-            {% for error in form.last_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-
-            {{form.email.label}}<br>
-            {{form.email }}<br>
-
-            {% for error in form.email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
-
-            {{form.phone_number.label}}<br>
-            {{form.phone_number }}<br>
-
-            {% for error in form.phone_number.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}<br>
+            <tr valign="center">
+                <td style="float:left;" width="33%">
+                    <h3><b>{{ form.last_name.label }} </b></h3>
+                    {{ form.last_name }}
+                    {% for error in form.last_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}<br>
+                </td>
+                <td style="float:left;" width="33%">
+                    <h3><b> {{ form.email.label }} </b></h3>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}<br>
+                </td>
+                <td style="float:left;" width="33%">
+                    <h3><b>{{ form.phone_number.label }}</b></h3>
+                    {{ form.phone_number }}
+                    {% for error in form.phone_number.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}<br>
+                </td>
+            </tr>
 
             {% if current_user.is_faculty() == False %}
-            
-                {{form.major.label}}<br>
-                {{form.major }}<br>
-
-                {% for error in form.major.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}<br>
-
-                {{form.gpa.label}}<br>
-                {{form.gpa }}<br>
-
-                {% for error in form.gpa.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}<br>
-
-                {{form.graduation_date.label}}<br>
-                {{form.graduation_date }}<br>
-
-                {% for error in form.graduation_date.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}<br>
-
+                <tr valign="center">
+                    <td style="float:left;" width="33%">
+                        <h3><b>{{ form.major.label }} </b></h3>
+                        {{ form.major }}
+                        {% for error in form.major.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}<br>
+                    </td>
+                    <td style="float:left;" width="33%">
+                        <h3><b> {{ form.gpa.label }} </b></h3>
+                        {{ form.gpa }}
+                        {% for error in form.gpa.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}<br>
+                    </td>
+                    <td style="float:left;" width="33%">
+                        <h3><b>{{ form.graduation_date.label }}</b></h3>
+                        {{ form.graduation_date }}
+                        {% for error in form.graduation_date.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}<br>
+                    </td>
+                </tr>
             {% endif %}
+        </table>
 
-        </div>
-
+        <!------------------------------------------------------>
+        <hr>
         {% if current_user.is_faculty() == False %}
 
-            <p class="formselect">{{form.interested_fields.label}}
-            {{form.interested_fields }}
-            </p>
-
-            <p class="formselect">{{form.programming_languages.label}}
-            {{form.programming_languages }}
-            </p>
-
+            <table class="table table-borderless">
+                <tr valign="center">
+                    <td style="float:left;">
+                        <a href="{{ url_for('routes.technical_electives') }}" class ="btn btn-warning">Edit Technical Electives</a> 
+                    </td>
+                    <td style="float:left;">
+                        <a href="{{ url_for('routes.research_experience') }}" class ="btn btn-warning">Edit Research Experience</a>
+                    </td>
+                </tr>
+                <tr valign="center">
+                    <td style="float:left;" width="50%">
+                        <h3><b>{{ form.interested_fields.label }} </b></h3>
+                        {{ form.interested_fields }}
+                    </td>
+                    <td style="float:left;" width="50%">
+                        <h3><b> {{ form.programming_languages.label }} </b></h3>
+                        {{ form.programming_languages }}
+                    </td>
+                </tr>
+            </table>
         {% endif %}
 
         {{ form.submit(class="btn btn-success") }}<br>
