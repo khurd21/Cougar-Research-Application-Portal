@@ -3,9 +3,13 @@ on:
   push:
     branches:
       - dev/kylehurd
+      - milestone3
+      - test
   pull_request:
     branches:
       - dev/kylehurd
+      - milestone3
+      - test
 jobs:
   build:
     runs-on: ubuntu-latest
