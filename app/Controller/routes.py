@@ -22,6 +22,8 @@ bp_routes = Blueprint('routes', __name__)
 bp_routes.template_folder = Config.TEMPLATE_FOLDER #'..\\View\\templates'
 bp_routes.static_folder = Config.STATIC_FOLDER
 
+recentSort = ''
+
 ## FUTURE: With faculty, sort so faculty id is on top? Or only show faculty's post?
 @bp_routes.route('/', methods=['GET', 'POST'])
 @bp_routes.route('/index', methods=['GET', 'POST'])
