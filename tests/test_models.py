@@ -39,7 +39,7 @@ def create_position(faculty):
 
 def create_application(student, position):
     return position_models.Application(student_id=student.id, position_id=position.id,
-                                        description='test_description', student_name=f'{student.first_name} {student.last_name}',
+                                        description='test_description',
                                         ref_name='test_ref_name', ref_email='test_ref_email'
                                         )
 

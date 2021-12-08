@@ -1,12 +1,8 @@
 
 from app import create_app, db
-from app.Model import position_models
+from app.Model import position_models, experience_models
 from datetime import datetime
 from flask_login import current_user
-
-
-from app.Model.position_models import ResearchField, Position
-from app.Model.user_models import User, Faculty, Student
 
 app = create_app()
 
@@ -29,6 +25,12 @@ def init_db(*args, **kwargs):
         statuses = ['Pending', 'Interview', 'Accepted', 'Rejected']
         for status in statuses:
             db.session.add(position_models.Status(status=status))
+        db.session.commit()
+
+    if experience_models.Grade.query.count() == 0:
+        grades = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F']
+        for grade in grades:
+            db.session.add(experience_models.Grade(grade=grade))
         db.session.commit()
     
     return None

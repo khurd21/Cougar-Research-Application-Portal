@@ -268,7 +268,6 @@ def create_position():
                             description = pform.description.data,
                             start_date  = start_date,
                             end_date    = end_date,
-                            faculty_name= f'{current_user.first_name} {current_user.last_name}',
                             faculty_id  = current_user.id,
                             time_commitment          = int(pform.time_commitment.data),
                             required_qualifications  = pform.required_qualifications.data,
