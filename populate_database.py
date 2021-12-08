@@ -96,12 +96,22 @@ if position_models.ResearchField.query.count() == 0:
             ]
     languages = sorted(languages)
 
+
+
     for field in fields:
         db.session.add(position_models.ResearchField(name=field))
 
     for language in languages:
         db.session.add(experience_models.ProgrammingLanguage(language=language))
 
+
+    db.session.commit()
+
+
+grades = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F']
+if experience_models.Grade.query.count() == 0:
+    for grade in grades:
+        db.session.add(experience_models.Grade(grade=grade))
     db.session.commit()
 
 
@@ -115,6 +125,10 @@ if position_models.Status.query.count() == 0:
 statuses_q    = position_models.Status.query.all()
 for status in statuses_q:
     assert status.status in statuses
+
+grades_q      = experience_models.Grade.query.all()
+for grade in grades_q:
+    assert grade.grade in grades
 
 
 languages   = experience_models.ProgrammingLanguage.query.all()
@@ -265,6 +279,7 @@ tech1 = experience_models.TechnicalElective(student_id=s1.id)
 tech1.course_title = 'Introduction to Python'
 tech1.course_prefix = 'CPTS'
 tech1.course_num = '101'
+tech1.grade_id = grades_q[3].id
 tech1.course_description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' \
     'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco' \
         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.'
@@ -277,6 +292,7 @@ tech2 = experience_models.TechnicalElective(student_id=s2.id)
 tech2.course_title = 'Software Engineering 1'
 tech2.course_prefix = 'CPTS'
 tech2.course_num = '322'
+tech2.grade_id = grades_q[0].id
 tech2.course_description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' \
     'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco' \
         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.' \
@@ -290,6 +306,7 @@ tech3 = experience_models.TechnicalElective(student_id=s2.id)
 tech3.course_title = 'Programming Language Design'
 tech3.course_prefix = 'CPTS'
 tech3.course_num = '355'
+tech3.grade_id = grades_q[-2].id
 tech3.course_description = 'Ultricies leo integer malesuada nunc vel risus. Arcu non odio euismod' \
     'lacinia at. Ullamcorper sit amet risus nullam eget felis eget nunc lobortis. Malesuada' \
         'fames ac turpis egestas integer eget aliquet nibh. Ut aliquam purus sit amet luctus venenatis lectus.' 
@@ -302,6 +319,7 @@ tech4 = experience_models.TechnicalElective(student_id=s3.id)
 tech4.course_title = 'Neural Network Design'
 tech4.course_prefix = 'CPTS'
 tech4.course_num = '434'
+tech4.grade_id = grades_q[1].id
 tech4.course_description = 'Est velit egestas dui id ornare arcu odio ut. Et netus et malesuada fames ac.' \
     'Nec feugiat nisl pretium fusce id velit ut tortor pretium. Quisque id diam vel quam elementum pulvinar etiam non quam.' \
         'Sed viverra ipsum nunc aliquet bibendum enim facilisis. Pellentesque habitant morbi tristique senectus.' \
@@ -317,7 +335,6 @@ app1.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie
     'Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.' \
         'Et ultrices neque ornare aenean euismod elementum nisi. Ultrices tincidunt arcu non sodales.' \
             'Accumsan lacus vel facilisis volutpat est. Pellentesque nec nam aliquam sem et tortor consequat id porta.'
-app1.student_name = f'{s1.first_name} {s1.last_name}'
 app1.ref_name = 'Dr. Calico Cat'
 app1.ref_email = 'calico_cat@edi.edu'
 app1.status_id = pending.id
@@ -332,7 +349,6 @@ app2 = position_models.Application(student_id=s2.id, position_id=p2.id)
 app2.description = 'Facilisis magna etiam tempor orci eu. Tortor id aliquet' \
     'lectus proin nibh nisl condimentum id. Suspendisse in est ante in nibh mauris cursus.' \
         'Massa tempor nec feugiat nisl pretium fusce id.'
-app2.student_name = f'{s2.first_name} {s2.last_name}'
 app2.ref_name = 'Jackson Donner'
 app2.ref_email = 'jackson_donner@test.com'
 app2.status_id = pending.id
@@ -347,7 +363,6 @@ app3 = position_models.Application(student_id=s1.id, position_id=p3.id)
 app3.description = 'Etiam tempor orci eu lobortis elementum nibh tellus molestie.' \
     'Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.' \
         'Nibh mauris cursus mattis molestie a iaculis. Cras adipiscing enim eu turpis egestas pretium aenean pharetra.'
-app3.student_name = f'{s1.first_name} {s1.last_name}'
 app3.ref_name = 'Dr. Helmer Glue'
 app3.ref_email = 'helmerg@ghi.edu'
 app3.status_id = pending.id

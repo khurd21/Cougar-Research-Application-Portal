@@ -6,9 +6,14 @@
 
     {% if current_user.is_faculty() == False %}
         <!-- url_for Apply route will implemented later -->
-        <a href="{{ url_for('routes.apply', pos_id=position.id) }}" class ="btn btn-success">Apply</a>
+        {% if position in current_user.applied_positions %}
+            <a href="{{ url_for('routes.apply', pos_id=position.id) }}" class ="btn btn-warning">Applied</a>
+        {% else %}
+            <a href="{{ url_for('routes.apply', pos_id=position.id) }}" class ="btn btn-success">Apply</a>
+        {% endif %}
         <br>
     {% endif %}
+
 
     {% if current_user.id == position.faculty_id %}
          <!-- the action would be the url_for the "edit application" route with userid-->
@@ -21,6 +26,15 @@
 		</td>
     {% endif %}
     <br>
-    <a href="{{ url_for('routes.index') }}"> Return to main page</a>
+    <table class="table table-borderless">
+        <tr valign="left">
+                <a href="{{ url_for('routes.index') }}"> Return to main page</a> - 
+        </tr>
+        <tr valign="right" style="text-justify: right;">
+                {% if not current_user.is_faculty() and position in current_user.applied_positions %}
+                    <a href="{{ url_for('routes.view_applied_positions') }}" style="text-align: right;"> Return to Applied Positions</a>
+                {% endif %}
+        </tr>
+    </table>
 </body>
 {% endblock %}
