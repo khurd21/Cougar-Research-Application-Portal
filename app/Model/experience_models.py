@@ -37,6 +37,10 @@ class ResearchExperience(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    
+    def __repr__(self):
+        return f'<ResearchExperience id: {self.id} student_id: {self.student_id} title: {self.title}>'
+
 
 
 class TechnicalElective(db.Model):
@@ -44,12 +48,40 @@ class TechnicalElective(db.Model):
     __tablename__ = 'technicalelective'
     id          = db.Column(db.Integer, primary_key=True)
     student_id  = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    grade_id    = db.Column(db.Integer, db.ForeignKey('grade.id'), nullable=False)
+
     course_num  = db.Column(db.Integer, nullable=False)
     course_prefix = db.Column(db.String(8), nullable=False)
     course_title = db.Column(db.String(32), nullable=False)
     course_description = db.Column(db.String(256), nullable=False)
 
 
+    def get_grade(self):
+        if (grade := Grade.query.filter_by(id=self.grade_id).first()):
+            return grade.grade
+
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+    
+    def __repr__(self):
+        return f'<TechnicalElective id: {self.id} student_id: {self.student_id} grade_id: {self.grade_id}'
+
+
+
+class Grade(db.Model):
+
+    id        = db.Column(db.Integer, primary_key=True)
+    grade     = db.Column(db.String(2), nullable=False)
+    students  = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    
+    def __repr__(self):
+        return f'<Grade id: {self.id} grade: {self.grade}>'

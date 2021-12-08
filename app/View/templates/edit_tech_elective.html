@@ -31,6 +31,13 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}<br>
 
+            {{ form.grade_id.label }}<br>
+            {{ form.grade_id }}<br>
+
+            {% for error in form.grade_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
             {{ form.course_description.label }}<br>
             {{ form.course_description(class = "bigformbody") }}<br> 
 

@@ -26,6 +26,17 @@
 		</td>
     {% endif %}
     <br>
-    <a href="{{ url_for('routes.index') }}" class ="button"> Return to main page</a>
+
+    <table class="table table-borderless">
+        <tr valign="left">
+                <a href="{{ url_for('routes.index') }}"> Return to main page</a> - 
+        </tr>
+        <tr valign="right" style="text-justify: right;">
+                {% if not current_user.is_faculty() and position in current_user.applied_positions %}
+                    <a href="{{ url_for('routes.view_applied_positions') }}" style="text-align: right;"> Return to Applied Positions</a>
+                {% endif %}
+        </tr>
+    </table>
+
 </body>
 {% endblock %}

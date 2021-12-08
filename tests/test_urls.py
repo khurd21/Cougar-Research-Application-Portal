@@ -365,13 +365,3 @@ def test_edit_faculty(test_client):
     assert b"Edit Technical Electives" in response.data
     assert b"Cougar Research Application Portal" in response.data
     assert faculty.first_name == "New First Name"
-    
-    
-    
-    
-
-
-    
-    
-
-

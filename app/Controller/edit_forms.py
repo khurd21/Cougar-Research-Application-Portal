@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_wtf import FlaskForm
+from app.Model import experience_models
 from app.Model.experience_models import ProgrammingLanguage, ResearchExperience, TechnicalElective
 from app.Model.position_models import ResearchField, Application
 from app.Model import user_models
@@ -122,6 +123,11 @@ class EditTechnicalElectiveForm(FlaskForm):
     course_prefix      = wtforms.StringField('Course Prefix', validators=[validators.DataRequired(), validators.Length(max=8)])
     course_num         = wtforms.IntegerField('Course Number', validators=[validators.DataRequired()])
     course_title       = wtforms.StringField('Course Title', validators=[validators.DataRequired(), validators.Length(max=32)])
+    grade_id           = fields.QuerySelectField('Grade',
+                                query_factory = lambda: experience_models.Grade.query.all(),
+                                get_label     = lambda x: x.grade,
+                                )
+
     course_description = wtforms.TextAreaField('Course Description', validators=[validators.DataRequired(), validators.Length(max=512)])
 
     submit = wtforms.SubmitField('Submit')

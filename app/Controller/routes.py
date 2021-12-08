@@ -205,7 +205,7 @@ def create_technical_elective():
     if form.validate_on_submit():
         technical_elective = TechnicalElective(course_num=form.course_num.data, course_title=form.course_title.data,
                                                 course_prefix=form.course_prefix.data, course_description=form.course_description.data,
-                                                student_id=current_user.id
+                                                student_id=current_user.id, grade_id=form.grade_id.data.id
                                                 )
         technical_elective.save_to_db()
         current_user.technical_electives.append(technical_elective)
@@ -459,6 +459,7 @@ def edit_technical_elective(elect_id):
     
     if eForm.validate_on_submit():
         eForm.populate_obj(elective)
+        elective.grade_id = eForm.grade_id.data.id
         db.session.commit()
         
         flash("Technical Elective information has been edited.")
